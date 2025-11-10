@@ -1,0 +1,12 @@
+data:
+  menus:
+    - id: sys
+      children:
+        - id: ureport
+          name: 报表管理
+          icon: TableOutlined
+          seq: 101
+          path: /ureport
+          perms:
+            - perm: ureport
+              name: 报表管理
