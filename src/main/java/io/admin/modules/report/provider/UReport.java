@@ -1,7 +1,7 @@
 package io.admin.modules.report.provider;
 
-import io.tmgg.data.domain.BaseEntity;
-import io.tmgg.data.DBConstants;
+import io.admin.framework.data.DBConstants;
+import io.admin.framework.data.domain.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Lob;

@@ -1,7 +1,7 @@
 package io.admin.modules.report.provider;
 
-import io.tmgg.data.repository.BaseDao;
-import io.tmgg.data.query.JpaQuery;
+import io.admin.framework.data.query.JpaQuery;
+import io.admin.framework.data.repository.BaseDao;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
