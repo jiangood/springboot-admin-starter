@@ -1,10 +1,10 @@
-package io.github.jian41.springadminframework;
+package io.admin;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class SpringAdminFrameworkApplicationTests {
+class SpringApplicationTests {
 
     @Test
     void contextLoads() {
