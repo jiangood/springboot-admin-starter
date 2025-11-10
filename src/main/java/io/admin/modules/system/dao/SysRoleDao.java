@@ -1,0 +1,32 @@
+
+package io.admin.modules.system.dao;
+
+
+import io.admin.modules.system.entity.SysRole;
+import io.admin.framework.data.repository.BaseDao;
+import io.admin.framework.data.query.JpaQuery;
+import org.springframework.stereotype.Repository;
+
+/**
+ * 系统角色
+ *
+
+ *
+ */
+@Repository
+public class SysRoleDao extends BaseDao<SysRole> {
+
+    public SysRole findByCode(String code) {
+
+        JpaQuery<SysRole> q = new JpaQuery<>();
+        q.eq(SysRole.Fields.code, code);
+        return this.findOne(q);
+    }
+
+    public long countByCode(String code) {
+
+        JpaQuery<SysRole> q = new JpaQuery<>();
+        q.eq(SysRole.Fields.code, code);
+        return this.count(q);
+    }
+}

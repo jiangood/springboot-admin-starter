@@ -1,0 +1,13 @@
+data:
+  configs:
+    - id: email.from
+      label: 邮件发送地址
+      group-name: 邮件配置
+    - id: email.password
+      label: 邮件密码
+      group-name: 邮件配置
+
+    - id: sys.default.password
+      label: 默认密码
+      group-name: 登录配置
+
