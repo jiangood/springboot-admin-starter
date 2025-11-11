@@ -11,8 +11,9 @@ import javax.sql.DataSource;
 @Configuration
 public class JdbcDbConfig {
 
+    @Bean
     @ConditionalOnMissingBean(value = DbUtils.class)
-    public DbUtils dbTool(DataSource dataSource){
+    public DbUtils dbUtils(DataSource dataSource){
         return new DbUtils(dataSource);
     }
 }
