@@ -3,6 +3,9 @@
 
 
 import {defineConfig} from 'umi';
-import {defaultConfigLocal} from "./defaultConfig";
+import {defaultConfig, defaultConfigLocal} from "./defaultConfig";
 
+defaultConfigLocal.alias= {
+    '@jian41/admin-framework': join(__dirname, 'src'),
+}
 export default defineConfig(defaultConfigLocal);

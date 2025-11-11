@@ -33,3 +33,4 @@ build/
 .vscode/
 /web/node_modules/
 /web/package-lock.json
+/web/pnpm-lock.yaml
