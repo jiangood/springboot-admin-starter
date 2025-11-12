@@ -9,6 +9,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @SpringBootTest
 public class PrefixedSequenceGeneratorTest {
 
@@ -26,6 +28,9 @@ public class PrefixedSequenceGeneratorTest {
 
 
         Assertions.assertTrue(e.getId().startsWith("BOOK"));
+
+        List list = em.createQuery("select t from TestEntity1 t").getResultList();
+        System.out.println(JsonUtils.toJsonQuietly(list));
 
     }
 

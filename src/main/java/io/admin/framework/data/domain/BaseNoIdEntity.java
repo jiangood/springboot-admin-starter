@@ -22,23 +22,12 @@ import java.util.Date;
 @EntityListeners(AuditingEntityListener.class)
 public abstract class BaseNoIdEntity {
 
-
-
-
-
-
-
     @CreatedDate
     @Column(updatable = false)
     private Date createTime;
 
-
-
-
     @LastModifiedDate
     private Date updateTime;
-
-
 
     @org.springframework.data.annotation.Version
     @Column(columnDefinition = "bigint default 0") // 建议：仅用于提示数据库建表时设置默认值
