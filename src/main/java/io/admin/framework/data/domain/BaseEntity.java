@@ -106,7 +106,7 @@ public abstract class BaseEntity implements PersistEntity, Serializable {
     @PrePersist
     public void prePersist() {
         this.prePersistOrUpdate();
-        if(this.id == null){
+        if(this.id == null && this._tempId == null){
             this.id = IdTool.uuidV7();
         }
 

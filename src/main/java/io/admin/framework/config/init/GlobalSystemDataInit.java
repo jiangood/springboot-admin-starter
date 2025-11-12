@@ -119,8 +119,6 @@ public class GlobalSystemDataInit implements CommandLineRunner {
         String id = "admin";
         SysUser admin = sysUserDao.findOne(id);
         String account = "admin-" + applicationName;
-
-
         if (admin == null) {
             String pwd = PasswordUtils.random();
             admin = new SysUser();
