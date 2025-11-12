@@ -24,10 +24,10 @@ import java.util.List;
  * @gendoc
  */
 @Slf4j
-public class HibernateMsgIntegrator implements Integrator {
-    public static final HibernateMsgIntegrator INSTANCE = new HibernateMsgIntegrator();
+public class HibernateEntityCommentIntegrator implements Integrator {
+    public static final HibernateEntityCommentIntegrator INSTANCE = new HibernateEntityCommentIntegrator();
 
-    public HibernateMsgIntegrator() {
+    public HibernateEntityCommentIntegrator() {
         super();
     }
 
