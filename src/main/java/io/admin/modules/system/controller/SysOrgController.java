@@ -172,7 +172,7 @@ public class SysOrgController {
             item.setTitle(title);
             item.setKey(o.getId());
             item.setParentKey(o.getPid());
-            item.setIconText(getIconByType(o.getType()));
+            item.setIconName(getIconByType(o.getType()));
 
             return item;
         }).toList();

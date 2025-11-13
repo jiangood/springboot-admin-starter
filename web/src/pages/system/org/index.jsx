@@ -194,7 +194,7 @@ export default class extends React.Component {
                               showIcon
                               blockNode
                               icon={item => {
-                                  return <NamedIcon name={item.data.iconText}/>;
+                                  return <NamedIcon name={item.data.iconName}/>;
                               }}
                               draggable={this.state.draggable}
                               onDrop={this.onDrop}
