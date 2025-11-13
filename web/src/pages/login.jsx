@@ -49,14 +49,18 @@ export default class login extends React.Component {
             return
         }
         crypt.setPublicKey(pubkey);
-        values.password = crypt.encrypt(values.password)
+       // values.password = crypt.encrypt(values.password)
 
-        HttpUtil.post('/auth/login', values).then(rs => {
+        const params = {
+            username: values.account,
+            password: values.password,
+        }
+
+        HttpUtil.postForm('/auth/login', params).then(rs => {
             console.log('登录结果', rs)
-            debugger
             history.push('/')
         }).catch(e=>{
-            debugger
+            console.log('登录错误', e)
         })
             .finally(() => {
             this.setState({logging: false})

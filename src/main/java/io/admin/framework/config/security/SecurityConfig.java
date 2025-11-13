@@ -1,27 +1,36 @@
 package io.admin.framework.config.security;
 
+import io.admin.common.dto.AjaxResult;
 import io.admin.common.utils.ArrayUtils;
 import io.admin.common.utils.PasswordUtils;
-import io.admin.framework.config.security.ajax.AjaxFormLoginConfigurer;
+import io.admin.common.utils.ResponseUtils;
 import io.admin.framework.config.security.ajax.AjaxLoginFilter;
 import io.admin.framework.config.SysProp;
 import io.admin.modules.common.AuthService;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.ExceptionHandlingConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.session.SessionRegistryImpl;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.context.SecurityContextRepository;
+
+import java.io.IOException;
 
 @Slf4j
 @Configuration
@@ -36,35 +45,49 @@ public class SecurityConfig {
         String[] loginExclude = ArrayUtils.toStrArr(sysProp.getXssExcludePathList());
 
         // 前后端分离项目，关闭csrf
-        http.csrf(AbstractHttpConfigurer::disable);
+        http.csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(authz -> {
+                    if (loginExclude.length > 0) {
+                        authz.requestMatchers(loginExclude).permitAll();
+                    }
+                    authz.requestMatchers("/admin/auth/**", "/admin/public/**").permitAll()
+                            .requestMatchers("/admin/**").authenticated()
+                            .anyRequest().permitAll();
 
-        http.authorizeHttpRequests(authz -> {
-            if (loginExclude.length > 0) {
-                authz.requestMatchers(loginExclude).permitAll();
-            }
-            authz.requestMatchers("/admin/auth/**", "/admin/public/**").permitAll()
-                    .requestMatchers("/admin/**").authenticated()
-                    .anyRequest().permitAll();
+                })
+                .formLogin(cfg -> {
+                    cfg.loginProcessingUrl("/admin/auth/login")
+                            .defaultSuccessUrl("/admin/auth/success")
+                            .successHandler((request, response, authentication) -> {
+                                AjaxResult rs = AjaxResult.ok("登录成功");
+                                ResponseUtils.response(response, rs);
+                            }).failureHandler((request, response, exception) -> {
+                                AjaxResult rs = AjaxResult.err("登录失败" + exception.getMessage());
+                                ResponseUtils.response(response, rs);
+                            })
+                    ;
+                })
+                .sessionManagement(cfg -> {
+                    int maximumSessions = sysProp.getMaximumSessions();
+                    log.info("设置最大并发会话数为 {}", maximumSessions);
+
+                    cfg.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED);
+                    cfg.sessionConcurrency(conCfg -> {
+                        conCfg.maximumSessions(maximumSessions)
+                                //达到限制时，新登录失败
+                                //.maxSessionsPreventsLogin(true)
+                                .sessionRegistry(sessionRegistry());
+                    });
+                });
+
+        http.exceptionHandling(cfg->{
+           cfg.accessDeniedHandler((request, response, e) -> {
+               AjaxResult err = AjaxResult.err(e.getMessage());
+               ResponseUtils.response(response,err);
+           });
 
         });
-        http.sessionManagement(cfg -> {
-            int maximumSessions = sysProp.getMaximumSessions();
-            log.info("设置最大并发会话数为 {}", maximumSessions);
 
-            cfg.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED);
-            cfg.sessionConcurrency(conCfg -> {
-                conCfg.maximumSessions(maximumSessions)
-                        //达到限制时，新登录失败
-                        .maxSessionsPreventsLogin(true)
-                        .sessionRegistry(sessionRegistry());
-            });
-        });
-
-
-
-
-        AjaxFormLoginConfigurer<HttpSecurity> configurer = new AjaxFormLoginConfigurer<>(loginFilter);
-        http.with(configurer, cfg->{});
 
         return http.build();
 
@@ -80,7 +103,7 @@ public class SecurityConfig {
 
     @Bean
     public AjaxLoginFilter loginFilter(AuthService loginService, AuthenticationConfiguration authenticationConfiguration) throws Exception {
-        AjaxLoginFilter loginFilter = new AjaxLoginFilter(loginService,authenticationConfiguration.getAuthenticationManager());
+        AjaxLoginFilter loginFilter = new AjaxLoginFilter(loginService, authenticationConfiguration.getAuthenticationManager());
         loginFilter.setSecurityContextRepository(securityContextRepository());
         return loginFilter;
     }

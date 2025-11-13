@@ -5,6 +5,6 @@ import lombok.Data;
 @Data
 public class CheckLoginResponse {
 
-    private boolean isLogin;
+    private boolean login;
     private boolean needUpdatePwd;
 }

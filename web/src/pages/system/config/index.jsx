@@ -61,6 +61,10 @@ export default class extends React.Component {
     ]
 
     componentDidMount() {
+        this.loadData();
+    }
+
+    loadData() {
         HttpUtil.get('sysConfig/page').then(rs => {
             this.setState({data: rs})
         })
@@ -74,7 +78,7 @@ export default class extends React.Component {
     onFinish = values => {
         HttpUtil.post('sysConfig/save', values).then(rs => {
             this.setState({formOpen: false})
-            this.tableRef.current.reload()
+            this.loadData()
         })
     }
 

@@ -65,10 +65,10 @@ class _Layouts extends React.Component {
         }
 
         Promise.all([
-            HttpUtil.get('/public/checkLogin')
+            HttpUtil.get('public/checkLogin')
                 .then(rs => {
-                    const {isLogin, needUpdatePwd} = rs
-                    if (isLogin && !needUpdatePwd) {
+                    const {login, needUpdatePwd} = rs
+                    if (login && !needUpdatePwd) {
                         return;
                     }
 
@@ -96,7 +96,7 @@ class _Layouts extends React.Component {
 
 
     reLogin = () => {
-        HttpUtil.get('/logout').finally(() => {
+        HttpUtil.get('/auth/logout').finally(() => {
             SysUtil.setToken(null)
             history.push('/login')
         })
