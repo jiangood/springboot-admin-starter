@@ -3,19 +3,18 @@ package io.admin.modules.common;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Dict;
-import io.admin.common.utils.field.ValueType;
+import cn.hutool.core.util.StrUtil;
+import io.admin.common.antd.MenuItem;
+import io.admin.common.dto.AjaxResult;
+import io.admin.common.utils.tree.TreeTool;
+import io.admin.framework.config.SysProp;
+import io.admin.framework.config.data.sysmenu.MenuDefinition;
 import io.admin.modules.common.dto.response.LoginDataResponse;
 import io.admin.modules.common.dto.response.LoginInfoResponse;
 import io.admin.modules.system.ConfigConsts;
-import io.admin.modules.system.dto.mapper.MenuMapper;
-import io.admin.modules.system.dto.response.MenuResponse;
 import io.admin.modules.system.entity.SysRole;
 import io.admin.modules.system.entity.SysUser;
 import io.admin.modules.system.service.*;
-import io.admin.framework.config.SysProp;
-import io.admin.framework.config.data.sysmenu.MenuDefinition;
-import io.admin.common.dto.AjaxResult;
-import io.admin.common.utils.tree.TreeTool;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -54,8 +53,6 @@ public class SysCommonController {
     @Resource
     private SysUserService sysUserService;
 
-    @Resource
-    private MenuMapper menuMapper;
 
     @Resource
     private SysOrgService sysOrgService;
@@ -69,23 +66,23 @@ public class SysCommonController {
     @GetMapping("public/site-info")
     public AjaxResult siteInfo() {
         Dict data = new Dict();
-        data.put("captcha",sysConfigService.getMixed("sys.captcha", Boolean.class));
-        data.put("captchaType",sysConfigService.getMixed("sys.captchaType",String.class));
-        data.put("copyright",sysConfigService.getMixed("sys.copyright",String.class));
-        data.put("loginBoxBottomTip",sysConfigService.getMixed("sys.loginBoxBottomTip",String.class));
-        data.put("logo",sysConfigService.getMixed("sys.logo",String.class));
-        data.put("title",sysConfigService.getMixed("sys.title",String.class));
-        data.put("waterMark",sysConfigService.getMixed("sys.waterMark",Boolean.class));
+        data.put("captcha", sysConfigService.getMixed("sys.captcha", Boolean.class));
+        data.put("captchaType", sysConfigService.getMixed("sys.captchaType", String.class));
+        data.put("copyright", sysConfigService.getMixed("sys.copyright", String.class));
+        data.put("loginBoxBottomTip", sysConfigService.getMixed("sys.loginBoxBottomTip", String.class));
+        data.put("logo", sysConfigService.getMixed("sys.logo", String.class));
+        data.put("title", sysConfigService.getMixed("sys.title", String.class));
+        data.put("waterMark", sysConfigService.getMixed("sys.waterMark", Boolean.class));
 
         // 将公钥发给前端，用于前端加密
-        String publicKey = sysConfigService.getMixed(ConfigConsts.RSA_PUBLIC_KEY,String.class);
+        String publicKey = sysConfigService.getMixed(ConfigConsts.RSA_PUBLIC_KEY, String.class);
         Assert.notNull(publicKey, "服务未初始化密钥信息，无法登录");
         data.put("rsaPublicKey", publicKey);
 
         // 登录背景图
-        String bg = sysConfigService.getMixed("sys.loginBackground",String.class);
-        if(bg != null && sysFileService.isFileExist(bg)){
-            data.put("loginBackground",bg);
+        String bg = sysConfigService.getMixed("sys.loginBackground", String.class);
+        if (bg != null && sysFileService.isFileExist(bg)) {
+            data.put("loginBackground", bg);
         }
 
         return AjaxResult.ok().data(data);
@@ -107,7 +104,7 @@ public class SysCommonController {
 
         SysUser user = LoginTool.getLoginUser();
         boolean login = user != null;
-        if (!login){
+        if (!login) {
             return AjaxResult.err("未登录");
         }
         r.setLogin(true);
@@ -121,7 +118,7 @@ public class SysCommonController {
         String roleNames = roleList.stream().map(SysRole::getName).collect(Collectors.joining(","));
 
         LoginInfoResponse userResponse = new LoginInfoResponse();
-        userResponse.setId( user.getId());
+        userResponse.setId(user.getId());
         userResponse.setName(user.getName());
         userResponse.setOrgName(sysOrgService.getNameById(user.getUnitId()));
         userResponse.setDeptName(sysOrgService.getNameById(user.getDeptId()));
@@ -135,8 +132,6 @@ public class SysCommonController {
     }
 
 
-
-
     /**
      * 前端左侧菜单调用， 以展示顶部及左侧菜单
      */
@@ -146,27 +141,35 @@ public class SysCommonController {
 
         SysUser user = sysUserService.findByAccount(account);
         Set<SysRole> roles = user.getRoles();
+        List<MenuDefinition> menuDefinitions = roleService.ownMenu(roles);
 
-        List<MenuDefinition> menuList = roleService.ownMenu(roles);
+        List<MenuItem> list = menuDefinitions.stream().map(m -> {
+            MenuItem item = new MenuItem();
+            item.setKey(m.getId());
+            item.setIcon(m.getIcon());
+            item.setLabel(m.getName());
+            item.setTitle(m.getName().substring(0, 1));
+            item.setRefreshOnTabClick(m.isRefreshOnTabClick());
+            item.setParentKey(m.getPid());
+            item.setPath(StrUtil.nullToEmpty(m.getPath()));
 
-        List<MenuResponse> menuResponseList = menuMapper.menuToResponseList(menuList);
-        List<MenuResponse> tree = TreeTool.buildTree(menuResponseList, MenuResponse::getId, MenuResponse::getPid, MenuResponse::setChildren);
+            return item;
+        }).toList();
 
+        // ======== 开始转换 ===========
+
+        List<MenuItem> tree = TreeTool.buildTree(list, MenuItem::getKey, MenuItem::getParentKey, MenuItem::getChildren, MenuItem::setChildren);
         // 顶层菜单如果没有子节点，则移除
         tree.removeIf(t -> CollUtil.isEmpty(t.getChildren()));
 
-        // 设置每个菜单的最顶层父节点id，方便刷新时切换顶层节点
-        TreeTool.walk(tree, MenuResponse::getChildren, (menu, parentMenu) -> {
-            String rootid = parentMenu == null ? menu.getId() : parentMenu.getRootid();
-            menu.setRootid(rootid);
-        });
+
 
         Dict data = new Dict();
-
         List<Dict> topMenus = tree.stream().map(r -> Dict.of("key", r.getKey(), "label", r.getLabel())).toList();
         data.put("topMenus", topMenus);
         data.put("menus", tree);
         data.put("badgeList", sysMenuBadgeService.findAll());
+
 
         return AjaxResult.ok().data(data);
     }

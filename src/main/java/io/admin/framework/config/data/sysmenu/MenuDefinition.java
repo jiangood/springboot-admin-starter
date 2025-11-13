@@ -1,6 +1,6 @@
 package io.admin.framework.config.data.sysmenu;
 
-import io.admin.common.AntDesignIcon;
+import io.admin.common.antd.AntDesignIcon;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

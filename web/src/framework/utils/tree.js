@@ -38,22 +38,22 @@ export const TreeUtil = {
 
     /**
      * 将数组转换为树
-     * @param data
+     * @param list
      * @param idKey
      * @param pidKey
      * @returns {*[]}
      */
-    arrayToTree(data, idKey = 'id', pidKey = 'pid') {
+    buildTree(list, idKey = 'id', pidKey = 'pid') {
         const map = {};
-        for (let i = 0; i < data.length; i++) {
-            const node = data[i];
+        for (let i = 0; i < list.length; i++) {
+            const node = list[i];
             let id = node[idKey];
             map[id] = node;
         }
 
         const root = [];
-        for (let i = 0; i < data.length; i++) {
-            const node = data[i];
+        for (let i = 0; i < list.length; i++) {
+            const node = list[i];
             let pid = node[pidKey];
             let parent = map[pid]
             if (parent) {
@@ -69,15 +69,8 @@ export const TreeUtil = {
         return root;
     },
 
-    /**
-     * 遍历
-     * @param tree
-     * @param callback
-     * @deprecated 请使用walk
-     */
-    traverseTree(tree, callback) {
-        this.walk(tree,callback)
-    },
+
+    // 遍历树节点
     walk(tree, callback) {
         // 遍历当前层级的节点
         for (let i = 0; i < tree.length; i++) {
@@ -118,35 +111,7 @@ export const TreeUtil = {
 
         return itemList;
     },
-
-
 // id, pid
-    convertSimpleListToTree(list) {
-        const map = {};
-
-        const result = [];
-        for (let item of list) {
-            map[item.id] = item;
-        }
-
-        for (let item of list) {
-            const p = map[item.pid];
-            if (p) {
-                if (p.children == null) {
-                    p.children = [];
-                }
-                p.children.push(item);
-            }
-
-            if (item.pid == null || p == null) {
-                result.push(item);
-            }
-        }
-
-        return result;
-    }
-
-    ,
     getSimpleList(treeNodeList) {
         const buffer = [];
 

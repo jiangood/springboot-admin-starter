@@ -1,4 +1,4 @@
-package io.admin.common;
+package io.admin.common.antd;
 
 public enum AntDesignIcon {
    AccountBookFilled,

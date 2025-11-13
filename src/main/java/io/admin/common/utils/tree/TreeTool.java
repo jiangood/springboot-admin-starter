@@ -2,7 +2,9 @@ package io.admin.common.utils.tree;
 
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.lang.Assert;
 import cn.hutool.core.lang.Dict;
+import org.apache.poi.ss.formula.functions.T;
 
 import java.util.*;
 import java.util.function.BiConsumer;
@@ -16,7 +18,7 @@ public class TreeTool {
 
 
     public static List<Dict> buildTree(List<Dict> list) {
-        return buildTree(list, e -> e.getStr("key"), e -> e.getStr("parentKey"), (e, children) -> e.set("children", children));
+        return buildTree(list, e -> e.getStr("key"), e -> e.getStr("parentKey"), (e) -> e.get("children", new ArrayList<>()), (e, children) -> e.set("children", children));
     }
 
 
@@ -29,50 +31,36 @@ public class TreeTool {
      * @param <E>
      * @return
      */
-    public static <E> List<E> buildTree(List<E> list, Function<E, String> idFn, Function<E, String> pidFn, BiConsumer<E, List<E>> setChildrenFn) {
-        // 1. 建立 ID 到节点的映射 (方便快速找到父节点对象)
+    public static <E> List<E> buildTree(List<E> list, Function<E, String> idFn, Function<E, String> pidFn, Function<E, List<E>> getChildren, BiConsumer<E, List<E>> setChildren) {
         Map<String, E> idMap = new HashMap<>();
         for (E e : list) {
             idMap.put(idFn.apply(e), e);
         }
 
-        // 2. 收集每个父节点下的所有子节点 (使用 PID 作为 Key)
-        Map<String, List<E>> childrenMap = new HashMap<>();
-        // 用于存放最终的根节点
-        List<E> rootNodes = new ArrayList<>();
+        List<E> tree = new ArrayList<>();
 
         for (E e : list) {
             String pid = pidFn.apply(e);
-            E parent = idMap.get(pid); // 尝试获取父节点对象
-
-            if (parent == null) {
-                // 如果父节点不存在 (通常是 PID 为 null/空字符串，或者找不到对应ID)，则认为是根节点
-                rootNodes.add(e);
-            } else {
-                // 是子节点，加入 childrenMap
-                // computeIfAbsent 保证了如果列表不存在则创建，并返回该列表供 add 使用
-                childrenMap.computeIfAbsent(pid, k -> new ArrayList<>()).add(e);
-            }
-        }
-
-        // 3. 将收集好的子节点列表设置给对应的父节点
-        for (Map.Entry<String, List<E>> entry : childrenMap.entrySet()) {
-            String pid = entry.getKey();
-            List<E> children = entry.getValue();
             E parent = idMap.get(pid);
 
-            // 理论上 parent 不会为 null，但为了健壮性检查一下
-            if (parent != null) {
-                // 只调用一次 setChildrenFn，传入完整的子节点列表
-                setChildrenFn.accept(parent, children);
+            if (parent == null) {
+                tree.add(e);
+                continue;
             }
+
+            List<E> parentChildren = getChildren.apply(parent); // 父节点的children字段
+            if (parentChildren == null) {
+                parentChildren = new ArrayList<>();
+                setChildren.accept(parent, parentChildren);
+            }
+            parentChildren.add(e);
         }
 
-        return rootNodes;
+        return tree;
     }
 
 
-    public static <E> void cleanEmptyChildren(List<E> list,Function<E, List<E>> getChildren,BiConsumer<E, List<E>> setChildrenFn) {
+    public static <E> void cleanEmptyChildren(List<E> list, Function<E, List<E>> getChildren, BiConsumer<E, List<E>> setChildrenFn) {
         walk(list, getChildren, e -> {
             List<E> children = getChildren.apply(e);
             if (CollUtil.isEmpty(children)) {
@@ -138,8 +126,6 @@ public class TreeTool {
     }
 
 
-
-
     public static <E> List<E> treeToList(List<E> tree, Function<E, List<E>> getChildren) {
         List<E> list = new ArrayList<>();
         walk(tree, getChildren, e -> list.add(e));
@@ -151,16 +137,16 @@ public class TreeTool {
      * 获取节点的父节点列表
      *
      * @param <E>
-     * @param list  注意不是树，而是列表
+     * @param list 注意不是树，而是列表
      * @return
      */
     public static <E> List<String> getPids(String nodeId, List<E> list, Function<E, String> idFn, Function<E, String> pidFn) {
-        Map<String,E> idMap = new HashMap<>();
+        Map<String, E> idMap = new HashMap<>();
         for (E e : list) {
             idMap.put(idFn.apply(e), e);
         }
         E node = idMap.get(nodeId);
-        if(node == null){
+        if (node == null) {
             return Collections.emptyList();
         }
 
@@ -175,7 +161,7 @@ public class TreeTool {
         }
 
 
-        return  pids;
+        return pids;
 
     }
 

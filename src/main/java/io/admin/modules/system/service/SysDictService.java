@@ -96,7 +96,7 @@ public class SysDictService extends BaseService<SysDict> {
             node.setColor(item.getColor());
             resultList.add(node);
         }
-        return TreeTool.buildTree(resultList, SysDictTreeResponse::getId, SysDictTreeResponse::getPid, SysDictTreeResponse::setChildren);
+        return TreeTool.buildTree(resultList, SysDictTreeResponse::getId, SysDictTreeResponse::getPid,SysDictTreeResponse::getChildren, SysDictTreeResponse::setChildren);
     }
 
     public Object getFinalKey(SysDictItem item) {

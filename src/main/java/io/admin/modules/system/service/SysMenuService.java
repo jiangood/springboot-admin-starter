@@ -32,7 +32,7 @@ public class SysMenuService  {
 
     public List<MenuDefinition> menuTree() {
         List<MenuDefinition> all = sysMenuDao.findAll();
-        List<MenuDefinition> tree = TreeTool.buildTree(all, MenuDefinition::getId, MenuDefinition::getPid, MenuDefinition::setChildren);
+        List<MenuDefinition> tree = TreeTool.buildTree(all, MenuDefinition::getId, MenuDefinition::getPid,MenuDefinition::getChildren, MenuDefinition::setChildren);
         return tree;
 
     }
