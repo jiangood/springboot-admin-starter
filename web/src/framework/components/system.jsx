@@ -3,23 +3,23 @@ import { FieldRemoteTreeSelect, FieldSelect} from './field';
 
 
 export function FieldUserSelect(props) {
-  return <FieldSelect url="/sysUser/options" {...props} />;
+  return <FieldSelect url="admin/sysUser/options" {...props} />;
 }
 
 export function FieldUserMultipleSelect(props) {
-  return <FieldSelect multiple={true} url="/sysUser/options" {...props} />;
+  return <FieldSelect multiple={true} url="admin/sysUser/options" {...props} />;
 }
 
 export function FieldUnitTreeSelect(props) {
-  return <FieldRemoteTreeSelect url="/sysOrg/unitTree" {...props} />;
+  return <FieldRemoteTreeSelect url="admin/sysOrg/unitTree" {...props} />;
 }
 
 export function FieldDeptTreeSelect(props) {
-  return <FieldRemoteTreeSelect url="/sysOrg/deptTree" {...props} />;
+  return <FieldRemoteTreeSelect url="admin/sysOrg/deptTree" {...props} />;
 }
 
 export function FieldOrgTreeSelect(props) {
-  return <FieldRemoteTreeSelect url="/sysOrg/deptTree" {...props} />;
+  return <FieldRemoteTreeSelect url="admin/sysOrg/deptTree" {...props} />;
 }
 
 export function FieldOrgTreeMultipleSelect(props) {

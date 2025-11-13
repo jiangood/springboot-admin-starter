@@ -14,7 +14,7 @@ import {
 } from "@/framework";
 
 const baseTitle = "组织机构";
-const baseApi = 'sysOrg/';
+const baseApi = 'admin/sysOrg/';
 
 const deleteTitle = '删除' + baseTitle
 
@@ -61,7 +61,7 @@ export default class extends React.Component {
         }
 
         const {params} = this.state
-        HttpUtil.post('admin/sysOrg/pageTree', params).then(rs => {
+        HttpUtil.get('admin/sysOrg/pageTree', params).then(rs => {
             let treeData = rs;
             this.setState({treeData})
         }).finally(() => {

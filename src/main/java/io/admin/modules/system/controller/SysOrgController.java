@@ -3,19 +3,20 @@ package io.admin.modules.system.controller;
 
 import cn.hutool.core.lang.Dict;
 import cn.hutool.core.util.StrUtil;
-import io.admin.framework.log.Log;
 import io.admin.common.dto.AjaxResult;
 import io.admin.common.utils.tree.TreeTool;
 import io.admin.common.utils.tree.drag.DragDropEvent;
 import io.admin.common.utils.tree.drag.TreeDragTool;
+import io.admin.framework.config.security.HasPermission;
+import io.admin.framework.data.query.JpaQuery;
+import io.admin.framework.log.Log;
 import io.admin.modules.system.entity.OrgType;
 import io.admin.modules.system.entity.SysOrg;
 import io.admin.modules.system.service.SysOrgService;
-import io.admin.framework.config.security.HasPermission;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpSession;
-import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -79,11 +80,7 @@ public class SysOrgController {
 
 
 
-    @Data
-    public static class PageParam{
-        boolean showDisabled;
-        boolean showDept;
-    }
+
 
     /**
      * 管理页面的树，包含禁用的
@@ -92,14 +89,17 @@ public class SysOrgController {
      */
     @HasPermission("sysOrg:view")
     @RequestMapping("pageTree")
-    public AjaxResult pageTree(@RequestBody PageParam param, String searchText) {
-
-        List<SysOrg> list = sysOrgService.findByLoginUser(param.showDept  , param.showDisabled);
-
-        if(StrUtil.isNotEmpty(searchText)){
-            list = list.stream().filter(t -> t.getName().contains(searchText)).collect(Collectors.toList());
+    public AjaxResult pageTree(  boolean showDisabled,    boolean showDept, String searchText) {
+        JpaQuery<SysOrg> q = new JpaQuery<>();
+        if(!showDisabled){
+            q.eq(SysOrg.Fields.enabled, false);
         }
+        if(!showDept){
+            q.ne(SysOrg.Fields.type, OrgType.DEPT);
+        }
+        q.searchText(searchText,SysOrg.Fields.name);
 
+        List<SysOrg> list = sysOrgService.findAll(q, Sort.by("seq"));
 
 
         return AjaxResult.ok().data(list2Tree(list));

@@ -236,4 +236,8 @@ public class SysOrgService extends BaseService<SysOrg> {
     public List<SysOrg> findAll() {
         return sysOrgDao.findAll();
     }
+
+    public List<SysOrg> findAll(JpaQuery<SysOrg> q, Sort sort) {
+        return sysOrgDao.findAll(q,sort);
+    }
 }
