@@ -14,7 +14,8 @@ export default class login extends React.Component {
     state = {
         logging: false,
 
-        siteInfo: {}
+        siteInfo: {},
+        random:Math.random()
     }
 
     async componentDidMount() {
@@ -51,12 +52,9 @@ export default class login extends React.Component {
         crypt.setPublicKey(pubkey);
        // values.password = crypt.encrypt(values.password)
 
-        const params = {
-            username: values.account,
-            password: values.password,
-        }
 
-        HttpUtil.postForm('admin/auth/login', params).then(rs => {
+
+        HttpUtil.postForm('admin/auth/login', values).then(rs => {
             console.log('登录结果', rs)
             history.push('/')
         }).catch(e=>{
@@ -90,7 +88,7 @@ export default class login extends React.Component {
                         colon={false}
                     >
 
-                        <Form.Item name="account" rules={[{required: true, message: '请输入用户名!'}]}>
+                        <Form.Item name="username" rules={[{required: true, message: '请输入用户名!'}]}>
                             <Input size='large' prefix={<UserOutlined/>} placeholder="用户名" autoComplete="off"/>
                         </Form.Item>
                         <Form.Item name="password" rules={[{required: true, message: '请输入密码!'}]}>
@@ -100,12 +98,12 @@ export default class login extends React.Component {
                         </Form.Item>
 
 
-                        {siteInfo.captcha && <Form.Item name='code' rules={[{required: true}]}>
+                        {siteInfo.captcha && <Form.Item name='captchaCode' rules={[{required: true}]}>
                             <Space style={{alignItems: 'center'}}>
                                 <Input size='large' placeholder='验证码' prefix={<SafetyCertificateOutlined/>}/>
                                 <img height={36} width={100}
-                                     src={SysUtil.getServerUrl() + "captchaImage?_r=" + this.state.r} onClick={() => {
-                                    this.setState({r: Math.random()})
+                                     src={SysUtil.wrapServerUrl( "admin/auth/captchaImage?_random=" + this.state.random)} onClick={() => {
+                                    this.setState({random: Math.random()})
                                 }}></img>
                             </Space>
                         </Form.Item>}

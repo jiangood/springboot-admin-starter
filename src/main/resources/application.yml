@@ -15,4 +15,5 @@ logging:
     path: ./logs
 sys:
   reset-admin-pwd: okjt123_
+  captcha: true
 

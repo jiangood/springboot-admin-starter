@@ -11,6 +11,7 @@ import io.admin.common.utils.PasswordUtils;
 import io.admin.modules.common.dto.LoginRequest;
 import io.admin.modules.system.ConfigConsts;
 import io.admin.framework.config.SysProp;
+import io.admin.modules.system.service.SysConfigService;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -42,13 +43,19 @@ public class AuthService {
 
 
 
-    public void preHandler(HttpServletRequest request) throws IOException {
+
+
+    public void preHandler(HttpServletRequest request) {
         // 0. 随眠 1秒，对用户无感知，但等防止爆破攻击
         ThreadUtil.sleep(1000);
 
-        String body = IoUtil.readUtf8(request.getInputStream());
-        LoginRequest loginRequest = JsonUtils.jsonToBean(body, LoginRequest.class);
-        String username = loginRequest.getAccount();
+        LoginRequest loginRequest = new LoginRequest();
+        loginRequest.setUsername(request.getParameter("username"));
+        loginRequest.setPassword(request.getParameter("password"));
+        loginRequest.setCaptchaCode(request.getParameter("captchaCode"));
+        loginRequest.setToken(request.getParameter("token"));
+
+        String username = loginRequest.getUsername();
         String password = loginRequest.getPassword();
 
         boolean locked = loginAttemptService.isAccountLocked(username);
@@ -60,9 +67,11 @@ public class AuthService {
         // 验证码校验
         if (prop.isCaptcha()) {
             HttpSession session = request.getSession(false);
-            Assert.hasText(loginRequest.getCode(), "请输入验证码");
+            Assert.notNull(session,"会话已失效，请重新获取验证码");
+
+            Assert.hasText(loginRequest.getCaptchaCode(), "请输入验证码");
             String sessionCode = (String) session.getAttribute(CAPTCHA_CODE);
-            Assert.state(codeGenerator.verify(sessionCode, loginRequest.getCode()), "验证码错误");
+            Assert.state(codeGenerator.verify(sessionCode, loginRequest.getCaptchaCode()), "验证码错误");
             session.removeAttribute(CAPTCHA_CODE);
         }
 

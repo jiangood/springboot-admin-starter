@@ -4,33 +4,26 @@ import io.admin.common.dto.AjaxResult;
 import io.admin.common.utils.ArrayUtils;
 import io.admin.common.utils.PasswordUtils;
 import io.admin.common.utils.ResponseUtils;
-import io.admin.framework.config.security.ajax.AjaxLoginFilter;
 import io.admin.framework.config.SysProp;
 import io.admin.modules.common.AuthService;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.config.Customizer;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.config.annotation.web.configurers.ExceptionHandlingConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.context.SecurityContextRepository;
-
-import java.io.IOException;
 
 @Slf4j
 @Configuration
@@ -41,7 +34,7 @@ public class SecurityConfig {
 
     // 配置 HTTP 安全
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http, AjaxLoginFilter loginFilter) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, LoginFilter loginFilter) throws Exception {
         String[] loginExclude = ArrayUtils.toStrArr(sysProp.getXssExcludePathList());
 
         // 前后端分离项目，关闭csrf
@@ -67,6 +60,7 @@ public class SecurityConfig {
                             })
                     ;
                 })
+                .addFilterBefore(loginFilter, UsernamePasswordAuthenticationFilter.class)
                 .sessionManagement(cfg -> {
                     int maximumSessions = sysProp.getMaximumSessions();
                     log.info("设置最大并发会话数为 {}", maximumSessions);
@@ -102,10 +96,15 @@ public class SecurityConfig {
 
 
     @Bean
-    public AjaxLoginFilter loginFilter(AuthService loginService, AuthenticationConfiguration authenticationConfiguration) throws Exception {
-        AjaxLoginFilter loginFilter = new AjaxLoginFilter(loginService, authenticationConfiguration.getAuthenticationManager());
-        loginFilter.setSecurityContextRepository(securityContextRepository());
-        return loginFilter;
+    public LoginFilter loginFilter(AuthService authService) {
+        return new LoginFilter(authService);
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
+        return http.getSharedObject(AuthenticationManagerBuilder.class)
+             //   .authenticationProvider(rsaDecryptingAuthenticationProvider) // 注册自定义 Provider
+                .build();
     }
 
     @Bean

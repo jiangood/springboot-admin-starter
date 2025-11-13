@@ -4,15 +4,15 @@ import lombok.Data;
 
 @Data
 public class LoginRequest {
-    String account;
+    String username;
     String password;
+
     // 验证码
-    String code;
+    String captchaCode;
 
     // 外部系统登录的token
     String token;
 
-    String clientId; // 客户端标识，主要用于验证码二次验证
 
 
 }

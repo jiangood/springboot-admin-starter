@@ -8,12 +8,6 @@ data:
           name: 邮件发送密码
     - group-name: 网站配置
       children:
-        - code: sys.captcha
-          name: 开启验证码
-          value-type: boolean
-        - code: sys.captchaType
-          name: 验证码类型
-          description: random,math
         - code: sys.copyright
           name: 版权信息
         - code: sys.loginBackground

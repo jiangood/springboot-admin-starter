@@ -49,14 +49,20 @@ public class AuthController {
 
 
 
+
     @GetMapping("captchaImage")
-    public void captcha(HttpSession session, HttpServletResponse resp) throws IOException {
+    public void captcha(HttpSession session, HttpServletResponse response) throws IOException {
+        log.info("正在生成验证码, sessionId={}",session.getId());
         try {
             ICaptcha captcha = CaptchaUtil.createLineCaptcha(100, 50, codeGenerator, 100);
-            captcha.write(resp.getOutputStream());
 
             String code = captcha.getCode();
             session.setAttribute(CAPTCHA_CODE, code);
+
+            response.setContentType("image/png");
+            response.setHeader("Cache-Control", "no-cache, no-store, max-age=0, must-revalidate");
+            captcha.write(response.getOutputStream());
+            response.getOutputStream().flush();
         } catch (Exception e) {
             log.error("生成验证码失败，将验证码参数设置为禁用");
         }
