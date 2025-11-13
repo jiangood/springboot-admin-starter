@@ -3,7 +3,6 @@ import {StorageUtil, StrUtil, UrlUtil} from "@/framework";
 const SITE_INFO_KEY = "siteInfo"
 const LOGIN_INFO_KEY = "loginInfo"
 const DICT_INFO_KEY = "dictInfo"
-const TOKEN_KEY = "X-Auth-Token"; // 认证token，存储、请求头、响应头保持一致
 export const SysUtil = {
 
     /**
@@ -24,22 +23,9 @@ export const SysUtil = {
         return UrlUtil.join(serverUrl, url)
     },
 
-    setToken(data) {
-        return StorageUtil.set(TOKEN_KEY, data)
-    },
-
-    getToken() {
-        return StorageUtil.get(TOKEN_KEY)
-    },
-
-    getTokenKey(){
-      return TOKEN_KEY
-    },
 
     getHeaders() {
-        const token =this.getToken();
         const headers = {}
-        headers[TOKEN_KEY] = token;
         return headers;
     },
 

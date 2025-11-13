@@ -84,7 +84,7 @@ export default class extends React.Component {
     }
 
     loadAssignmentObjectTree = (assignmentTypeCode) => {
-        const url = '/flowable/model/assignmentObjectTree?code=' + assignmentTypeCode;
+        const url = 'admin/flowable/model/assignmentObjectTree?code=' + assignmentTypeCode;
         HttpUtil.get(url).then((rs) => {
             this.setState({assignmentObjectList: rs});
         });

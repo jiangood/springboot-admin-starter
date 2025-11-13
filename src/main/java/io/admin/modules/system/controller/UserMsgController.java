@@ -39,12 +39,6 @@ public class UserMsgController {
         return AjaxResult.ok();
     }
 
-    @GetMapping("getMessageCount")
-    public AjaxResult getMessageCount() {
-        String id = LoginTool.getLoginUser().getId();
-        long sum = sysUserMsgService.countUnReadByUser(id);
 
-        return AjaxResult.ok().data(sum);
-    }
 
 }

@@ -4,11 +4,11 @@ package io.admin.modules.common;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Dict;
 import cn.hutool.core.util.StrUtil;
-import io.admin.modules.common.dto.response.CheckLoginResponse;
+import io.admin.modules.common.dto.response.LoginDataResponse;
+import io.admin.modules.common.dto.response.LoginInfoResponse;
 import io.admin.modules.system.ConfigConsts;
 import io.admin.modules.system.dto.mapper.MenuMapper;
 import io.admin.modules.system.dto.response.MenuResponse;
-import io.admin.modules.system.dto.response.UserResponse;
 import io.admin.modules.system.entity.SysRole;
 import io.admin.modules.system.entity.SysUser;
 import io.admin.modules.system.service.*;
@@ -58,6 +58,12 @@ public class SysCommonController {
     @Resource
     private MenuMapper menuMapper;
 
+    @Resource
+    private SysOrgService sysOrgService;
+
+    @Resource
+    private SysUserMessageService sysUserMessageService;
+
     /**
      * 站点信息， 非登录情况下使用
      */
@@ -93,49 +99,44 @@ public class SysCommonController {
      */
     @GetMapping("public/checkLogin")
     public AjaxResult checkLogin(HttpServletRequest request) {
-        CheckLoginResponse r = new CheckLoginResponse();
+        LoginDataResponse r = new LoginDataResponse();
 
         HttpSession session = request.getSession(false);
         if (session == null) {
             log.debug("checkLogin session is null");
-        }else {
-            String account = LoginTool.getLoginAccount();
-            r.setLogin(account != null);
-            if(r.isLogin()){
-                r.setNeedUpdatePwd(false); // TODO
-            }
+            return AjaxResult.err("未登录");
         }
+
+        SysUser user = LoginTool.getLoginUser();
+        boolean login = user != null;
+        if (!login){
+            return AjaxResult.err("未登录");
+        }
+        r.setLogin(true);
+        r.setNeedUpdatePwd(false); // TODO
+        r.setDictTree(sysDictService.tree());
+
+
+        List<String> permissions = LoginTool.getPermissions();
+        List<String> roles = LoginTool.getRoles();
+        List<SysRole> roleList = roleService.findAllByCode(roles);
+        String roleNames = roleList.stream().map(SysRole::getName).collect(Collectors.joining(","));
+
+        LoginInfoResponse userResponse = new LoginInfoResponse();
+        userResponse.setId( user.getId());
+        userResponse.setName(user.getName());
+        userResponse.setOrgName(sysOrgService.getNameById(user.getUnitId()));
+        userResponse.setDeptName(sysOrgService.getNameById(user.getDeptId()));
+        userResponse.setPermissions(permissions);
+        userResponse.setAccount(user.getAccount());
+        userResponse.setRoleNames(roleNames);
+        userResponse.setMessageCount(sysUserMessageService.countUnReadByUser(user.getId()));
+        r.setLoginInfo(userResponse);
 
         return AjaxResult.ok().data(r);
     }
 
-    /**
-     * 获取当前登录信息
-     */
-    @GetMapping("getLoginInfo")
-    private AjaxResult getLoginInfo() {
-        String loginUserId = LoginTool.getLoginAccount();
 
-        SysUser sysUser = sysUserService.findByAccount(loginUserId);
-        UserResponse user = sysUserService.findOneDto(sysUser.getId());
-        List<String> permissions = LoginTool.getPermissions();
-
-        Dict vo = new Dict();
-        vo.put("id", user.getId());
-        vo.put("name", user.getName());
-        vo.put("orgName", user.getUnitLabel());
-        vo.put("deptName", user.getDeptLabel());
-        vo.put("permissions", permissions);
-        vo.put("account", user.getAccount());
-
-        List<String> rolePermissions = LoginTool.getRoles();
-        List<SysRole> roleList = roleService.findAllByCode(rolePermissions);
-
-        vo.put("roleNames", roleList.stream().map(SysRole::getName).collect(Collectors.joining(",")));
-
-
-        return AjaxResult.ok().data(vo);
-    }
 
 
     /**
@@ -176,8 +177,5 @@ public class SysCommonController {
     @Resource
     private SysDictService sysDictService;
 
-    @GetMapping("common/dictTree")
-    public AjaxResult tree() {
-        return AjaxResult.ok().data(sysDictService.tree());
-    }
+
 }

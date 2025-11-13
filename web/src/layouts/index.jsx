@@ -6,14 +6,12 @@ import '@ant-design/v5-patch-for-react-19';
 
 import {history, Outlet, withRouter} from "umi";
 import zhCN from 'antd/locale/zh_CN';
-import {ArrUtil, theme} from "@/framework";
+import {ArrUtil, HttpUtil, MsgBoxComponent, PageLoading, PageUtil, SysUtil, theme} from "../framework";
 import dayjs from 'dayjs';
 import 'dayjs/locale/zh-cn';
 
 import '../style/global.less'
 import './index.less'
-import {HttpUtil, PageLoading, PageUtil, SysUtil} from "@/framework";
-import {MsgBoxComponent} from "@/framework";
 
 dayjs.locale('zh-cn');
 
@@ -66,19 +64,11 @@ class _Layouts extends React.Component {
 
         HttpUtil.get('admin/public/checkLogin')
             .then(rs => {
-                const {login, needUpdatePwd} = rs
-                if (login && !needUpdatePwd) {
-                    Promise.all([
-                        HttpUtil.get('admin/getLoginInfo').then(res => {
-                            SysUtil.setLoginInfo(res)
-                        }),
-                        HttpUtil.get('admin/common/dictTree').then(res => {
-                            SysUtil.setDictInfo(res)
-                        }),
-
-                    ]).then(() => {
-                        this.setState({loginInfoFinish: true})
-                    })
+                const {needUpdatePwd, dictTree, loginInfo} = rs
+                SysUtil.setDictInfo(dictTree)
+                SysUtil.setLoginInfo(loginInfo)
+                if (!needUpdatePwd) {
+                    this.setState({loginInfoFinish: true});
                     return;
                 }
 
@@ -86,22 +76,15 @@ class _Layouts extends React.Component {
                     PageUtil.open('/userCenter/ChangePassword', '修改密码')
                     return;
                 }
-
-                // 缓存路径
-                localStorage.setItem("pre_href", window.location.href)
-
+            })
+            .catch(async () => {
                 this.reLogin()
-            });
-
-
+            })
     }
 
 
     reLogin = () => {
-        HttpUtil.get('admin/auth/logout').finally(() => {
-            SysUtil.setToken(null)
-            history.push('/login')
-        })
+        history.push('/login')
     };
 
 

@@ -11,26 +11,20 @@ const ID = 'header-right';
 export default class HeaderRight extends React.Component {
 
     state = {
-        messageCount: 0,
         isMobileDevice: false
     };
 
     componentDidMount() {
-        this.initMessage()
         document.dispatchEvent(new CustomEvent('componentDidMount', {detail: ID}))
         if (isMobileDevice()) {
             this.setState({isMobileDevice: true})
         }
     }
 
-    initMessage = () => {
-        HttpUtil.get('admin/user/msg/getMessageCount').then(rs => {
-            this.setState({messageCount: rs})
-        })
-    }
+
 
     logout = () => {
-        HttpUtil.post('admin//auth/logout').then(async () => {
+        HttpUtil.post('admin/auth/logout').then(async () => {
             localStorage.clear()
             await MsgBox.alert('退出登录成功');
             history.replace('/login')
@@ -64,7 +58,7 @@ export default class HeaderRight extends React.Component {
 
 
             <div className='item' onClick={() => PageUtil.open('/userCenter/message', '我的消息')}>
-                <Badge count={this.state.messageCount} size="small">
+                <Badge count={info.messageCount} size="small">
                     <NotificationOutlined/>
                 </Badge>
             </div>

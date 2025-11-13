@@ -3,19 +3,6 @@ import React from 'react';
 import {HttpUtil, PageUtil, ProTable} from "@/framework";
 import {PlusOutlined} from "@ant-design/icons";
 
-const baseTitle = "流程模型";
-const baseApi = 'flowable/model/';
-const basePerm = 'flowable/model:';
-
-const deleteTitle = '删除' + baseTitle
-
-
-const delApi = baseApi + 'delete'
-const pageApi = baseApi + 'page'
-
-const delPerm = basePerm + 'delete'
-
-
 export default class extends React.Component {
 
 
@@ -56,7 +43,7 @@ export default class extends React.Component {
                     <Button size='small' type='primary'
                             onClick={() => PageUtil.open('/flowable/design?id=' + record.id, '流程设计' + record.name)}> 设计 </Button>
                     <Button size='small' onClick={() => this.handleEdit(record)}> 编辑 </Button>
-                    <Popconfirm perm={delPerm} title={'是否确定' + deleteTitle}
+                    <Popconfirm perm='flowable/model:delete' title={'是否确定删除流程模型' }
                                 onConfirm={() => this.handleDelete(record)}>
                         <Button size='small' danger>删除</Button>
                     </Popconfirm>
@@ -87,7 +74,7 @@ export default class extends React.Component {
     }
 
     handleDelete = row => {
-        HttpUtil.get(delApi, {id: row.id}).then(rs => {
+        HttpUtil.get('admin/flowable/model/delete', {id: row.id}).then(rs => {
             this.actionRef.current.reload();
         })
     }
@@ -111,7 +98,7 @@ public class DemoProcess implements ProcessDefinition {
                 actionRef={this.actionRef}
                 toolBarRender={() => <Button icon={<PlusOutlined/>} type='primary'
                                              onClick={this.handleAdd}> 新增</Button>}
-                request={(params) => HttpUtil.pageData(pageApi, params)}
+                request={(params) => HttpUtil.pageData('admin/flowable/model/page', params)}
                 columns={this.columns}
                 rowSelection={false}
                 rowKey="id"
