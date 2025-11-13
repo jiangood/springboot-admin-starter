@@ -21,80 +21,54 @@ export default class extends React.Component {
     state = {
         loginInfo: {},
 
-        menus: [],
-        topMenus: [],
-        leftMenus: [],
-        menuMap: {},
+        menuTree: [],
+        pathMenuMap: {},
 
 
-        currentTopMenuKey: null,
         currentMenuKey: null,
 
 
         collapsed: false,
         siteInfo: {},
-
         isMobileDevice: false,
-
-        pathMenuMap: {}
     }
+
     tabPageRenderRef = React.createRef()
 
 
-    toggleCollapsed = (v) => {
-        this.setState({collapsed: v})
-    }
-
     componentDidMount() {
         console.log('Admin Layout didMount')
-        this.initMenu()
-        let siteInfo = SysUtil.getSiteInfo();
-        this.setState({siteInfo})
-
         // 判断是否手机端，自动收起菜单
         if (isMobileDevice()) {
             this.setState({collapsed: true, isMobileDevice: true})
         }
 
+        let siteInfo = SysUtil.getSiteInfo();
         const loginInfo = SysUtil.getLoginInfo()
-        this.setState({loginInfo})
+        this.setState({siteInfo,loginInfo})
+
+        this.initMenu()
     }
 
 
     initMenu = () => {
         HttpUtil.get('admin/menuInfo').then(info => {
-            const {menus, topMenus, badgeList} = info
+            const {menuTree, pathMenuMap, badgeList} = info
 
             let pathname = PageUtil.currentPathname();
-            let currentMenuKey = null
-            const menuMap = {}
 
-            TreeUtil.walk(menus, (item) => {
+            TreeUtil.walk(menuTree, (item) => {
                 item.icon = <NamedIcon name={item.icon} style={{fontSize: 12}}/>
-                menuMap[item.id] = item
-                if (item.path === pathname) {
-                    currentMenuKey = item.id
-                }
             })
 
-
-            let currentTopMenuKey = null
-            let leftMenus = []
-
-
-            // 查早顶部菜单的当前key
-            currentTopMenuKey = menus[0]?.key
-
             if (pathname !== "" && pathname !== "/") {
-                let menu = menuMap[currentMenuKey]
-                currentTopMenuKey = menu?.rootid
+                let menu = pathMenuMap[pathname]
+                if(menu){
+                    this.setState({currentMenuKey: menu.key})
+                }
             }
 
-            leftMenus = menuMap[currentTopMenuKey]?.children
-
-            this.setState({menus, menuMap, topMenus, leftMenus, currentTopMenuKey, currentMenuKey})
-
-            this.storePathMenuMap(menuMap)
+            this.setState({menuTree,pathMenuMap})
 
             this.loadBadge(badgeList)
         })
@@ -103,7 +77,9 @@ export default class extends React.Component {
     }
     actionRef = React.createRef()
 
-
+    toggleCollapsed = (v) => {
+        this.setState({collapsed: v})
+    }
     loadBadge = list => {
         for (let item of list) {
             const {menuId, url} = item
@@ -119,19 +95,11 @@ export default class extends React.Component {
         }
     };
 
-    storePathMenuMap = menuMap => {
-        const menus = Object.values(menuMap)
-        const map = {}
-        for (let menu of menus) {
-            const {path} = menu;
-            map[path] = menu;
-        }
-        this.setState({pathMenuMap: map})
-    };
+
 
 
     render() {
-        const {siteInfo, topMenus, loginInfo, leftMenus} = this.state
+        const {siteInfo, loginInfo} = this.state
         let logo = this.props.logo || defaultLogo
         if (siteInfo.logo) {
             logo = SysUtil.wrapServerUrl('sysFile/preview/' + siteInfo.logo)
@@ -147,20 +115,6 @@ export default class extends React.Component {
                         <Link to="/" style={{color: theme["primary-color"]}}>{siteInfo.title} </Link>
                     </h3>
 
-
-                    <Menu items={topMenus}
-                          mode="horizontal"
-                          selectedKeys={[this.state.currentTopMenuKey]}
-                          onClick={e => {
-                              let currentTopMenuKey = e.key;
-                              let topMenu = this.state.menuMap[currentTopMenuKey];
-                              const leftMenus = topMenu.children
-                              if (topMenu) {
-                                  this.setState({currentTopMenuKey, leftMenus})
-                              }
-                          }}
-                          style={{lineHeight: '42px', borderBottom: 'none', backgroundColor: '#f5f5f5'}}
-                    ></Menu>
                 </div>
                 <HeaderRight/>
             </Header>
@@ -178,7 +132,7 @@ export default class extends React.Component {
                         {this.state.collapsed ? <MenuUnfoldOutlined/> : <MenuFoldOutlined/>}
                     </div>
 
-                    <Menu items={leftMenus}
+                    <Menu items={this.state.menuTree}
                           theme='dark'
                           mode="inline"
                           className='left-menu'
@@ -204,8 +158,8 @@ export default class extends React.Component {
 
     getContent = () => {
         const {siteInfo, loginInfo} = this.state
-        if (this.state.menus.length === 0) { // 加载菜单中
-            return
+        if (this.state.menuTree.length === 0) { // 加载菜单中
+            return <div>数据加载中...</div>
         }
         let tabPageRenderNode = <TabPageRender ref={this.tabPageRenderRef} pathMenuMap={this.state.pathMenuMap}/>;
         if (siteInfo.waterMark === true) {

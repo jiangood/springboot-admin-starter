@@ -1,7 +1,6 @@
 
 package io.admin.modules.common;
 
-import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Dict;
 import cn.hutool.core.util.StrUtil;
 import io.admin.common.antd.MenuItem;
@@ -24,7 +23,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -143,31 +144,28 @@ public class SysCommonController {
         Set<SysRole> roles = user.getRoles();
         List<MenuDefinition> menuDefinitions = roleService.ownMenu(roles);
 
-        List<MenuItem> list = menuDefinitions.stream().map(m -> {
+        Map<String,MenuDefinition> pathMenuMap = new HashMap<>();
+        List<MenuItem> list = menuDefinitions.stream().map(def -> {
             MenuItem item = new MenuItem();
-            item.setKey(m.getId());
-            item.setIcon(m.getIcon());
-            item.setLabel(m.getName());
-            item.setTitle(m.getName().substring(0, 1));
-            item.setRefreshOnTabClick(m.isRefreshOnTabClick());
-            item.setParentKey(m.getPid());
-            item.setPath(StrUtil.nullToEmpty(m.getPath()));
+            item.setKey(def.getId());
+            item.setIcon(def.getIcon());
+            item.setLabel(def.getName());
+            item.setTitle(def.getName().substring(0, 1));
+            item.setParentKey(def.getPid());
+            item.setPath(StrUtil.nullToEmpty(def.getPath()));
+
+            if(def.getPath() != null){
+                pathMenuMap.put(def.getPath(),def);
+            }
 
             return item;
         }).toList();
 
         // ======== 开始转换 ===========
-
         List<MenuItem> tree = TreeTool.buildTree(list, MenuItem::getKey, MenuItem::getParentKey, MenuItem::getChildren, MenuItem::setChildren);
-        // 顶层菜单如果没有子节点，则移除
-        tree.removeIf(t -> CollUtil.isEmpty(t.getChildren()));
-
-
-
         Dict data = new Dict();
-        List<Dict> topMenus = tree.stream().map(r -> Dict.of("key", r.getKey(), "label", r.getLabel())).toList();
-        data.put("topMenus", topMenus);
-        data.put("menus", tree);
+        data.put("menuTree", tree);
+        data.put("pathMenuMap",pathMenuMap);
         data.put("badgeList", sysMenuBadgeService.findAll());
 
 

@@ -30,14 +30,18 @@ public class MenuItem {
     String parentKey;
 
 
-    // === 额外信息, 由于react的特性，这里全部用小写 ========
 
-    @JsonProperty("root_id")
-    String rootId;
-
-    @JsonProperty("refresh_on_tab_click")
-    Boolean refreshOnTabClick;
 
     String path;
 
+    @Override
+    public MenuItem clone() {
+        try {
+            MenuItem clone = (MenuItem) super.clone();
+            // TODO: copy mutable state here, so the clone can't change the internals of the original
+            return clone;
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
+    }
 }
