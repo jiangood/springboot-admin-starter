@@ -1,15 +1,14 @@
 package io.admin.modules.system.service;
 
 import cn.hutool.core.collection.CollUtil;
-import io.admin.framework.config.argument.RequestBodyKeys;
+import io.admin.framework.data.query.JpaQuery;
+import io.admin.framework.data.service.BaseService;
 import io.admin.modules.common.LoginTool;
 import io.admin.modules.system.dao.SysOrgDao;
 import io.admin.modules.system.dao.SysUserDao;
 import io.admin.modules.system.entity.OrgType;
 import io.admin.modules.system.entity.SysOrg;
 import io.admin.modules.system.entity.SysUser;
-import io.admin.framework.data.service.BaseService;
-import io.admin.framework.data.query.JpaQuery;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheConfig;
@@ -225,7 +224,7 @@ public class SysOrgService extends BaseService<SysOrg> {
     }
 
     public List<SysOrg> findAll() {
-        return sysOrgDao.findAll();
+        return sysOrgDao.findAll(Sort.by(SysOrg.Fields.seq));
     }
 
     public List<SysOrg> findAll(JpaQuery<SysOrg> q, Sort sort) {

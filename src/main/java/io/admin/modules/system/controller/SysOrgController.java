@@ -15,7 +15,6 @@ import io.admin.modules.system.entity.OrgType;
 import io.admin.modules.system.entity.SysOrg;
 import io.admin.modules.system.service.SysOrgService;
 import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
@@ -34,17 +33,42 @@ public class SysOrgController {
     @Resource
     private SysOrgService sysOrgService;
 
+    /**
+     * 管理页面的树，包含禁用的
+     *
+     * @return
+     */
+    @HasPermission("sysOrg:view")
+    @RequestMapping("leftTree")
+    public AjaxResult leftTree(boolean onlyShowEnabled, boolean onlyShowUnit, String searchText) {
+        JpaQuery<SysOrg> q = new JpaQuery<>();
+
+        if (onlyShowEnabled) {
+            q.eq(SysOrg.Fields.enabled, true);
+        }
+
+        if (onlyShowUnit) {
+            q.eq(SysOrg.Fields.type, OrgType.UNIT);
+        }
+        q.searchText(searchText, SysOrg.Fields.name);
+
+        List<SysOrg> list = sysOrgService.findAll(q, Sort.by("seq"));
+
+
+        return AjaxResult.ok().data(list2Tree(list));
+    }
+
 
     @Log("机构-保存")
     @HasPermission("sysOrg:save")
     @PostMapping("save")
     public AjaxResult saveOrUpdate(@RequestBody SysOrg input, RequestBodyKeys requestBodyKeys) throws Exception {
-        if(input.getLeader() != null){
-            if(StrUtil.isEmpty(input.getLeader().getId())){
+        if (input.getLeader() != null) {
+            if (StrUtil.isEmpty(input.getLeader().getId())) {
                 input.setLeader(null);
             }
         }
-        sysOrgService.saveOrUpdateByRequest(input,requestBodyKeys);
+        sysOrgService.saveOrUpdateByRequest(input, requestBodyKeys);
         return AjaxResult.ok().msg("保存机构成功");
     }
 
@@ -61,35 +85,6 @@ public class SysOrgController {
     public AjaxResult detail(String id) {
         SysOrg org = sysOrgService.findOneByRequest(id);
         return AjaxResult.ok().data(org);
-    }
-
-
-
-
-
-
-
-    /**
-     * 管理页面的树，包含禁用的
-     *
-     * @return
-     */
-    @HasPermission("sysOrg:view")
-    @RequestMapping("pageTree")
-    public AjaxResult pageTree(  boolean showDisabled,    boolean showDept, String searchText) {
-        JpaQuery<SysOrg> q = new JpaQuery<>();
-        if(!showDisabled){
-            q.eq(SysOrg.Fields.enabled, false);
-        }
-        if(!showDept){
-            q.ne(SysOrg.Fields.type, OrgType.DEPT);
-        }
-        q.searchText(searchText,SysOrg.Fields.name);
-
-        List<SysOrg> list = sysOrgService.findAll(q, Sort.by("seq"));
-
-
-        return AjaxResult.ok().data(list2Tree(list));
     }
 
 
@@ -120,14 +115,25 @@ public class SysOrgController {
         return AjaxResult.ok().msg("排序成功");
     }
 
-
-    @GetMapping("allTree")
-    public AjaxResult allTree() throws Exception {
-        List<SysOrg> list = this.sysOrgService.findByLoginUser(true, true);
+    /***
+     * 机构表单请求的树
+     * @return
+     */
+    @HasPermission("sysOrg:save")
+    @GetMapping("tree4Form")
+    public AjaxResult tree4Form() {
+        List<SysOrg> list = this.sysOrgService.findAll();
 
         return AjaxResult.ok().data(list2Tree(list));
     }
 
+
+    @GetMapping("allTree")
+    public AjaxResult allTree() {
+        List<SysOrg> list = this.sysOrgService.findByLoginUser(true, true);
+
+        return AjaxResult.ok().data(list2Tree(list));
+    }
 
 
     @GetMapping("unitTree")
@@ -148,7 +154,7 @@ public class SysOrgController {
     }
 
 
-    public List<TreeNodeItem> list2Tree(List<SysOrg> orgList){
+    public List<TreeNodeItem> list2Tree(List<SysOrg> orgList) {
         List<TreeNodeItem> list = orgList.stream().map(o -> {
             String title = o.getName();
             if (!o.getEnabled()) {

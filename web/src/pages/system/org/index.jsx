@@ -1,5 +1,5 @@
 import {DeleteOutlined, EditOutlined, PlusOutlined, SyncOutlined} from '@ant-design/icons';
-import {Button, Card, Empty, Form, Input, Popconfirm, Select, Space, Splitter, Switch, Tree} from 'antd';
+import {Button, Card, Checkbox, Empty, Form, Input, Popconfirm, Space, Splitter, Switch, Tree} from 'antd';
 import React from 'react';
 import {
     FieldDictRadio,
@@ -23,8 +23,8 @@ export default class extends React.Component {
 
 
         params: {
-            showDisabled: true,
-            showDept: true,
+            onlyShowEnabled: true,
+            onlyShowUnit: true,
             searchText: null
         },
 
@@ -36,16 +36,14 @@ export default class extends React.Component {
     treeRef = React.createRef();
 
     componentDidMount() {
-        this.loadTree(true)
+        this.loadTree()
     }
 
-    loadTree = (showLoading) => {
-        if (showLoading) {
+    loadTree = () => {
             this.setState({treeLoading: true})
-        }
 
         const {params} = this.state
-        HttpUtil.get('admin/sysOrg/pageTree', params).then(rs => {
+        HttpUtil.get('admin/sysOrg/leftTree', params).then(rs => {
             let treeData = rs;
             this.setState({treeData})
         }).finally(() => {
@@ -96,10 +94,33 @@ export default class extends React.Component {
         let {formValues} = this.state;
         let disabled = formValues == null;
         let params = this.state.params;
-        return <Page>
+        return <Page padding>
+            <Card>
+            <Space>
+
+                <Input.Search placeholder='搜索' value={params.searchText} onChange={e => {
+                    params.searchText = e.target.value
+                    this.setState({params}, this.loadTree)
+                }}/>
+                <Checkbox  checked={params.onlyShowEnabled}
+                           onChange={e => {
+                               params.onlyShowEnabled = e.target.checked;
+                               this.setState({params}, this.loadTree);
+                           }}>仅显示启用</Checkbox>
+
+                <Checkbox  checked={params.onlyShowUnit}
+                           onChange={e => {
+                               params.onlyShowUnit = e.target.checked;
+                               this.setState({params}, this.loadTree);
+                           }}>仅显示单位</Checkbox>
+
+
+            </Space>
+            </Card>
+            <Gap/>
             <Splitter>
                 <Splitter.Panel defaultSize={500}>
-                    <Card loading={this.state.treeLoading}
+                    <Card
                           title='组织机构'
                           extra={<Space>
 
@@ -111,35 +132,9 @@ export default class extends React.Component {
                               <Button size='small' shape={"round"} icon={<SyncOutlined/>}
                                       onClick={this.loadTree}></Button>
                           </Space>}>
-                        <Space>
-
-                            <Input.Search placeholder='搜索' value={params.searchText} onChange={e => {
-                                params.searchText = e.target.value
-                                this.setState({params}, this.loadTree)
-                            }}/>
-                            <div>
-                                显示禁用 <Switch
-                                value={params.showDisabled}
-                                onChange={e => {
-                                    params.showDisabled = e;
-                                    this.setState({params}, this.loadTree);
-                                }}
-                            />
-                            </div>
-                            <div>
-                                显示部门 <Switch
-                                value={params.showDept}
-                                onChange={e => {
-                                    params.showDept = e;
-                                    this.setState({params}, this.loadTree);
-                                }}
-                            />
-                            </div>
-                        </Space>
-
-                        <Gap/>
 
 
+                        <Card loading={this.state.treeLoading} >
                         <Tree ref={this.treeRef}
                               treeData={this.state.treeData}
                               onSelect={this.onSelect}
@@ -151,8 +146,10 @@ export default class extends React.Component {
                               draggable={this.state.draggable}
                               onDrop={this.onDrop}
                               showLine
+                              defaultExpandAll
                         >
                         </Tree>
+                        </Card>
                         {this.state.treeData.length === 0 && <Empty/>}
                     </Card>
                 </Splitter.Panel>
