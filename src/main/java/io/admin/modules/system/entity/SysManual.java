@@ -20,6 +20,8 @@ import lombok.experimental.FieldNameConstants;
 @FieldNameConstants
 public class SysManual extends BaseEntity {
 
+    private static final long serialVersionUID = 1L;
+
     @NotNull
     @Remark("名称")
     @Column(length = 100)
