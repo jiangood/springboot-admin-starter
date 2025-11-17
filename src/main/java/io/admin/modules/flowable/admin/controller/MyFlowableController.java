@@ -5,10 +5,7 @@ import cn.hutool.core.lang.Dict;
 
 
 import io.admin.common.dto.AjaxResult;
-import io.admin.common.utils.BeanTool;
-import io.admin.common.utils.DateFormatTool;
-import io.admin.common.utils.ImgTool;
-import io.admin.common.utils.SpringTool;
+import io.admin.common.utils.*;
 import io.admin.framework.config.security.LoginUser;
 import io.admin.modules.common.LoginUtils;
 import io.admin.modules.flowable.core.FlowableLoginUser;
@@ -41,7 +38,6 @@ import org.flowable.task.api.TaskInfo;
 import org.flowable.task.api.TaskQuery;
 import org.flowable.task.api.history.HistoricTaskInstance;
 import org.flowable.task.api.history.HistoricTaskInstanceQuery;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
@@ -61,7 +57,7 @@ import java.util.stream.Collectors;
  */
 @RestController
 @RequestMapping("admin/flowable/userClient")
-public class MyTaskController {
+public class MyFlowableController {
 
 
     @Resource
@@ -92,6 +88,7 @@ public class MyTaskController {
 
     @Resource
     SysUserService sysUserService;
+
     @RequestMapping("todoTaskPage")
     public AjaxResult todo(Pageable pageable) {
         String userId = LoginUtils.getUserId();
@@ -118,7 +115,7 @@ public class MyTaskController {
         query.orderByTaskCreateTime().desc();
 
         long count = query.count();
-        if(count == 0){
+        if (count == 0) {
             return AjaxResult.ok().data(new PageImpl<>(new ArrayList<>(), pageable, 0));
         }
         List<Task> taskList = query.listPage((int) pageable.getOffset(), pageable.getPageSize());
@@ -129,20 +126,13 @@ public class MyTaskController {
         Map<String, ProcessInstance> instanceMap = runtimeService.createProcessInstanceQuery().processInstanceIds(instanceIds).list().stream().collect(Collectors.toMap(Execution::getId, t -> t));
 
 
-
-
         List<TaskResponse> infoList = taskList.stream().map(task -> {
             ProcessInstance instance = instanceMap.get(task.getProcessInstanceId());
             TaskResponse r = new TaskResponse();
-            r.setId(task.getId());
-            r.setTaskName(task.getName());
-            r.setCreateTime(task.getCreateTime());
-            r.setAssigneeInfo(sysUserService.getNameById( task.getAssignee()));
-            r.setFormKey(task.getFormKey());
-            r.setInstanceId(task.getProcessInstanceId());
+            convert(r, task);
             r.setInstanceName(instance.getName());
-            r.setInstanceStartTime(instance.getStartTime());
-            r.setInstanceStarter(sysUserService.getNameById( instance.getStartUserId()));
+            r.setInstanceStartTime(FriendlyUtils.getPastTime( instance.getStartTime()));
+            r.setInstanceStarter(sysUserService.getNameById(instance.getStartUserId()));
             return r;
         }).collect(Collectors.toList());
 
@@ -155,6 +145,7 @@ public class MyTaskController {
     public AjaxResult doneTaskPage(Pageable pageable) {
         LoginUser user = LoginUtils.getUser();
         HistoricTaskInstanceQuery query = historyService.createHistoricTaskInstanceQuery()
+                .taskAssignee(user.getId())
                 .finished()
                 .includeProcessVariables()
                 .orderByHistoricTaskInstanceEndTime().desc();
@@ -172,21 +163,26 @@ public class MyTaskController {
             HistoricProcessInstance instance = instanceMap.get(task.getProcessInstanceId());
 
             TaskResponse r = new TaskResponse();
-            r.setId(task.getId());
-            r.setTaskName(task.getName());
-            r.setCreateTime(task.getCreateTime());
-            r.setAssigneeInfo(sysUserService.getNameById( task.getAssignee()));
-            r.setFormKey(task.getFormKey());
-            r.setInstanceId(task.getProcessInstanceId());
+            this.convert(r, task);
             r.setInstanceName(instance.getName());
-            r.setInstanceStartTime(instance.getStartTime());
-            r.setInstanceStarter(sysUserService.getNameById( instance.getStartUserId()));
+            r.setInstanceStartTime(FriendlyUtils.getPastTime(instance.getStartTime()));
+            r.setInstanceStarter(sysUserService.getNameById(instance.getStartUserId()));
+            r.setDurationInfo(FriendlyUtils.getTimeDiff(task.getCreateTime(), task.getEndTime()));
             return r;
         }).collect(Collectors.toList());
 
-        return AjaxResult.ok().data( new PageImpl<>(infoList, pageable, count));
+        return AjaxResult.ok().data(new PageImpl<>(infoList, pageable, count));
     }
 
+    private void convert(TaskResponse r, TaskInfo task) {
+        r.setId(task.getId());
+        r.setTaskName(task.getName());
+        r.setCreateTime(FriendlyUtils.getPastTime(task.getCreateTime()));
+        r.setAssigneeInfo(sysUserService.getNameById(task.getAssignee()));
+        r.setFormKey(task.getFormKey());
+        r.setInstanceId(task.getProcessInstanceId());
+
+    }
 
     // 我发起的
     @GetMapping("myInstance")

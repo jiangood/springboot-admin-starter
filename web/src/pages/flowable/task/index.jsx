@@ -112,8 +112,8 @@ export default class extends React.Component {
                 dataIndex: 'endTime',
             },
             {
-                title: '耗时(小时)',
-                dataIndex: 'durationInHours',
+                title: '耗时',
+                dataIndex: 'durationInfo',
             },
             {
                 title: '处理节点',
@@ -122,11 +122,6 @@ export default class extends React.Component {
             {
                 title: '操作人',
                 dataIndex: 'assigneeInfo'
-            },
-
-            {
-                title: '流程状态',
-                dataIndex: 'instanceStatusLabel'
             },
 
 
