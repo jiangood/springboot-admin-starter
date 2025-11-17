@@ -13,8 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.security.auth.Subject;
-
 @RestController
 @RequestMapping("userCenter")
 public class UserCenterController {
@@ -45,9 +43,9 @@ public class UserCenterController {
 
     @PostMapping("updatePwd")
     public AjaxResult updatePwd(@RequestBody UpdatePwdRequest request) {
-        String userId = SecurityUtils.getSubject().getId();
+        SysUser user = LoginTool.getLoginUser();
         String newPassword = request.getNewPassword();
-        sysUserService.updatePwd(userId, newPassword);
+        sysUserService.updatePwd(user.getId(), newPassword);
         return AjaxResult.ok();
     }
 }

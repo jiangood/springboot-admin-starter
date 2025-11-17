@@ -1,8 +1,6 @@
 package io.admin.modules.common;
 
-import io.admin.modules.system.entity.SysUser;
-import io.admin.modules.system.service.SysUserService;
-import io.admin.common.utils.SpringTool;
+import io.admin.framework.config.security.LoginUser;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -15,36 +13,35 @@ import java.util.List;
 
 @Slf4j
 public class LoginTool {
-
-    public  static String getUsername() {
-        SecurityContext context = SecurityContextHolder.getContext();
-        Authentication authentication = context.getAuthentication();
-
-        String account = authentication.getName();
-        log.debug("获取当前登录用户 {}", account);
-
-        boolean authenticated = authentication.isAuthenticated();
-        if(!authenticated || account.equals("anonymousUser")){
+    public static String getUserId() {
+        LoginUser user = getUser();
+        if (user == null) {
             return null;
         }
-
-        return account;
+        return user.getId();
     }
 
-    public  static SysUser getLoginUser() {
-        String account = getUsername();
-        if(account == null){
+    public static LoginUser getUser() {
+        SecurityContext context = SecurityContextHolder.getContext();
+        if (context == null) {
+            return null;
+        }
+        Authentication authentication = context.getAuthentication();
+        if (authentication == null) {
+            return null;
+        }
+        String account = authentication.getName();
+        log.debug("获取当前登录用户 {}", account);
+        boolean authenticated = authentication.isAuthenticated();
+        if (!authenticated || account.equals("anonymousUser")) {
             return null;
         }
 
-        SysUserService userService = SpringTool.getBean(SysUserService.class);
-        SysUser user = userService.findByAccount(account);
-
-        return user;
+        return (LoginUser) authentication.getPrincipal();
     }
 
     public static List<String> getOrgPermissions() {
-        User principal = getUserPrincipal();
+        User principal = getUser();
         Collection<GrantedAuthority> authorities = principal.getAuthorities();
 
         return authorities.stream().map(GrantedAuthority::getAuthority)
@@ -54,7 +51,7 @@ public class LoginTool {
     }
 
     public static List<String> getPermissions() {
-        User principal = getUserPrincipal();
+        User principal = getUser();
         Collection<GrantedAuthority> authorities = principal.getAuthorities();
 
         return authorities.stream().map(GrantedAuthority::getAuthority)
@@ -63,20 +60,13 @@ public class LoginTool {
     }
 
     public static List<String> getRoles() {
-        User principal = getUserPrincipal();
+        User principal = getUser();
         Collection<GrantedAuthority> authorities = principal.getAuthorities();
 
         return authorities.stream().map(GrantedAuthority::getAuthority)
                 .filter(t -> t.startsWith("ROLE_"))
                 .map(t -> t.substring(5))
                 .toList();
-    }
-
-    private static User getUserPrincipal() {
-        SecurityContext context = SecurityContextHolder.getContext();
-        Authentication authentication = context.getAuthentication();
-        User principal = (User) authentication.getPrincipal();
-        return principal;
     }
 
     public static boolean isAdmin() {
