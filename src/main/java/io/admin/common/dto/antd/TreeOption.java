@@ -7,12 +7,14 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @Data
 @EqualsAndHashCode(of = "key")
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@NoArgsConstructor
 public class TreeOption {
 
     private String key;//	被树的 (default)ExpandedKeys / (default)CheckedKeys / (default)SelectedKeys 属性所用。注意：整个树范围内的所有节点的 key 值不能重复！	string	(内部计算出的节点位置)
@@ -48,5 +50,9 @@ public class TreeOption {
     private String iconName;
 
 
-
+    public TreeOption(String title, String key, String parentKey) {
+        this.key = key;
+        this.title = title;
+        this.parentKey = parentKey;
+    }
 }

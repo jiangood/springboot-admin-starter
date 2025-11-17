@@ -4,7 +4,6 @@ package io.admin.framework.config;
 import cn.hutool.captcha.generator.CodeGenerator;
 import cn.hutool.captcha.generator.MathGenerator;
 import cn.hutool.captcha.generator.RandomGenerator;
-import io.admin.framework.interceptor.RestApiJwtInterceptor;
 import io.admin.framework.WebConstants;
 import io.admin.framework.config.argument.resolver.RequestBodyKeysArgumentResolver;
 import jakarta.annotation.Resource;
@@ -59,8 +58,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
 
 
-    @Resource
-    private RestApiJwtInterceptor appApiInterceptor;
+
 
 
 

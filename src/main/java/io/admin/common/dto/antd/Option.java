@@ -12,15 +12,14 @@ import java.util.function.Function;
 @EqualsAndHashCode(of = "value")
 @Getter
 @Setter
-@Builder
+@NoArgsConstructor
 public class Option {
     String label;
     Object value;
 
     Object data;
 
-    public Option() {
-    }
+
 
     public static Option of(Object value, String label) {
         Option option = new Option();
@@ -29,65 +28,14 @@ public class Option {
         return option;
     }
 
-    @Deprecated
-    public Option(String label, Object value) {
-        this.label = label;
-        this.value = value;
-    }
 
-    @Deprecated
-    public Option(String label, Object value, Object data) {
-        this.label = label;
-        this.value = value;
-        this.data = data;
-    }
-
-
-    public static  List<Option> empty(){
-        return new ArrayList<>();
-    }
-
-    public static <T> List<Option> convertList(Iterable<T> list, Function<T, Object> valueFn, Function<T, String> labelFn){
+    public static <T> List<Option> convertList(Iterable<T> list, Function<T, Object> valueFn, Function<T, String> labelFn) {
         List<Option> result = new ArrayList<>();
-        for(T t : list){
+        for (T t : list) {
             String label = labelFn.apply(t);
             Object value = valueFn.apply(t);
-            result.add(new Option(label, value));
+            result.add(Option.of(value, label));
         }
-
-        return result;
-    }
-
-    /**
-     * 转换字符串列表未 OptionList
-     * @param list
-     *
-     */
-    public static  List<Option> convertList(Iterable<String> list){
-        List<Option> result = new ArrayList<>();
-        for(String t : list){
-            result.add(new Option(t, t));
-        }
-
-        return result;
-    }
-    public static  List<Option> convertList(String[] list){
-        List<Option> result = new ArrayList<>();
-        for(String t : list){
-            result.add(new Option(t, t));
-        }
-
-        return result;
-    }
-
-    public static <T> List<Option> convertListWithSelf(Iterable<T> list, Function<T, Object> valueFn, Function<T, String> labelFn){
-        List<Option> result = new ArrayList<>();
-        for(T t : list){
-            String label = labelFn.apply(t);
-            Object value = valueFn.apply(t);
-            result.add(new Option(label, value, t));
-        }
-
         return result;
     }
 

@@ -4,11 +4,19 @@ package io.admin.modules.system.controller;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.text.PasswdStrength;
 import cn.hutool.core.util.StrUtil;
-import io.admin.framework.data.query.JpaQuery;
-import io.admin.common.dto.table.Table;
 import io.admin.common.dto.AjaxResult;
 import io.admin.common.dto.antd.Option;
+import io.admin.common.dto.antd.TreeOption;
+import io.admin.common.dto.table.Table;
+import io.admin.common.utils.tree.TreeTool;
+import io.admin.framework.config.argument.RequestBodyKeys;
+import io.admin.framework.config.security.HasPermission;
+import io.admin.framework.data.domain.BaseEntity;
+import io.admin.framework.data.query.JpaQuery;
 import io.admin.framework.log.Log;
+import io.admin.framework.perm.SecurityUtils;
+import io.admin.framework.perm.Subject;
+import io.admin.framework.pojo.param.DropdownParam;
 import io.admin.modules.common.LoginTool;
 import io.admin.modules.system.dto.request.GrantUserPermRequest;
 import io.admin.modules.system.dto.response.UserResponse;
@@ -18,14 +26,9 @@ import io.admin.modules.system.entity.SysUser;
 import io.admin.modules.system.service.SysConfigService;
 import io.admin.modules.system.service.SysOrgService;
 import io.admin.modules.system.service.SysUserService;
-import io.admin.framework.config.security.HasPermission;
-import io.admin.framework.config.argument.RequestBodyKeys;
-import io.admin.framework.perm.SecurityUtils;
-import io.admin.framework.perm.Subject;
-import io.admin.framework.data.domain.BaseEntity;
-import io.admin.framework.pojo.param.DropdownParam;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
+import org.apache.commons.collections4.ListUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -38,7 +41,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 
 @RestController
@@ -159,7 +161,7 @@ public class SysUserController {
         List<Option> options = Option.convertList(page.getContent(), BaseEntity::getId, t -> {
             if (t.getDeptId() != null) {
                 SysOrg sysOrg = dict.get(t.getDeptId());
-                if(sysOrg != null){
+                if (sysOrg != null) {
                     return t.getName() + " (" + sysOrg.getName() + ")";
 
                 }
@@ -211,14 +213,11 @@ public class SysUserController {
         Collection<String> orgPermissions = subject.getOrgPermissions();
         List<SysUser> userList = sysUserService.findByUnit(orgPermissions);
 
-        List<TreeOption> tree = orgList.stream().map(o -> new TreeOption(o.getName(), o.getId(), o.getPid())).collect(Collectors.toList());
+        List<TreeOption> orgOptions = orgList.stream().map(o -> new TreeOption(o.getName(), o.getId(), o.getPid())).toList();
+        List<TreeOption> userOptions = userList.stream().map(u -> new TreeOption(u.getName(), u.getId(), StrUtil.emptyToDefault(u.getDeptId(), u.getUnitId()))).toList();
+        List<TreeOption> allOptions = ListUtils.union(orgOptions,userOptions);
 
-        List<TreeOption> userTree = userList.stream().map(u -> new TreeOption(u.getName(), u.getId(), StrUtil.emptyToDefault(u.getDeptId(), u.getUnitId()))).collect(Collectors.toList());
-
-        tree.addAll(userTree);
-
-        tree = TreeOption.convertTree(tree);
-
+        List<TreeOption> tree = TreeTool.buildTree(allOptions);
         return AjaxResult.ok().data(tree);
     }
 
