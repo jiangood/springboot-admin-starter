@@ -3,10 +3,7 @@ package io.admin.modules.system.controller;
 
 import io.admin.modules.system.service.SysUserMessageService;
 import io.admin.common.dto.AjaxResult;
-import io.admin.modules.common.LoginTool;
 import io.admin.modules.system.entity.SysUserMessage;
-import io.admin.framework.perm.SecurityUtils;
-import io.admin.framework.data.domain.BaseEntity;
 import jakarta.annotation.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
