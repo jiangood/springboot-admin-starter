@@ -23,9 +23,9 @@ public class TreeOption implements TreeNode<TreeOption> {
     List<TreeOption> children = new ArrayList<>();
 
 
-    Boolean selectable = true;
-    Boolean checkable = true;
-    Boolean disabled = false;
+    Boolean selectable ;
+    Boolean checkable ;
+    Boolean disabled ;
 
     Boolean isLeaf;
 
