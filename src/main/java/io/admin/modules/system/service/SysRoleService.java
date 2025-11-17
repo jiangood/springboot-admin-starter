@@ -139,17 +139,18 @@ public class SysRoleService extends BaseService<SysRole> {
     }
 
     @Transactional
-    public void grantUsers(String id, List<String> userIdList) {
+    public SysRole grantUsers(String id, List<String> userIdList) {
         SysRole role = roleDao.findOne(id);
         role.getUsers().clear();
 
         List<SysUser> users = sysUserDao.findAllById(userIdList);
         role.getUsers().addAll(users);
+        return role;
     }
 
 
     @Transactional
-    public void savePerms(String id, List<String> perms, List<String> menus) {
+    public SysRole savePerms(String id, List<String> perms, List<String> menus) {
         // 菜单的目录也加进来
         List<MenuDefinition> list = sysMenuDao.findAll();
         List<String> finalMenus = new ArrayList<>();
@@ -162,9 +163,7 @@ public class SysRoleService extends BaseService<SysRole> {
         SysRole role = roleDao.findOne(id);
         role.setPerms(perms);
         role.setMenus(finalMenus);
-        roleDao.save(role);
-
-        // TODO 刷新 登录用户的权限
+        return  roleDao.save(role);
     }
 
     public List<SysRole> findAll() {

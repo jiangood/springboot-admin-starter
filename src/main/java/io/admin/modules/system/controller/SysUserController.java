@@ -12,6 +12,7 @@ import io.admin.common.utils.tree.TreeTool;
 import io.admin.framework.config.SysProp;
 import io.admin.framework.config.argument.RequestBodyKeys;
 import io.admin.framework.config.security.HasPermission;
+import io.admin.framework.config.security.refresh.PermissionStaleService;
 import io.admin.framework.data.domain.BaseEntity;
 import io.admin.framework.data.query.JpaQuery;
 import io.admin.framework.log.Log;
@@ -49,14 +50,16 @@ public class SysUserController {
     @Resource
     private SysUserService sysUserService;
 
-    @Resource
-    private SysConfigService configService;
+
 
     @Resource
     private SysOrgService sysOrgService;
 
     @Resource
     private SysProp sysProp;
+
+    @Resource
+    private PermissionStaleService permissionStaleService;
 
 
     @HasPermission("sysUser:view")
@@ -91,6 +94,8 @@ public class SysUserController {
 
         if (isNew) {
             return AjaxResult.ok().msg("添加成功,密码：" + sysProp.getDefaultPassword());
+        }else {
+            permissionStaleService.markUserStale(input.getAccount());
         }
 
         return AjaxResult.ok();
@@ -101,7 +106,10 @@ public class SysUserController {
     @HasPermission("sysUser:delete")
     @GetMapping("delete")
     public AjaxResult delete(String id) {
+        SysUser user = sysUserService.findOne(id);
         sysUserService.delete(id);
+        permissionStaleService.markUserStale(user.getAccount());
+
         return AjaxResult.ok();
     }
 
@@ -194,7 +202,10 @@ public class SysUserController {
     @HasPermission("sysUser:grantPerm")
     @PostMapping("grantPerm")
     public AjaxResult grantPerm(@Valid @RequestBody GrantUserPermRequest param) {
-        sysUserService.grantPerm(param.getId(), param.getRoleIds(), param.getDataPermType(), param.getOrgIds());
+        SysUser sysUser = sysUserService.grantPerm(param.getId(), param.getRoleIds(), param.getDataPermType(), param.getOrgIds());
+
+        permissionStaleService.markUserStale(sysUser.getAccount());
+
         return AjaxResult.ok();
     }
 

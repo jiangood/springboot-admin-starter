@@ -3,7 +3,6 @@ package io.admin.modules.system.service;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.extra.spring.SpringUtil;
 import io.admin.common.utils.PasswordUtils;
 import io.admin.framework.config.SysProp;
 import io.admin.modules.system.entity.DataPermType;
@@ -300,7 +299,7 @@ public class SysUserService extends BaseService<SysUser> {
     }
 
     @Transactional
-    public void grantPerm(String id, List<String> roleIds, DataPermType dataPermType, List<String> orgIdList) {
+    public SysUser grantPerm(String id, List<String> roleIds, DataPermType dataPermType, List<String> orgIdList) {
         SysUser user = sysUserDao.findOne(id);
         List<SysOrg> orgs = CollUtil.isNotEmpty(orgIdList) ? sysOrgDao.findAllById(orgIdList) : Collections.emptyList();
         user.setDataPerms(orgs);
@@ -311,6 +310,7 @@ public class SysUserService extends BaseService<SysUser> {
         Set<SysRole> roles = user.getRoles();
         roles.clear();
         roles.addAll(newRoles);
+        return user;
     }
 
 

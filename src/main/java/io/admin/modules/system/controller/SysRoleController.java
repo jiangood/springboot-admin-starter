@@ -7,6 +7,7 @@ import io.admin.framework.config.data.sysmenu.MenuPermission;
 import io.admin.common.dto.AjaxResult;
 import io.admin.common.dto.antd.Option;
 import io.admin.common.utils.CollectionTool;
+import io.admin.framework.config.security.refresh.PermissionStaleService;
 import io.admin.modules.system.dto.request.SaveRolePermRequest;
 import io.admin.modules.system.dto.request.GrantUserToRoleRequest;
 import io.admin.modules.system.entity.SysRole;
@@ -42,6 +43,8 @@ public class SysRoleController extends BaseController<SysRole> {
     @Resource
     private SysUserService sysUserService;
 
+    @Resource
+    private PermissionStaleService permissionStaleService;
 
     /**
      * 添加系统角色
@@ -50,11 +53,15 @@ public class SysRoleController extends BaseController<SysRole> {
     @PostMapping("save")
     public AjaxResult save(@RequestBody SysRole role, RequestBodyKeys updateFields) throws Exception {
         role.setBuiltin(false);
-
         role = sysRoleService.saveOrUpdateByRequest(role, updateFields);
 
-        AjaxResult result = AjaxResult.ok().data(role).msg("保存角色成功");
-        return result;
+
+        for (SysUser user : role.getUsers()) {
+            permissionStaleService.markUserStale(user.getAccount());
+        }
+
+
+        return AjaxResult.ok().data(role).msg("保存角色成功");
     }
 
 
@@ -114,7 +121,10 @@ public class SysRoleController extends BaseController<SysRole> {
     @HasPermission("sysRole:save")
     @RequestMapping("savePerms")
     public AjaxResult savePerms(@RequestBody SaveRolePermRequest request) {
-        sysRoleService.savePerms(request.getId(), request.getPerms(), request.getMenus());
+        SysRole sysRole = sysRoleService.savePerms(request.getId(), request.getPerms(), request.getMenus());
+        for (SysUser user : sysRole.getUsers()) {
+            permissionStaleService.markUserStale(user.getAccount());
+        }
         return AjaxResult.ok().msg("保存角色权限成功");
     }
 
@@ -146,7 +156,10 @@ public class SysRoleController extends BaseController<SysRole> {
     @HasPermission("sysRole:save")
     @RequestMapping("grantUsers")
     public AjaxResult saveUserList(@RequestBody GrantUserToRoleRequest request) {
-        sysRoleService.grantUsers(request.getId(), request.getUserIdList());
+        SysRole sysRole = sysRoleService.grantUsers(request.getId(), request.getUserIdList());
+        for (SysUser user : sysRole.getUsers()) {
+            permissionStaleService.markUserStale(user.getAccount());
+        }
         return AjaxResult.ok().msg("授权用户成功");
     }
 
