@@ -175,11 +175,8 @@ public class SysFlowableModelService extends BaseService<SysFlowableModel> {
         }
         // task 必须命名
         for (FlowElement flowElement : model.getMainProcess().getFlowElements()) {
-            if (flowElement instanceof UserTask) {
-                UserTask task = (UserTask) flowElement;
-                if (StringUtils.isEmpty(task.getName())) {
-                    throw new IllegalArgumentException("部署失败：存在用户任务未命名的节点");
-                }
+            if (flowElement instanceof UserTask task) {
+                Assert.hasText(task.getName(), "部署失败：存在用户任务未命名的节点");
             }
         }
 
