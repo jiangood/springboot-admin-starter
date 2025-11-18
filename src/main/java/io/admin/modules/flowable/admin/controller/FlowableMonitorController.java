@@ -1,10 +1,12 @@
 package io.admin.modules.flowable.admin.controller;
 
 
+import cn.hutool.core.util.StrUtil;
 import io.admin.common.dto.AjaxResult;
 import io.admin.common.utils.BeanTool;
 import io.admin.framework.config.security.HasPermission;
 import io.admin.modules.common.LoginUtils;
+import io.admin.modules.flowable.core.FlowableService;
 import io.admin.modules.flowable.core.dto.request.SetAssigneeRequest;
 import io.admin.modules.flowable.core.dto.response.MonitorTaskResponse;
 import io.admin.modules.system.service.SysUserService;
@@ -36,12 +38,14 @@ import java.util.Map;
 @RequestMapping("admin/flowable/monitor")
 @RestController
 @AllArgsConstructor
-public class MonitorController {
+public class FlowableMonitorController {
 
     private RepositoryService repositoryService;
     private RuntimeService runtimeService;
     private TaskService taskService;
-    private  SysUserService sysUserService;
+    private SysUserService sysUserService;
+
+    private FlowableService flowableService;
 
     @GetMapping("processDefinition")
     public AjaxResult processDefinition(Pageable pageable) {
@@ -71,8 +75,13 @@ public class MonitorController {
 
 
     @GetMapping("task")
-    public AjaxResult task() {
+    public AjaxResult task(String assignee) {
         TaskQuery query = taskService.createTaskQuery();
+
+        if (StrUtil.isNotEmpty(assignee)) {
+            query = flowableService.buildUserTodoTaskQuery(assignee);
+        }
+
         List<Task> list = query.list();
 
         List<MonitorTaskResponse> responseList = list.stream().map(t -> {
@@ -97,7 +106,7 @@ public class MonitorController {
 
     @HasPermission("flowableTask:setAssignee")
     @RequestMapping("setAssignee")
-    public AjaxResult setAssignee(@RequestBody SetAssigneeRequest request){
+    public AjaxResult setAssignee(@RequestBody SetAssigneeRequest request) {
         taskService.setAssignee(request.getTaskId(), request.getAssignee());
         return AjaxResult.ok().msg("设置任务处理人成功");
     }

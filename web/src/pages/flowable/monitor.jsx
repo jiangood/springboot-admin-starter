@@ -72,7 +72,7 @@ export default class extends React.Component {
             ]}
             request={(params) => HttpUtil.pageData('admin/flowable/monitor/task', params)}
         >
-            <Form.Item label='受理人'>
+            <Form.Item label='受理人' name='assignee'>
                 <FieldUserSelect />
             </Form.Item>
         </ProTable>

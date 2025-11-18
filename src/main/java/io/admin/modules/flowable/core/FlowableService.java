@@ -47,12 +47,12 @@ public class FlowableService {
 
     private FlowableProperties flowableProperties;
     public long findUserTaskCount(String userId) {
-        TaskQuery taskQuery = buildUserQuery(userId);
+        TaskQuery taskQuery = buildUserTodoTaskQuery(userId);
         return taskQuery.count();
     }
 
     public Page<TaskResponse> findUserTaskList(Pageable pageable, String userId) {
-        TaskQuery query = buildUserQuery(userId);
+        TaskQuery query = buildUserTodoTaskQuery(userId);
         long count = query.count();
         if (count == 0) {
             return new PageImpl<>(new ArrayList<>(), pageable, 0);
@@ -208,7 +208,7 @@ public class FlowableService {
 
 
 
-    private TaskQuery buildUserQuery(String userId) {
+    public TaskQuery buildUserTodoTaskQuery(String userId) {
         TaskQuery query = taskService.createTaskQuery().active();
 
         query.or();
