@@ -5,7 +5,7 @@ import io.admin.common.utils.FriendlyUtils;
 import io.admin.common.utils.SpringTool;
 import io.admin.modules.flowable.admin.service.MyBpmnModelService;
 import io.admin.modules.flowable.core.assignment.AssignmentTypeProvider;
-import io.admin.modules.flowable.core.dto.TaskHandleResult;
+import io.admin.modules.flowable.core.dto.TaskHandleType;
 import io.admin.modules.flowable.core.dto.response.TaskResponse;
 import io.admin.modules.system.service.SysUserService;
 import lombok.AllArgsConstructor;
@@ -112,7 +112,7 @@ public class FlowableService {
         return new PageImpl<>(infoList, pageable, count);
     }
 
-    public void handle(String userId, TaskHandleResult result, String taskId, String comment) {
+    public void handle(String userId, TaskHandleType result, String taskId, String comment) {
         Assert.notNull(userId, "用户Id不能为空");
         //校验任务是否存在
         Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
@@ -130,13 +130,13 @@ public class FlowableService {
         //   }
 
 
-        if (result == TaskHandleResult.APPROVE) {
+        if (result == TaskHandleType.APPROVE) {
             taskService.complete(taskId);
             return;
         }
 
         // 点击拒绝（不同意）
-        if (result == TaskHandleResult.REJECT) {
+        if (result == TaskHandleType.REJECT) {
             switch (flowableProperties.getRejectType()) {
                 case DELETE:
                     closeAndDelete(comment, task);
