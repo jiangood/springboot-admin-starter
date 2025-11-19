@@ -6,7 +6,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class MenuDefinition  {
+public class MenuDefinition {
 
     private String id;
 
@@ -34,7 +34,6 @@ public class MenuDefinition  {
     private boolean refreshOnTabClick;
 
 
-
     /**
      * 子节点（表中不存在，用于构造树）
      */
@@ -54,5 +53,5 @@ public class MenuDefinition  {
     /**
      * 是否禁用菜单
      */
-    private boolean disabled = false;
+    private boolean disabled;
 }

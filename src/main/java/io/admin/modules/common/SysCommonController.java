@@ -145,7 +145,9 @@ public class SysCommonController {
 
         Map<String,MenuDefinition> pathMenuMap = new HashMap<>();
         Map<String,MenuDefinition> menuMap = new HashMap<>();
-        List<MenuItem> list = menuDefinitions.stream().map(def -> {
+        List<MenuItem> list = menuDefinitions.stream()
+                .filter(def-> !def.isDisabled())
+                .map(def -> {
             MenuItem item = new MenuItem();
             item.setKey(def.getId());
             item.setIcon(def.getIcon());
