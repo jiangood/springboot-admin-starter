@@ -9,10 +9,11 @@ export default class extends React.Component {
         let allKeys = formRegistry.getAllKeys();
         console.log('所有表单：', allKeys)
 
+        const DemoForm = formRegistry.get('demoForm')
         return <Card title='测试页面'>
 
 
-
+<DemoForm />
 
         </Card>
     }
