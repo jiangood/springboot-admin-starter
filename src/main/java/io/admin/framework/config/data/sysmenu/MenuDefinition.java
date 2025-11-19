@@ -51,7 +51,7 @@ public class MenuDefinition {
     private String messageCountUrl;
 
     /**
-     * 是否禁用菜单
+     * 是否禁用菜单，默认false
      */
     private boolean disabled;
 }
