@@ -3,8 +3,24 @@
 
 
 import {defineConfig} from 'umi';
-import { defaultConfigLocal} from "./defaultConfig";
 
 
 
-export default defineConfig(defaultConfigLocal);
+export default defineConfig({
+    proxy: {
+        '/admin': {
+            target: 'http://127.0.0.1:8002',
+            changeOrigin: true,
+        },
+        '/ureport': {
+            target: 'http://127.0.0.1:8002',
+            changeOrigin: true,
+            pathRewrite: {'^/ureport': '/ureport'},
+        },
+        '/ws-log-view': {
+            target: 'http://127.0.0.1:8002',
+            changeOrigin: true,
+            ws: true,
+        },
+    }
+});

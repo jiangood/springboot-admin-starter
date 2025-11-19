@@ -1,11 +1,12 @@
 import {defineConfig} from 'umi';
-import {defaultConfig} from "./defaultConfig";
 
-
-
+//https://umijs.org/docs/api/config
 
 
 export default defineConfig({
-
-    ...defaultConfig,
+    // 配置是否让生成的文件包含 hash 后缀，通常用于增量发布和避免浏览器加载缓存。
+    hash: true,
+    history: {type: 'hash'},
+    // 复杂，还得设置忽略、编译等，先关掉
+    mfsu: false,
 });
