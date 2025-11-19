@@ -47,7 +47,7 @@
         <poi.version>5.4.1</poi.version>
         <mapstruct.version>1.5.5.Final</mapstruct.version>
         <guava.version>33.5.0-jre</guava.version>
-        <commons-io.version>2.13.0</commons-io.version>
+        <commons-io.version>2.21.0</commons-io.version>
     </properties>
     <dependencies>
         <dependency>
