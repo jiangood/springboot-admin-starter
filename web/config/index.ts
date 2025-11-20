@@ -1,4 +1,4 @@
-export   {default as config} from './config';
-export   {default as configLocal} from './config.local';
-export   {default as routePlugin} from './plugins/route-plugin';
-export   {default as formPlugin} from './plugins/form-plugin';
+export   * from './config';
+export   * from './config.local';
+export   * from './plugins/route-plugin';
+export   * from './plugins/form-plugin';
