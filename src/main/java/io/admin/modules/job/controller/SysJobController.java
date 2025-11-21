@@ -4,9 +4,8 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.ClassUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.admin.modules.job.entity.SysJob;
-import io.admin.modules.job.entity.SysJobLog;
+import io.admin.modules.job.entity.SysJobExecuteRecord;
 import io.admin.modules.job.quartz.QuartzManager;
-import io.admin.modules.job.service.SysJobLogService;
 import io.admin.modules.job.service.SysJobService;
 import io.admin.framework.log.Log;
 import io.admin.common.utils.field.Field;
@@ -45,51 +44,19 @@ public class SysJobController {
     @Resource
     private QuartzManager quartzService;
 
-    @Resource
-    private SysJobLogService sysJobLogService;
+
 
 
     @HasPermission("job:view")
     @RequestMapping("page")
     public AjaxResult page(String searchText, @PageableDefault(direction = Sort.Direction.DESC, sort = "updateTime") Pageable pageable) throws SchedulerException {
-        JpaQuery<SysJob> q = new JpaQuery<>();
-        q.searchText(searchText, SysJob.Fields.name, SysJob.Fields.jobClass);
-        Page<SysJob> page = service.findPageByRequest(q, pageable);
-
-        List<JobExecutionContext> currentlyExecutingJobs = scheduler.getCurrentlyExecutingJobs();
-        Map<JobKey, JobExecutionContext> currentlyExecutingJobsMap = currentlyExecutingJobs.stream().collect(Collectors.toMap(ctx -> ctx.getJobDetail().getKey(), ctx -> ctx));
-
-
-        for (SysJob job : page) {
-            SysJobLog latest = sysJobLogService.findLatest(job);
-            if (latest != null) {
-                // TODO
-                /*job.putExtData("beginTime", latest.getBeginTime());
-                job.putExtData("endTime", latest.getEndTime());
-                job.putExtData("jobRunTime", latest.getJobRunTimeLabel());
-                job.putExtData("result", latest.getResult());*/
-            }
-
-            if (job.getEnabled()) {
-                JobKey jobKey = JobKey.jobKey(job.getName(), job.getGroup());
-                JobExecutionContext ctx = currentlyExecutingJobsMap.get(jobKey);
-                if (ctx != null) {
-                    // TODO
-                  /*  job.putExtData("executing", true);
-                    job.putExtData("fireTime", ctx.getFireTime());*/
-                }
-            }
-        }
-
-
-        return AjaxResult.ok().data(page);
+        return AjaxResult.ok().data(service.page(searchText, pageable));
     }
 
     @HasPermission("job:save")
     @PostMapping("save")
     public AjaxResult save(@RequestBody SysJob param, RequestBodyKeys updateFields) throws Exception {
         Class.forName(param.getJobClass());
-
         service.saveOrUpdateByRequest(param, updateFields);
         return AjaxResult.ok().msg("操作成功");
     }
@@ -186,6 +153,19 @@ public class SysJobController {
 
         return AjaxResult.ok().data(result);
     }
+
+    @RequestMapping("executeRecord")
+    public AjaxResult executeRecordPage(@RequestParam String jobId, @PageableDefault(direction = Sort.Direction.DESC, sort = "updateTime") Pageable pageable) {
+        JpaQuery<SysJobExecuteRecord> q = new JpaQuery<>();
+        q.eq(SysJobExecuteRecord.Fields.sysJob + ".id", jobId);
+
+        Page<SysJobExecuteRecord> page = service.findAllExecuteRecord(q, pageable);
+        return AjaxResult.ok().data(page);
+    }
+
+
+
+
 
     @HasPermission("job:view")
     @RequestMapping("status")

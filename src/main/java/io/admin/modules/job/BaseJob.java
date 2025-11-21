@@ -1,10 +1,10 @@
 package io.admin.modules.job;
 
 import io.admin.modules.job.entity.SysJob;
-import io.admin.modules.job.entity.SysJobLog;
+import io.admin.modules.job.entity.SysJobExecuteRecord;
 import io.admin.modules.log.shift.file.FileShiftLogTool;
 import io.admin.modules.job.dao.SysJobDao;
-import io.admin.modules.job.dao.SysJobLogDao;
+import io.admin.modules.job.dao.SysJobExecuteRecordDao;
 import jakarta.annotation.Resource;
 import org.quartz.*;
 import org.slf4j.Logger;
@@ -15,7 +15,7 @@ import java.util.Date;
 public abstract class BaseJob implements Job {
 
     @Resource
-    private SysJobLogDao sysJobLogDao;
+    private SysJobExecuteRecordDao sysJobLogDao;
 
     @Resource
     private SysJobDao sysJobDao;
@@ -32,7 +32,7 @@ public abstract class BaseJob implements Job {
         // 1. 数据库保存记录
         SysJob job = sysJobDao.findByName(jobName);
 
-        SysJobLog jobLog = new SysJobLog();
+        SysJobExecuteRecord jobLog = new SysJobExecuteRecord();
         jobLog.setSysJob(job);
         Date fireTime = context.getFireTime();
         jobLog.setBeginTime(fireTime);

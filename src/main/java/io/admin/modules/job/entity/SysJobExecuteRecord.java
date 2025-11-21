@@ -15,7 +15,7 @@ import java.util.Date;
 @Getter
 @Setter
 @FieldNameConstants
-public class SysJobLog extends BaseEntity {
+public class SysJobExecuteRecord extends BaseEntity {
 
     @NotNull
     @ManyToOne(fetch = FetchType.EAGER)

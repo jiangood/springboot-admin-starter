@@ -1,14 +1,19 @@
 package io.admin.modules.job.service;
 
 import io.admin.modules.job.entity.SysJob;
-import io.admin.modules.job.entity.SysJobLog;
+import io.admin.modules.job.entity.SysJobExecuteRecord;
 import io.admin.modules.job.quartz.QuartzManager;
-import io.admin.modules.job.dao.SysJobLogDao;
+import io.admin.modules.job.dao.SysJobExecuteRecordDao;
 import io.admin.modules.job.JobDescription;
 import io.admin.framework.data.service.BaseService;
 import io.admin.framework.data.query.JpaQuery;
 import lombok.extern.slf4j.Slf4j;
+import org.quartz.JobExecutionContext;
+import org.quartz.JobKey;
+import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
@@ -16,6 +21,8 @@ import org.springframework.util.Assert;
 import jakarta.annotation.Resource;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -25,7 +32,10 @@ public class SysJobService extends BaseService<SysJob> {
     QuartzManager quartzService;
 
     @Resource
-    SysJobLogDao sysJobLogDao;
+    SysJobExecuteRecordDao sysJobExecuteRecordDao;
+
+    @Resource
+    Scheduler scheduler;
 
 
 
@@ -69,7 +79,7 @@ public class SysJobService extends BaseService<SysJob> {
         Assert.notNull(job, "该任务已被删除，请勿重复操作");
         quartzService.deleteJob(job);
 
-        sysJobLogDao.deleteByJobId(id);
+        sysJobExecuteRecordDao.deleteByJobId(id);
 
         baseDao.deleteById(id);
     }
@@ -77,10 +87,46 @@ public class SysJobService extends BaseService<SysJob> {
 
     //清理日志
     public void clean(List<String> ids){
-        List<SysJobLog> list = sysJobLogDao.findAllById(ids);
-        for (SysJobLog sysJobLog : list) {
-            sysJobLogDao.delete(sysJobLog);
+        List<SysJobExecuteRecord> list = sysJobExecuteRecordDao.findAllById(ids);
+        for (SysJobExecuteRecord sysJobExecuteRecord : list) {
+            sysJobExecuteRecordDao.delete(sysJobExecuteRecord);
         }
     }
 
+    public Page<SysJobExecuteRecord> findAllExecuteRecord(JpaQuery<SysJobExecuteRecord> q, Pageable pageable) {
+      return   sysJobExecuteRecordDao.findAll(q, pageable);
+    }
+
+    public Page<SysJob> page(String searchText, Pageable pageable) throws SchedulerException {
+        JpaQuery<SysJob> q = new JpaQuery<>();
+        q.searchText(searchText, SysJob.Fields.name, SysJob.Fields.jobClass);
+        Page<SysJob> page = baseDao.findAll(q, pageable);
+
+        List<JobExecutionContext> currentlyExecutingJobs = scheduler.getCurrentlyExecutingJobs();
+        Map<JobKey, JobExecutionContext> currentlyExecutingJobsMap = currentlyExecutingJobs.stream().collect(Collectors.toMap(ctx -> ctx.getJobDetail().getKey(), ctx -> ctx));
+
+
+        for (SysJob job : page) {
+            SysJobExecuteRecord latest = sysJobExecuteRecordDao.findLatest(job.getId());
+            if (latest != null) {
+                // TODO
+                /*job.putExtData("beginTime", latest.getBeginTime());
+                job.putExtData("endTime", latest.getEndTime());
+                job.putExtData("jobRunTime", latest.getJobRunTimeLabel());
+                job.putExtData("result", latest.getResult());*/
+            }
+
+            if (job.getEnabled()) {
+                JobKey jobKey = JobKey.jobKey(job.getName(), job.getGroup());
+                JobExecutionContext ctx = currentlyExecutingJobsMap.get(jobKey);
+                if (ctx != null) {
+                    // TODO
+                  /*  job.putExtData("executing", true);
+                    job.putExtData("fireTime", ctx.getFireTime());*/
+                }
+            }
+        }
+
+        return page;
+    }
 }
