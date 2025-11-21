@@ -183,7 +183,7 @@ export default class extends React.Component {
                 }}
                 request={(params) => HttpUtil.pageData('admin/job/page', params)}
                 columns={this.columns}
-                bordered={true}
+                showToolbarSearch
             />
 
 
