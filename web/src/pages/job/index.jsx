@@ -1,7 +1,7 @@
-import {AutoComplete, Button, Form, Input, message, Modal, Popconfirm, Select, Space, Switch, Tag} from 'antd'
+import {Alert, AutoComplete, Button, Form, Input, message, Modal, Popconfirm, Select, Space, Switch, Tag} from 'antd'
 import React from 'react'
 import {PlusOutlined, ReloadOutlined} from "@ant-design/icons";
-import {HttpUtil, Page, PageUtil, ProTable, StrUtil, ValueType} from "../../framework";
+import {ButtonList, HttpUtil, Page, PageUtil, ProTable, StrUtil, ValueType} from "../../framework";
 
 
 const cronOptions = [
@@ -38,7 +38,10 @@ export default class extends React.Component {
 
         jobClassOptions: [],
 
-        paramList: []
+        paramList: [],
+
+        statusOpen:false,
+        status: null
     }
 
     componentDidMount() {
@@ -58,8 +61,9 @@ export default class extends React.Component {
         {
             title: '名称',
             dataIndex: 'name',
-            render:(name, record)=> {
-                return <a onClick={()=>PageUtil.open('/job/logList?jobId=' + record.id, '作业日志-'+name)}>{name}</a>;
+            render: (name, record) => {
+                return <a
+                    onClick={() => PageUtil.open('/job/logList?jobId=' + record.id, '作业日志-' + name)}>{name}</a>;
             }
         },
         {
@@ -91,7 +95,6 @@ export default class extends React.Component {
                     <Tag>空闲</Tag>
             },
         },
-
 
 
         {
@@ -156,15 +159,27 @@ export default class extends React.Component {
         })
     }
 
+    showStatus = () => {
+        this.setState({statusOpen:true})
+        HttpUtil.get('admin/job/status').then(rs=>{
+            this.setState({status:rs})
+        })
+    };
+
 
     render() {
         return <Page>
             <ProTable
                 actionRef={this.tableRef}
                 toolBarRender={() => {
-                    return <Button type='primary' onClick={() => this.handleAdd()} icon={<PlusOutlined/>}>
-                        新增
-                    </Button>
+                    return <ButtonList>
+                        <Button type='primary' onClick={() => this.handleAdd()} icon={<PlusOutlined/>}>
+                            新增
+                        </Button>
+                        <Button onClick={this.showStatus}>
+                           查看状态
+                        </Button>
+                    </ButtonList>
                 }}
                 request={(params) => HttpUtil.pageData('admin/job/page', params)}
                 columns={this.columns}
@@ -194,7 +209,8 @@ export default class extends React.Component {
                         <Input/>
                     </Form.Item>
 
-                    <Form.Item label='cron表达式' name='cron' help='格式：秒分时日月周,留空表示手动执行' rules={[{required: true}]}>
+                    <Form.Item label='cron表达式' name='cron' help='格式：秒分时日月周,留空表示手动执行'
+                               rules={[{required: true}]}>
                         <AutoComplete placeholder='如 0 */5 * * * ?' options={cronOptions}/>
                     </Form.Item>
 
@@ -207,12 +223,21 @@ export default class extends React.Component {
                                    name={['jobData', p.name]}
                                    key={p.name}
                                    rules={[{required: p.required}]}>
-                            {ValueType.renderField(p.componentType,p.componentProps)}
+                            {ValueType.renderField(p.componentType, p.componentProps)}
                         </Form.Item>
                     ))}
                 </Form>
             </Modal>
 
+            <Modal title='作业调度状态'
+                   open={this.state.statusOpen}
+                   onCancel={() => this.setState({statusOpen: false})}
+                   footer={ null}
+                   width={1024}
+            >
+                <Alert message={<pre>{this.state.status}</pre>}></Alert>
+
+            </Modal>
         </Page>
     }
 

@@ -60,7 +60,6 @@ export default class extends React.Component {
         return <Page padding>
 
 
-            <Alert message={<pre>{this.state.summary}</pre>} style={{marginBottom: 12}}></Alert>
             <div id='main' style={{height: 300}}></div>
 
 

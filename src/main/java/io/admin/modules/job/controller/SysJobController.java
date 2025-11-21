@@ -1,5 +1,6 @@
 package io.admin.modules.job.controller;
 
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.ClassUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.admin.modules.job.entity.SysJob;
@@ -187,6 +188,13 @@ public class SysJobController {
         return AjaxResult.ok().data(result);
     }
 
+    @HasPermission("job:view")
+    @RequestMapping("status")
+    public AjaxResult info() throws SchedulerException {
+        String summary = scheduler.getMetaData().getSummary();
+
+        return AjaxResult.ok().data(summary);
+    }
 
     @ExceptionHandler(JobPersistenceException.class)
     public AjaxResult ex(JobPersistenceException e) {

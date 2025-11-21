@@ -28,50 +28,9 @@ public class SysJobStatusController {
     private DbUtils db;
 
 
-    @HasPermission("jobStatus:info")
-    @RequestMapping("info")
-    public AjaxResult info() throws SchedulerException {
-        Map<String, Object> rs = new HashMap<>();
-        List<JobExecutionContext> list = scheduler.getCurrentlyExecutingJobs();
 
 
-        String summary = scheduler.getMetaData().getSummary();
-        rs.put("summary", summary);
 
-
-        List<Map<String, Object>> mapList = new ArrayList<>();
-        for (JobExecutionContext e : list) {
-            Map<String, Object> map = new HashMap<>();
-            JobDetail jobDetail = e.getJobDetail();
-            map.put("id", e.getFireInstanceId());
-            map.put("jobKey", jobDetail.getKey().toString());
-            map.put("className", jobDetail.getJobClass().getName());
-            map.put("triggerKey", e.getTrigger().getKey().toString());
-            map.put("fireTime", DateUtil.formatDateTime(e.getFireTime()));
-            map.put("nextFireTime", DateUtil.formatDateTime(e.getNextFireTime()));
-
-            mapList.add(map);
-        }
-        rs.put("list", mapList);
-
-        return AjaxResult.ok().data(rs);
-    }
-
-
-    @HasPermission("jobStatus:statsTotal")
-    @RequestMapping("statsTotal")
-    public AjaxResult statsTotal() {
-        String begin =  DateUtil.offsetDay(new Date(), -30).toDateStr();
-        String end = DateUtil.today();
-        String sql = """
-                SELECT execute_date as date,sum(if(success=1,true,0)) success, sum(if(success=0,true,0)) error from sys_job_log 
-                WHERE execute_date BETWEEN ? and ? 
-                GROUP BY execute_date
-                """;
-
-
-        return AjaxResult.ok().data(db.findAll(sql,begin, end));
-    }
 
 
 }
