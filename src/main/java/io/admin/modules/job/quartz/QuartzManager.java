@@ -18,7 +18,7 @@ public class QuartzManager {
 
 
     public void deleteJob(SysJob job) throws SchedulerException {
-        JobKey jobKey = JobKey.jobKey(job.getName(), job.getGroup());
+        JobKey jobKey = JobKey.jobKey(job.getName());
         if (scheduler.checkExists(jobKey)) {
             scheduler.deleteJob(jobKey);
 
@@ -32,7 +32,7 @@ public class QuartzManager {
                 .withMisfireHandlingInstructionFireAndProceed(); // 当调度错失时，执行一次
 
         Trigger trigger = TriggerBuilder.newTrigger()
-                .withIdentity(job.getName(), job.getGroup())
+                .withIdentity(job.getName())
                 .withSchedule(scheduleBuilder)
                 .build();
 
@@ -42,7 +42,7 @@ public class QuartzManager {
 
     public void triggerJob(SysJob job) throws SchedulerException, ClassNotFoundException {
         if (job.getEnabled()) {
-            JobKey jobKey = JobKey.jobKey(job.getName(), job.getGroup());
+            JobKey jobKey = JobKey.jobKey(job.getName());
             scheduler.triggerJob(jobKey);
         } else {
             deleteJob(job);
@@ -50,7 +50,7 @@ public class QuartzManager {
             JobDetail jobDetail = getJobDetail(job);
 
             Trigger trigger = TriggerBuilder.newTrigger()
-                    .withIdentity(job.getName(), job.getGroup())
+                    .withIdentity(job.getName())
                     .startNow()
                     .withSchedule(SimpleScheduleBuilder.simpleSchedule()
                             .withRepeatCount(0)) // 不重复
@@ -66,10 +66,9 @@ public class QuartzManager {
 
         Map<String, Object> jobDataMap = job.getJobDataMap();
 
-        JobDetail jobDetail = JobBuilder.newJob(cls)
-                .withIdentity(job.getName(), job.getGroup())
+        return JobBuilder.newJob(cls)
+                .withIdentity(job.getName())
                 .usingJobData(new JobDataMap(jobDataMap))
                 .build();
-        return jobDetail;
     }
 }

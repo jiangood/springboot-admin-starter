@@ -45,8 +45,6 @@ public class SysJob extends BaseEntity {
     @NotNull
     String jobClass;
 
-    @Column(name = "group_")
-    String group;
 
 
     // 参数

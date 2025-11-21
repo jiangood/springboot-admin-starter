@@ -6,7 +6,7 @@ import io.admin.modules.job.JobDescription;
 import org.quartz.JobDataMap;
 import org.slf4j.Logger;
 
-@JobDescription(label = "你好世界", group = "测试分组", params = {@FieldDescription(name = "name", label = "姓名")})
+@JobDescription(label = "你好世界",  params = {@FieldDescription(name = "name", label = "姓名")})
 public class HelloWorldJob extends BaseJob {
     @Override
     public String execute(JobDataMap data, Logger logger) throws Exception {

@@ -12,7 +12,6 @@ public @interface JobDescription {
 
     String label();
 
-    String group() default "默认分组";
 
 
     FieldDescription[] params() default {};

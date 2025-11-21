@@ -30,17 +30,16 @@ public class SysJobDao extends BaseDao<SysJob> {
         return this.findOne(q);
     }
 
-    public SysJob findByNameAndGroup(String name, String group) {
+    public SysJob findByNameAndGroup(String name) {
         JpaQuery<SysJob> q = new JpaQuery<>();
         q.eq(SysJob.Fields.name, name);
-        q.eq(SysJob.Fields.group, group);
 
         return this.findOne(q);
     }
 
     @Transactional
-    public void save(String name, String group, String paramKey, Object paramValue) {
-        SysJob job = this.findByNameAndGroup(name, group);
+    public void save(String name, String paramKey, Object paramValue) {
+        SysJob job = this.findByNameAndGroup(name);
         Assert.notNull(job, "没有找到数据库中的job " + name);
 
         Map<String, Object> jobData = job.getJobData();
