@@ -85,7 +85,7 @@ export  class ApiDoc extends React.Component {
 
                 <Title level={4}>请求头</Title>
 
-                <Table rowKey='appId' columns={this.columns} bordered dataSource={[
+                <Table rowKey='name' columns={this.columns} bordered dataSource={[
                     {name: 'appId', type: 'String', required: true, desc: '账号标识,appId'},
                     {name: 'timestamp', type: 'String', required: true, desc: '时间戳，当前UNIX时间戳，13位，精确到毫秒'},
                     {name: 'sign', type: 'String', required: true, desc: '数据签名，appId + appSecret + timestamp拼接后，进行md5摘要，值为32位小写'},
