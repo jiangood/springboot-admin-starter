@@ -1,5 +1,4 @@
 export * from './FieldAutoTime'
-export * from './FieldEditor'
 export * from './FieldBoolean';
 export * from './switch-y-n';
 export * from './input-number-percent';

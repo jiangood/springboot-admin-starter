@@ -1,6 +1,6 @@
 import React from "react";
-import {Button, Card, Divider, Form, Space} from "antd";
-import {FieldRemoteSelect, FieldRemoteSelectMultiple} from "../framework";
+import {Button, Card, Divider, Form, Space, Splitter} from "antd";
+import {FieldEditor, FieldRemoteSelect, FieldRemoteSelectMultiple} from "../framework";
 
 export default class extends React.Component {
 
@@ -24,34 +24,41 @@ export default class extends React.Component {
 
         return <>
             <Card title='表单组件'>
-                <Form
-                    ref={this.formRef}
-                    onValuesChange={(changedValues, allValues) => {
-                        this.setState({formValues: allValues})
-                    }}
-                    onReset={() => {
-                        this.setState({formValues: {}})
-                    }}
+                        <Form
+                            ref={this.formRef}
+                            onValuesChange={(changedValues, allValues) => {
+                                this.setState({formValues: allValues})
+                            }}
+                            onReset={() => {
+                                this.setState({formValues: {}})
+                            }}
 
-                    onFinish={values => {
-                        localStorage.setItem("_test", JSON.stringify(values))
-                    }}
-                >
-                    <Form.Item label='单选' name='单选值'>
-                        <FieldRemoteSelect url='admin/sysUser/options'/>
-                    </Form.Item>
-                    <Form.Item label='多选' name='多选值'>
-                        <FieldRemoteSelectMultiple url='admin/sysUser/options'/>
-                    </Form.Item>
+                            onFinish={values => {
+                                localStorage.setItem("_test", JSON.stringify(values))
+                            }}
 
-                    <Space>
-                        <Button type='primary' htmlType='submit'>保存</Button>
-                        <Button htmlType='reset'>重置</Button>
-                    </Space>
-                </Form>
+                            layout='vertical'
+                        >
+                            <Form.Item label='单选' name='单选值'>
+                                <FieldRemoteSelect url='admin/sysUser/options'/>
+                            </Form.Item>
+                            <Form.Item label='多选' name='多选值'>
+                                <FieldRemoteSelectMultiple url='admin/sysUser/options'/>
+                            </Form.Item>
+                            <Form.Item label='富文本' name='富文本'>
+                                <FieldEditor />
+                            </Form.Item>
 
-                <Divider>表单数据</Divider>
-                {JSON.stringify(this.state.formValues)}
+                            <Space>
+                                <Button type='primary' htmlType='submit'>保存</Button>
+                                <Button htmlType='reset'>重置</Button>
+                            </Space>
+                        </Form>
+                        <Divider>表单数据</Divider>
+                        {JSON.stringify(this.state.formValues)}
+
+
+
             </Card>
         </>
     }
