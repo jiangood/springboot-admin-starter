@@ -21,7 +21,6 @@ export * from './FieldRemoteTreeCheckable'
 export * from './FieldPassword'
 export * from './FieldInput'
 
-export * from './FieldTree'
 export * from './FieldEditTable'
 export * from './FieldFileBase64'
 

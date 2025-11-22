@@ -1,6 +1,6 @@
 import {Form, Modal, Spin, Tree} from 'antd';
 import React from 'react';
-import {FieldDictSelect, FieldRemoteSelectMultiple, HttpUtil} from "../../../framework";
+import {FieldDictSelect, FieldRemoteSelectMultiple, FieldRemoteTree, HttpUtil} from "../../../framework";
 
 
 
@@ -83,7 +83,7 @@ export default class UserPerm extends React.Component {
 
                 {this.state.formValues.dataPermType === 'CUSTOM' && <>
                     <Form.Item label='组织机构' name='orgIds'>
-                        <FieldTree/>
+                       <FieldRemoteTree url='admin/sysOrg/unitTree' />
                     </Form.Item>
                 </>}
 
@@ -96,38 +96,3 @@ export default class UserPerm extends React.Component {
 
 
 }
-
-class FieldTree extends React.Component {
-
-    state = {
-        treeLoading: true,
-        treeData: [],
-    }
-
-    componentDidMount() {
-        HttpUtil.get('admin/sysOrg/unitTree').then(treeData => {
-            this.setState({treeData, treeLoading: false})
-        })
-    }
-
-
-    render() {
-        if (this.state.treeLoading) {
-            return <Spin />
-        }
-        return <Tree
-            multiple
-            checkable
-            onCheck={e => this.props.onChange(e.checked)}
-            checkedKeys={this.props.value}
-            treeData={this.state.treeData}
-            defaultExpandAll
-            checkStrictly
-        >
-        </Tree>
-    }
-}
-
-
-
-
