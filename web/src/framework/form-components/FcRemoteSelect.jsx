@@ -1,6 +1,6 @@
 import React from 'react';
-import { Select, Spin, message } from 'antd';
-import  { debounce } from 'lodash';
+import {Select, Spin, message} from 'antd';
+import {debounce} from 'lodash';
 import {HttpUtil} from "../system";
 
 export class FcRemoteSelect extends React.Component {
@@ -17,7 +17,7 @@ export class FcRemoteSelect extends React.Component {
     }
 
     static defaultProps = {
-        placeholder:'请搜索选择'
+        placeholder: '请搜索选择'
     };
 
     componentDidMount() {
@@ -29,39 +29,39 @@ export class FcRemoteSelect extends React.Component {
     }
 
     loadData = async (searchText) => {
-        const { url,value } = this.props;
+        const {url, value} = this.props;
         const fetchId = ++this.fetchIdRef;
 
-        this.setState({ loading: true });
+        this.setState({loading: true});
 
         try {
-            const data = await HttpUtil.get(url, {searchText,selected:value});
+            const data = await HttpUtil.get(url, {searchText, selected: value});
 
             if (fetchId === this.fetchIdRef) {
-                this.setState({ options: data || [] });
+                this.setState({options: data || []});
             }
         } catch (error) {
             console.error('远程搜索失败:', error);
             message.error('搜索失败，请重试');
-            this.setState({ options: [] });
+            this.setState({options: []});
         } finally {
             if (fetchId === this.fetchIdRef) {
-                this.setState({ loading: false });
+                this.setState({loading: false});
             }
         }
     };
 
     handleSearch = (value) => {
         if (value.trim() === '') {
-            this.setState({ options: [] });
+            this.setState({options: []});
             return;
         }
         this.loadDataDebounce(value.trim());
     };
 
     render() {
-        const { options, loading } = this.state;
-        const {value,onChange, url,...selectProps } = this.props;
+        const {options, loading} = this.state;
+        const {value, onChange, url, ...selectProps} = this.props;
 
         return (
             <Select
@@ -74,7 +74,7 @@ export class FcRemoteSelect extends React.Component {
                 value={value}
                 onChange={onChange}
                 options={options}
-                notFoundContent={loading ? <Spin size="small" /> : '数据为空'}
+                notFoundContent={loading ? <Spin size="small"/> : '数据为空'}
                 style={{width: '100%', minWidth: 200}}
                 allowClear
 

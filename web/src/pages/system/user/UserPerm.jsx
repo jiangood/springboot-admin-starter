@@ -3,6 +3,7 @@ import React from 'react';
 import {FieldDictSelect, FcRemoteSelectMultiple, HttpUtil} from "../../../framework";
 
 
+
 export default class UserPerm extends React.Component {
 
 
