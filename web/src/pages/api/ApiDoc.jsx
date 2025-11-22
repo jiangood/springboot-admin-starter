@@ -85,7 +85,7 @@ export  class ApiDoc extends React.Component {
 
                 <Title level={4}>请求头</Title>
 
-                <Table columns={this.columns} bordered dataSource={[
+                <Table rowKey='appId' columns={this.columns} bordered dataSource={[
                     {name: 'appId', type: 'String', required: true, desc: '账号标识,appId'},
                     {name: 'timestamp', type: 'String', required: true, desc: '时间戳，当前UNIX时间戳，13位，精确到毫秒'},
                     {name: 'sign', type: 'String', required: true, desc: '数据签名，appId + appSecret + timestamp拼接后，进行md5摘要，值为32位小写'},
@@ -95,7 +95,7 @@ export  class ApiDoc extends React.Component {
 
 
                 <Typography.Title level={4}>公共错误码</Typography.Title>
-                <Table columns={[
+                <Table  columns={[
                     {dataIndex:'code',title:'错误码'},
                     {dataIndex:'message', title:'错误描述'}
                 ]} rowKey='code' bordered dataSource={this.state.errorList} size='small' pagination={false}>
@@ -103,19 +103,20 @@ export  class ApiDoc extends React.Component {
 
                 <Typography.Title level={2}>二、接口列表</Typography.Title>
                 {apiList.map((api, index) => {
-                    return <>
+                    return <div key={index}>
                         <Typography.Title level={3}>{ api.name} </Typography.Title>
                         <p>接口名称： {api.action}</p>
                         <p>功能描述：{api.desc}</p>
 
 
                         <Title level={5}>请求参数</Title>
-                        <Table columns={this.columns} bordered dataSource={api.parameterList}
+                        <Table rowKey='name' columns={this.columns} bordered dataSource={api.parameterList}
                                size='small' pagination={false}>
                         </Table>
 
                         <Title level={5}>响应数据</Title>
                         <Table columns={this.columns} bordered
+                               rowKey={'code'}
                                dataSource={[
                             {name: 'code', type: 'int', required: true, desc: '响应码，0表示成功'},
                             {name: 'message', type: 'String', required: false, desc: '结果提示信息'},
@@ -125,13 +126,15 @@ export  class ApiDoc extends React.Component {
                         {api.returnList != null && api.returnList.length > 0 && <>
                             <Title level={5}>data 对象 {api.returnType} 说明</Title>
 
-                            <Table columns={this.columns} bordered
+                            <Table columns={this.columns}
+                                   rowKey={'name'}
+                                   bordered
                                    dataSource={api.returnList} size='small' pagination={false}>
                             </Table>
                         </>
                         }
 
-                    </>
+                    </div>
                 })}
 
 
