@@ -50,13 +50,7 @@ export const HttpUtil = {
      * 分页请求, 为antd的ProTable
      */
     pageData(url, params) {
-        const { _exportType, ...data} = params || {};
-
-        if (_exportType) {
-            return this.downloadFileGet(url, data, {'X-Export-Type': _exportType})
-        }
-
-        return this.get(url, data)
+        return this.get(url, params)
     },
     /**
      * 下载
