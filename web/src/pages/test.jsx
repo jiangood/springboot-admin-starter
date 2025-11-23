@@ -1,12 +1,19 @@
 import React from "react";
 import {Button, Card, Divider, Form, Space, Splitter} from "antd";
 import {
-    FieldBoolean, FieldDate, FieldDateRange,
+    FieldBoolean,
+    FieldDate,
+    FieldDateRange,
     FieldEditor,
     FieldRemoteSelect,
     FieldRemoteSelectMultiple,
     FieldRemoteTree,
-    FieldRemoteTreeCascader, FieldRemoteTreeSelect, FieldRemoteTreeSelectMultiple, FieldTable, FieldTableSelect
+    FieldRemoteTreeCascader,
+    FieldRemoteTreeSelect,
+    FieldRemoteTreeSelectMultiple, FieldSysOrgTree,
+    FieldSysOrgTreeSelect,
+    FieldTable,
+    FieldTableSelect
 } from "../framework";
 
 export default class extends React.Component {
@@ -50,6 +57,20 @@ export default class extends React.Component {
                     labelCol={{flex: '400px',}}
                     layout='horizontal'
                 >
+
+                    <Form.Item label='机构树选择 （部门） FieldSysOrgTree'   name='org'>
+                        <FieldSysOrgTree />
+                    </Form.Item>
+                    <Form.Item label='机构树选择 （部门） FieldSysOrgTreeSelect'   name='org'>
+                        <FieldSysOrgTreeSelect />
+                    </Form.Item>
+
+                    <Form.Item label='机构树选择（单位） FieldSysOrgTreeSelect'   name='org'>
+                        <FieldSysOrgTreeSelect type='unit' />
+                    </Form.Item>
+
+
+
                     <Form.Item label='选择表格 FieldTableSelect' name='user'>
                         <FieldTableSelect url='admin/sysUser/page'  columns={[
                             {title: '姓名', dataIndex: 'name'},
