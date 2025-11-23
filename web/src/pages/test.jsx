@@ -68,7 +68,7 @@ export default class extends React.Component {
                             <Form.Item label='远程树选择' name='user'>
                                 <FieldRemoteTreeSelect url='admin/sysUser/tree' />
                             </Form.Item>
-                            <Form.Item label='远程树' name='user'>
+                            <Form.Item label='远程树（多选）' name='users'>
                                 <FieldRemoteTree url='admin/sysUser/tree' />
                             </Form.Item>
                             <Form.Item label='远程树级联选择' name='user'>
