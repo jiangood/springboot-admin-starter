@@ -1,21 +1,19 @@
 import {
     FieldDateTimePickerString,
-    FieldDictRadio,
     FieldImageBase64,
     FieldRadioBoolean,
     FieldUploadImage
 } from "../field";
 import {ViewImage,  ViewText} from "../view";
 import {ViewPassword,ViewBoolean} from "../../view-components";
-import {FieldRemoteSelect} from "../../field-components";
+import {FieldDictSelect, FieldRemoteSelect} from "../../field-components";
 import {Input} from "antd";
 
 
 export const fieldRegistry = {
     'text':Input,
 
-    'dict':FieldDictRadio,
-    'dictRadio':FieldDictRadio,
+    'dict':FieldDictSelect,
     'password':Input.Password,
     'datetime':FieldDateTimePickerString,
     'boolean':FieldRadioBoolean,

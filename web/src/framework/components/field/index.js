@@ -6,7 +6,6 @@ export * from './input-number-percent';
 
 
 export * from './time';
-export * from './dict';
 export * from './text';
 export * from './FieldProps'
 export * from './FieldOrgTree'
