@@ -13,7 +13,6 @@ export * from './ProTable'
 export * from './DownloadFileButton'
 
 export * from './NamedIcon'
-export * from './EditTable'
 export * from './view'
 export * from './LinkButton'
 export * from './Gap'
