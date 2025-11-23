@@ -9,7 +9,6 @@ export * from './FieldProps'
 export * from './FieldOrgTree'
 
 
-export * from './FieldEditTable'
 export * from './FieldFileBase64'
 
 export  * from './upload'
