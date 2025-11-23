@@ -1,12 +1,12 @@
 import React from "react";
 import {Button, Card, Divider, Form, Space, Splitter} from "antd";
 import {
-    FieldBoolean,
+    FieldBoolean, FieldDate,
     FieldEditor,
     FieldRemoteSelect,
     FieldRemoteSelectMultiple,
     FieldRemoteTree,
-    FieldRemoteTreeCascader, FieldRemoteTreeCheckable, FieldRemoteTreeSelect, FieldRemoteTreeSelectMultiple
+    FieldRemoteTreeCascader, FieldRemoteTreeSelect, FieldRemoteTreeSelectMultiple
 } from "../framework";
 
 export default class extends React.Component {
@@ -50,6 +50,12 @@ export default class extends React.Component {
                             labelCol={{flex:'400px',}}
                             layout='horizontal'
                         >
+                            <Form.Item label='FieldDate HOUR_MINUTE' name='date'>
+                                <FieldDate type='HOUR_MINUTE'></FieldDate>
+                            </Form.Item>
+                            <Form.Item label='FieldDate HOUR_MINUTE_SECOND' name='date'>
+                                <FieldDate type='HOUR_MINUTE_SECOND'></FieldDate>
+                            </Form.Item>
                             <Form.Item label='FieldBoolean 布尔 (switch)' name='boolean'>
                                 <FieldBoolean type='switch'></FieldBoolean>
                             </Form.Item>

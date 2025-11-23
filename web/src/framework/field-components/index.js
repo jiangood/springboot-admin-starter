@@ -8,3 +8,4 @@ export * from './FieldRemoteTreeCascader'
 export * from './FieldRemoteTreeSelect'
 export * from './FieldRemoteTreeSelectMultiple'
 export * from './FieldBoolean';
+export * from './FieldDate';
