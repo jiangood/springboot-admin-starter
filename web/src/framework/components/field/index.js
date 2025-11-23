@@ -16,8 +16,6 @@ export * from './FieldOrgTree'
 
 export * from './FieldAutoTime'
 export * from './FieldRemoteTreeCheckable'
-export * from './FieldPassword'
-export * from './FieldInput'
 
 export * from './FieldEditTable'
 export * from './FieldFileBase64'

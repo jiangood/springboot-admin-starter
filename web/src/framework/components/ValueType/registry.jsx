@@ -3,13 +3,13 @@ import {
     FieldDictRadio,
     FieldImageBase64,
     FieldInput,
-    FieldPassword,
     FieldRadioBoolean,
     FieldUploadImage
 } from "../field";
 import {ViewImage,  ViewText} from "../view";
 import {ViewPassword,ViewBoolean} from "../../view-components";
 import {FieldRemoteSelect} from "../../field-components";
+import {Input} from "antd";
 
 
 export const fieldRegistry = {
@@ -17,7 +17,7 @@ export const fieldRegistry = {
 
     'dict':FieldDictRadio,
     'dictRadio':FieldDictRadio,
-    'password':FieldPassword,
+    'password':Input.Password,
     'datetime':FieldDateTimePickerString,
     'boolean':FieldRadioBoolean,
     imageBase64:FieldImageBase64,
