@@ -3,7 +3,6 @@ import {Button, Form, Input, Modal} from "antd";
 
 
 import {history} from 'umi'
-import {HttpUtil, SysUtil} from "../../framework";
 
 export default class extends React.Component {
 
@@ -14,7 +13,7 @@ export default class extends React.Component {
                 title: '提示',
                 content: '修改密码成功',
                 onOk: () => {
-                    SysUtil.setToken(null)
+                    SysUtils.setToken(null)
                     history.push('/login')
                 }
             })

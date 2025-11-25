@@ -1,7 +1,7 @@
 import {matchRoutes, useAppData} from "umi";
 import React from "react";
 import {Result} from "antd";
-import {UrlUtil} from "../framework";
+import {UrlUtils} from "../framework";
 
 /**
  * 通过指定 pathname 渲染页面
@@ -55,7 +55,7 @@ class _PageRender extends React.Component {
         const key = pathname.substring(1); // 移除第一个斜杠
         let componentType = map[key] || map[key + '/index']
         if (componentType) {
-            let params =search ? UrlUtil.getParams(search): {}
+            let params =search ? UrlUtils.getParams(search): {}
             const location = {pathname, search, params}
             return React.createElement(componentType, {location});
         }

@@ -1,13 +1,7 @@
 import {PlusOutlined} from '@ant-design/icons'
 import {Button, Form, Input, Modal, Popconfirm, Tabs} from 'antd'
 import React from 'react'
-import {
-    ButtonList, FieldBoolean, FieldDate,
-    HttpUtil, Page,
-    PageUtil,
-    ProTable,
-    StringUtils, ViewPassword
-} from "../../framework";
+import {ButtonList, FieldBoolean, FieldDate, Page, ProTable, StringUtils, ViewPassword} from "../../framework";
 import {ApiDoc} from "./ApiDoc";
 
 
@@ -59,7 +53,7 @@ export default class extends React.Component {
             render: (_, record) => (
                 <ButtonList>
                     <Button size='small' perm='api'
-                            onClick={() => PageUtil.open('/api/perm?accountId=' + record.id, '账户权限')}
+                            onClick={() => PageUtils.open('/api/perm?accountId=' + record.id, '账户权限')}
                             type='primary'>权限</Button>
                     <Button size='small' perm='api' onClick={() => this.handleEdit(record)}>编辑</Button>
                     <Popconfirm perm='api' title='是否确定删除接口访客' onConfirm={() => this.handleDelete(record)}>

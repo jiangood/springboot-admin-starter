@@ -9,7 +9,7 @@ export default class extends React.Component {
 
   render() {
     const url = this.props.url;
-    const headers = SysUtil.getHeaders();
+    const headers = SysUtils.getHeaders();
 
 
     return <ScrollFollow

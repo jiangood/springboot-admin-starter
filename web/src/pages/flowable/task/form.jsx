@@ -2,7 +2,7 @@ import React from "react";
 import {Button, Card, Form, Input, message, Radio, Spin, Splitter,} from "antd";
 import InstanceInfo from "../../../components/InstanceInfo";
 import {history} from "umi";
-import {HttpUtil, Page, PageUtil} from "../../../framework";
+import {Page} from "../../../framework";
 
 export default class extends React.Component {
 
@@ -20,7 +20,7 @@ export default class extends React.Component {
     externalFormRef = React.createRef()
 
     componentDidMount() {
-        const {taskId, instanceId, formKey} = PageUtil.currentParams()
+        const {taskId, instanceId, formKey} = PageUtils.currentParams()
         this.setState({taskId, instanceId, formKey})
 
         HttpUtils.get('admin/flowable/my/taskInfo', {id: taskId}).then(rs=>{

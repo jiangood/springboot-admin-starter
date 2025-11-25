@@ -1,5 +1,5 @@
 import React from "react";
-import {FieldRemoteSelect, HttpUtil, PageUtil} from "../../framework";
+import {FieldRemoteSelect} from "../../framework";
 import {Button, Descriptions, message, Space, Table, Typography} from "antd";
 
 const {Title, Paragraph, Text, Link} = Typography;
@@ -29,7 +29,7 @@ export  class ApiDoc extends React.Component {
     ]
 
     componentDidMount() {
-        const id = PageUtil.currentParams().id
+        const id = PageUtils.currentParams().id
         this.loadData(id);
 
         let url = window.location.protocol + '//' + window.location.host

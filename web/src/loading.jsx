@@ -1,6 +1,6 @@
 import React from "react";
 import {Spin} from "antd";
-import {theme} from "./framework";
+import {ThemeUtils} from "./framework";
 
 export default class extends React.Component {
     render() {
@@ -10,7 +10,7 @@ export default class extends React.Component {
                 alignItems: 'center',
                 justifyContent: 'center',
                 height: '100vh',
-                background: theme["background-color"]
+                background: ThemeUtils.getColor("background-color")
             }}>
             <Spin size='large'/>
         </div>

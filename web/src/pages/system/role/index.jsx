@@ -1,7 +1,7 @@
 import {PlusOutlined} from '@ant-design/icons'
 import {Button, Form, Input, InputNumber, Modal, Popconfirm, Transfer, Tree} from 'antd'
 import React from 'react'
-import {ButtonList, Ellipsis, FieldBoolean, HttpUtil, Page, PageUtil, ProTable} from "../../../framework";
+import {ButtonList, Ellipsis, FieldBoolean, Page, ProTable} from "../../../framework";
 
 
 export default class extends React.Component {
@@ -104,7 +104,7 @@ export default class extends React.Component {
                                 onClick={() => this.handleEditUser(record)}>用户设置</Button>
 
                         <Button size='small' perm='sysRole:save' disabled={record.builtin}
-                                onClick={() => PageUtil.open('/system/role/perm?id='+record.id, '角色权限设置')}>权限设置</Button>
+                                onClick={() => PageUtils.open('/system/role/perm?id='+record.id, '角色权限设置')}>权限设置</Button>
 
                         <Button size='small' perm='sysRole:save' disabled={record.builtin}
                                 onClick={() => this.handleEdit(record)}>编辑</Button>

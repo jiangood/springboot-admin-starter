@@ -1,7 +1,7 @@
 import React from "react";
 import {Alert, Button, Card, Checkbox, Table, Typography} from "antd";
 import {SaveOutlined} from "@ant-design/icons";
-import {ArrUtils, HttpUtil, PageUtil} from "../../../framework";
+import {ArrUtils} from "../../../framework";
 
 export default class extends React.Component {
 
@@ -52,7 +52,7 @@ export default class extends React.Component {
     ]
 
     componentDidMount() {
-        this.roleId = PageUtil.currentParams().id;
+        this.roleId = PageUtils.currentParams().id;
         this.loadData();
     }
 
@@ -87,7 +87,7 @@ export default class extends React.Component {
             ArrUtils.addAll(perms, ks)
         }
         HttpUtils.post('admin/sysRole/savePerms', {id: this.roleId, perms, menus}).then(rs => {
-            //  Page.open(PageUtil.currentPathname(), PageUtil.currentLabel())
+            //  Page.open(PageUtils.currentPathname(), PageUtils.currentLabel())
         })
     };
 

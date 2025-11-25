@@ -5,7 +5,7 @@ import {HistoryOutlined, ReloadOutlined} from '@ant-design/icons';
 import {Button, Input, message, Modal, Table} from 'antd';
 import React from 'react';
 import './index.less';
-import {DateUtils, PageUtils, StorageUtil} from "../../../../utils";
+import {DateUtils, PageUtils, StorageUtils} from "../../../../utils";
 
 export default class Toolbar extends React.Component {
 
@@ -46,7 +46,7 @@ export default class Toolbar extends React.Component {
 
     renderHistory() {
         const {params} = this.props
-        const list = StorageUtil.get(this.getParamKey()) || []
+        const list = StorageUtils.get(this.getParamKey()) || []
 
         const dataSource = [{params, time: '当前'}, ...list]
 
@@ -103,13 +103,13 @@ export default class Toolbar extends React.Component {
             message.error('查询参数为空，无法保存')
             return
         }
-        const list = StorageUtil.get(this.getParamKey()) || []
+        const list = StorageUtils.get(this.getParamKey()) || []
         let data = {time: DateUtils.now(), params};
         list.unshift(data)
         if (list.length > 5) {
             list.pop()
         }
-        StorageUtil.set(this.getParamKey(), list)
+        StorageUtils.set(this.getParamKey(), list)
         message.success('保存成功')
         this.setState({historyOpen: false})
     }

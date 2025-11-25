@@ -1,7 +1,7 @@
 import {Button, Modal, Popconfirm, Space} from 'antd';
 import React from 'react';
 import {PlusOutlined} from "@ant-design/icons";
-import {HttpUtil, PageUtil, ProTable} from "../../framework";
+import {PageUtils, ProTable} from "../../framework";
 
 export default class extends React.Component {
 
@@ -41,7 +41,7 @@ export default class extends React.Component {
             render: (_, record) => (
                 <Space>
                     <Button size='small' type='primary'
-                            onClick={() => PageUtil.open('/flowable/design?id=' + record.id, '流程设计' + record.name)}> 设计 </Button>
+                            onClick={() => PageUtils.open('/flowable/design?id=' + record.id, '流程设计' + record.name)}> 设计 </Button>
                     <Button size='small' onClick={() => this.handleEdit(record)}> 编辑 </Button>
                     <Popconfirm perm='flowable/model:delete' title={'是否确定删除流程模型' }
                                 onConfirm={() => this.handleDelete(record)}>

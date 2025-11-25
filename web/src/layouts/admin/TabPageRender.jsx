@@ -61,7 +61,7 @@ class TabPageRender extends React.Component {
         if (path === '/') {
             return '首页'
         }
-        let label = PageUtil.currentLabel();
+        let label = PageUtils.currentLabel();
 
         if (!label) {
             const menu = this.props.pathMenuMap[path]

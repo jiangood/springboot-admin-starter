@@ -45,3 +45,6 @@ export declare class MsgBox {
      */
     static prompt(msg: string, defaultValue?: string, title?: string): Promise<string | null>;
 }
+
+export declare class MsgBoxComponent extends React.Component<any, any> {
+}

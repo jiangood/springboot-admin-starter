@@ -1,6 +1,6 @@
 import {Button, Form, Input, Modal, Popconfirm} from 'antd'
 import React from 'react'
-import {ButtonList, FieldDateRange, FieldDictSelect, FieldUploadFile, HttpUtil, ProTable, SysUtil} from "../../../framework";
+import {ButtonList, FieldDateRange, FieldDictSelect, FieldUploadFile, ProTable} from "../../../framework";
 import {CloudUploadOutlined} from "@ant-design/icons";
 
 
@@ -54,14 +54,14 @@ export default class extends React.Component {
             title: '预览',
             dataIndex: 'id',
             render(id,record){
-                const nodes = [  <a href={SysUtil.wrapServerUrl( 'sysFile/preview/' + record.id) } target='_blank'>预览</a>]
+                const nodes = [  <a href={SysUtils.wrapServerUrl( 'sysFile/preview/' + record.id) } target='_blank'>预览</a>]
 
 
                 if(record.imageUrls?.length > 0){
                    for(let item of record.imageUrls){
                        let url = item.url;
                        let label = item.label;
-                       nodes.push(<a href={SysUtil.wrapServerUrl( url) } target='_blank' style={{marginLeft:8}} >{label}</a>)
+                       nodes.push(<a href={SysUtils.wrapServerUrl( url) } target='_blank' style={{marginLeft:8}} >{label}</a>)
                    }
                 }
 

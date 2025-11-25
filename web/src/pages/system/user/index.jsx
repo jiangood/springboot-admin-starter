@@ -2,10 +2,9 @@ import {PlusOutlined} from '@ant-design/icons';
 import {Button, Form, Input, Modal, Popconfirm, Splitter, Tabs} from 'antd';
 import React from 'react';
 import {
-    ButtonList,
-    dictValueTag, FieldBoolean,
-    FieldOrgTreeSelect, FieldSysOrgTreeSelect,
-    HttpUtil,
+    ButtonList, DictUtils,
+    FieldBoolean,
+    FieldSysOrgTreeSelect,
     OrgTree,
     Page,
     ProTable,
@@ -78,7 +77,7 @@ export default class extends React.Component {
             title: '数据权限',
             dataIndex: 'dataPermType',
             render(v) {
-                return dictValueTag('dataPermType', v)
+                return DictUtils.dictValueTag('dataPermType', v)
             }
         },
 

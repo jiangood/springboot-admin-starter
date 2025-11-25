@@ -2,7 +2,7 @@ import {Badge, Dropdown} from "antd";
 import {NotificationOutlined, QuestionCircleOutlined, SettingOutlined, UserOutlined} from "@ant-design/icons";
 import React from "react";
 import {history} from "umi";
-import {HttpUtil, isMobileDevice, MsgBox, PageUtil, SysUtil} from "../../framework";
+import {DeviceUtils, HttpUtils, MsgBox, PageUtils, SysUtils} from "../../framework";
 
 
 const ID = 'header-right';
@@ -14,7 +14,7 @@ export default class HeaderRight extends React.Component {
 
     componentDidMount() {
         document.dispatchEvent(new CustomEvent('componentDidMount', {detail: ID}))
-        if (isMobileDevice()) {
+        if (DeviceUtils.isMobileDevice()) {
             this.setState({isMobileDevice: true})
         }
     }
@@ -36,11 +36,11 @@ export default class HeaderRight extends React.Component {
     }
 
     userCenter = () => {
-        PageUtil.open('/userCenter', '个人中心')
+        PageUtils.open('/userCenter', '个人中心')
     }
 
     render() {
-        const info = SysUtil.getLoginInfo()
+        const info = SysUtils.getLoginInfo()
 
         if (this.state.isMobileDevice) {
             return <div className='header-right'>
@@ -55,13 +55,13 @@ export default class HeaderRight extends React.Component {
             </div>
 
 
-            <div className='item' onClick={() => PageUtil.open('/userCenter/message', '我的消息')}>
+            <div className='item' onClick={() => PageUtils.open('/userCenter/message', '我的消息')}>
                 <Badge count={info.messageCount} size="small">
                     <NotificationOutlined/>
                 </Badge>
             </div>
 
-            <div className='item' title='操作手册' onClick={() => PageUtil.open('/userCenter/manual', '操作手册')}>
+            <div className='item' title='操作手册' onClick={() => PageUtils.open('/userCenter/manual', '操作手册')}>
                 <QuestionCircleOutlined/>
             </div>
 

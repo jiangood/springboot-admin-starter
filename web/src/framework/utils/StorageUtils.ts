@@ -1,8 +1,5 @@
 import { DateUtils } from "./DateUtils";
 
-// 如果 ENCRYPT 仅在当前文件内使用，且不需要作为公共属性，可以保持为局部常量
-const ENCRYPT = false;
-
 /**
  * 存储工具类
  * 使用 localStorage 进行数据的存取，并包含时间戳和默认值处理。

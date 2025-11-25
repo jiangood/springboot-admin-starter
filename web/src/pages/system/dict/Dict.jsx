@@ -1,6 +1,5 @@
 import React from 'react'
-import {HttpUtil, ProTable} from "../../../framework";
-
+import {ProTable} from "../../../framework";
 
 
 export default class extends React.Component {

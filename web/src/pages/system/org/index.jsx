@@ -7,7 +7,6 @@ import {
     FieldRemoteTreeSelect,
     FieldUserSelect,
     Gap,
-    HttpUtil,
     NamedIcon,
     Page
 } from "../../../framework";

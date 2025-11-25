@@ -15,7 +15,7 @@ import UserTaskForm from "../../../components/flow/design/form/UserTaskForm";
 import palette from "../../../components/flow/design/palette";
 import contextPad from "../../../components/flow/design/contextPad";
 import {CloudUploadOutlined, SaveOutlined} from "@ant-design/icons";
-import {HttpUtil, PageUtil} from "../../../framework";
+import {HttpUtils, PageUtils} from "../../../framework";
 
 export default class extends React.Component {
 
@@ -43,7 +43,7 @@ export default class extends React.Component {
     preXmlRef = React.createRef()
 
     componentDidMount() {
-        let params = PageUtil.currentParams()
+        let params = PageUtils.currentParams()
         this.state.id = params.id
         this.bpmnModeler = new BpmnModeler({
             additionalModules: [
@@ -174,7 +174,7 @@ export default class extends React.Component {
                                  onClick={this.handleDeploy}>部署</Button>
                          <Button onClick={this.showXML}>XML</Button>
                          <Button
-                             onClick={() => PageUtil.open('/flowable/test?id=' + this.state.id, "流程测试")}> 测试 </Button>
+                             onClick={() => PageUtils.open('/flowable/test?id=' + this.state.id, "流程测试")}> 测试 </Button>
 
                      </Space>}>
 

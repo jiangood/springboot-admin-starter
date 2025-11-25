@@ -2,7 +2,7 @@ import {SysUtils} from "./SysUtils";
 import {ArrUtils} from "../ArrUtils";
 
 /**
- * 登录用户信息接口，假设 SysUtil.getLoginInfo() 返回这个结构
+ * 登录用户信息接口，
  */
 interface LoginInfo {
   // ... 其他登录信息字段

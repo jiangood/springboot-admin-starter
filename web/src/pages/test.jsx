@@ -4,16 +4,19 @@ import {
     FieldBoolean,
     FieldDate,
     FieldDateRange,
-    FieldEditor, FieldPercent,
+    FieldEditor,
+    FieldPercent,
     FieldRemoteSelect,
     FieldRemoteSelectMultiple,
     FieldRemoteTree,
     FieldRemoteTreeCascader,
     FieldRemoteTreeSelect,
-    FieldRemoteTreeSelectMultiple, FieldSysOrgTree,
+    FieldRemoteTreeSelectMultiple,
+    FieldSysOrgTree,
     FieldSysOrgTreeSelect,
     FieldTable,
-    FieldTableSelect, FieldUploadFile
+    FieldTableSelect,
+    FieldUploadFile
 } from "../framework";
 
 export default class extends React.Component {

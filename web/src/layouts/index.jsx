@@ -5,7 +5,13 @@ import {ConfigProvider} from "antd";
 
 import {history, Outlet, withRouter} from "umi";
 import zhCN from 'antd/locale/zh_CN';
-import {ArrUtils, HttpUtil, MsgBoxComponent, PageLoading, PageUtil, SysUtil, theme} from "../framework";
+import {
+    ArrUtils,
+    HttpUtils,
+    MsgBoxComponent,
+    PageLoading, PageUtils,
+    SysUtils, ThemeUtils,
+} from "../framework";
 import dayjs from 'dayjs';
 import 'dayjs/locale/zh-cn';
 
@@ -28,7 +34,7 @@ class _Layouts extends React.Component {
 
     componentDidMount() {
         HttpUtils.get("/admin/public/site-info").then(rs => {
-            SysUtil.setSiteInfo(rs)
+            SysUtils.setSiteInfo(rs)
             this.setState({siteInfoLoading: false})
 
             this.loadLoginInfo()
@@ -57,20 +63,20 @@ class _Layouts extends React.Component {
         HttpUtils.get('admin/public/checkLogin')
             .then(rs => {
                 const {needUpdatePwd, dictMap, loginInfo} = rs
-                SysUtil.setDictInfo(dictMap)
-                SysUtil.setLoginInfo(loginInfo)
+                SysUtils.setDictInfo(dictMap)
+                SysUtils.setLoginInfo(loginInfo)
                 if (!needUpdatePwd) {
                     this.setState({loginInfoFinish: true});
                     return;
                 }
 
                 if (needUpdatePwd) {
-                    PageUtil.open('/userCenter/ChangePassword', '修改密码')
+                    PageUtils.open('/userCenter/ChangePassword', '修改密码')
                     return;
                 }
             })
             .catch(async () => {
-                PageUtil.redirectToLogin()
+                PageUtils.redirectToLogin()
             })
     }
 
@@ -111,24 +117,24 @@ class _Layouts extends React.Component {
             locale={zhCN}
             theme={{
                 token: {
-                    colorPrimary: theme["primary-color"],
-                    colorSuccess: theme["success-color"],
-                    colorWarning: theme["warning-color"],
-                    colorError: theme["error-color"],
+                    colorPrimary: ThemeUtils.getColor("primary-color"),
+                    colorSuccess: ThemeUtils.getColor("success-color"),
+                    colorWarning: ThemeUtils.getColor("warning-color"),
+                    colorError: ThemeUtils.getColor("error-color"),
                     borderRadius: 4,
 
                 },
                 components: {
                     Menu: {
-                        darkItemBg: theme["primary-color"],
-                        darkPopupBg: theme["primary-color"],
-                        darkItemSelectedBg: theme["primary-color-click"],
-                        darkItemHoverBg: theme["primary-color-hover"],
-                        darkSubMenuItemBg: theme["primary-color"]
+                        darkItemBg: ThemeUtils.getColor("primary-color"),
+                        darkPopupBg: ThemeUtils.getColor("primary-color"),
+                        darkItemSelectedBg: ThemeUtils.getColor("primary-color-click"),
+                        darkItemHoverBg: ThemeUtils.getColor("primary-color-hover"),
+                        darkSubMenuItemBg: ThemeUtils.getColor("primary-color")
                     },
                     Layout: {
-                        siderBg: theme["primary-color"],
-                        triggerBg: theme["primary-color-click"],
+                        siderBg: ThemeUtils.getColor("primary-color"),
+                        triggerBg: ThemeUtils.getColor("primary-color-click"),
                         headerBg: 'white',
                         triggerHeight: 32
                     },

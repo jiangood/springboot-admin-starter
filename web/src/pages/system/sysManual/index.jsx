@@ -1,7 +1,7 @@
 import {PlusOutlined} from '@ant-design/icons'
 import {Button, Form, Input, Modal, Popconfirm} from 'antd'
 import React from 'react'
-import {ButtonList, FieldUploadFile, HttpUtil, Page, ProTable, SysUtil} from "../../../framework";
+import {ButtonList, FieldUploadFile, Page, ProTable} from "../../../framework";
 
 
 export default class extends React.Component {
@@ -35,7 +35,7 @@ export default class extends React.Component {
             title: '文件',
             dataIndex: 'fileId',
             render(id){
-               const url = SysUtil.wrapServerUrl('admin/sysFile/preview/' + id);
+               const url = SysUtils.wrapServerUrl('admin/sysFile/preview/' + id);
                 return <a href={url} target='_blank'>查看文件</a>
             }
 

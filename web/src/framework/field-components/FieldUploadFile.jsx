@@ -2,9 +2,8 @@ import React from "react";
 import ImgCrop from "antd-img-crop";
 import {Modal, Upload} from "antd";
 import UploadOutlined from "@ant-design/icons/lib/icons/UploadOutlined";
-import {ObjUtil} from "../utils";
 import {ViewFile} from "../components";
-import {SysUtil} from "../system";
+import {ObjectUtils} from "../utils";
 
 
 export class FieldUploadFile extends React.Component {
@@ -21,7 +20,7 @@ export class FieldUploadFile extends React.Component {
 
     constructor(props) {
         super(props);
-        ObjUtil.copyPropertyIfPresent(props, this.state)
+        ObjectUtils.copyPropertyIfPresent(props, this.state)
         this.state.fileList = this.convertInputToComponentValue(this.state.value);
     }
 

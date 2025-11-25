@@ -3,7 +3,7 @@ import {Button, Form, Input, message, Space} from 'antd';
 import {LockOutlined, SafetyCertificateOutlined, UserOutlined, WarningOutlined} from '@ant-design/icons';
 import "./login.less"
 import {history} from 'umi';
-import {HttpUtil, MsgBox, PageUtil, SysUtil} from "../framework";
+import {MsgBox} from "../framework";
 import {JSEncrypt} from "jsencrypt";
 
 
@@ -20,7 +20,7 @@ export default class login extends React.Component {
 
     async componentDidMount() {
         console.log('渲染登录页面')
-        const redirect = PageUtil.currentParams()['redirect']
+        const redirect = PageUtils.currentParams()['redirect']
         if(redirect){
             console.log('重定向参数',redirect)
            this.redirect = decodeURIComponent(redirect)
@@ -29,7 +29,7 @@ export default class login extends React.Component {
 
         {
             // 内部系统登录
-            let token = PageUtil.currentParams().token
+            let token = PageUtils.currentParams().token
             if (token) {
                 token = window.location.search
                 this.submit({token})
@@ -42,7 +42,7 @@ export default class login extends React.Component {
             return
         }
 
-        const siteInfo = SysUtil.getSiteInfo()
+        const siteInfo = SysUtils.getSiteInfo()
         this.setState({siteInfo})
     }
 
@@ -78,7 +78,7 @@ export default class login extends React.Component {
 
         const pageStyle = {}
         if(siteInfo.loginBackground){
-            let url = SysUtil.wrapServerUrl('admin/sysFile/preview/' + siteInfo.loginBackground);
+            let url = SysUtils.wrapServerUrl('admin/sysFile/preview/' + siteInfo.loginBackground);
             pageStyle.backgroundImage = 'url("'+url+'")'
         }
 
@@ -109,7 +109,7 @@ export default class login extends React.Component {
                             <Space style={{alignItems: 'center'}}>
                                 <Input size='large' placeholder='验证码' prefix={<SafetyCertificateOutlined/>}/>
                                 <img height={36} width={100}
-                                     src={SysUtil.wrapServerUrl( "admin/auth/captchaImage?_random=" + this.state.random)} onClick={() => {
+                                     src={SysUtils.wrapServerUrl( "admin/auth/captchaImage?_random=" + this.state.random)} onClick={() => {
                                     this.setState({random: Math.random()})
                                 }}></img>
                             </Space>
