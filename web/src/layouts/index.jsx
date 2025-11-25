@@ -60,7 +60,7 @@ class _Layouts extends React.Component {
             return;
         }
 
-        HttpUtils.get('admin/public/checkLogin')
+        HttpUtils.get('/admin/public/checkLogin')
             .then(rs => {
                 const {needUpdatePwd, dictMap, loginInfo} = rs
                 SysUtils.setDictInfo(dictMap)

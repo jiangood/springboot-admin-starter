@@ -47,12 +47,7 @@ export class HttpUtils {
 
         const { url, showLoading, transformData, showMessage, ...axiosConfig } = finalConfig;
 
-        // URL处理 (处理可能存在的 '//' 开头，使其兼容相对路径)
-        if (url && url.startsWith("//")) {
-            axiosConfig.url = url.substring(1);
-        } else {
-            axiosConfig.url = url;
-        }
+        axiosConfig.url = url.startsWith('admin') ? '/' + url: url;
 
         let hideLoading: (() => void) | null = null;
         if (showLoading) {

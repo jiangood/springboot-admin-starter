@@ -1,5 +1,5 @@
 import React from 'react'
-import {Page, ProTable} from "../../framework";
+import {HttpUtils, Page, ProTable} from "../../framework";
 
 
 export default class extends React.Component {
@@ -28,7 +28,7 @@ export default class extends React.Component {
             title: '文件',
             dataIndex: 'fileId',
             render(id){
-               const url = SysUtils.wrapServerUrl('admin/sysFile/preview/' + id);
+               const url = ('admin/sysFile/preview/' + id);
                 return <a href={url} target='_blank'>查看文件</a>
             }
 
@@ -47,13 +47,9 @@ export default class extends React.Component {
         return <Page>
             <ProTable
                 actionRef={this.tableRef}
-
-                request={(params) => HttpUtils.pageData('admin/sysManual/pageForUser', params)}
+                request={(params) => HttpUtils.get('admin/sysManual/pageForUser', params)}
                 columns={this.columns}
-
             />
-
-
         </Page>
 
 

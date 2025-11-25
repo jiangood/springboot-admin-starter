@@ -61,7 +61,7 @@ export default class login extends React.Component {
         values.password = crypt.encrypt(values.password)
 
 
-        HttpUtils.postForm('admin/auth/login', values).then(rs => {
+        HttpUtils.postForm('/admin/auth/login', values).then(rs => {
             console.log('登录结果', rs)
             history.push(this.redirect)
         }).catch(e=>{
@@ -109,7 +109,7 @@ export default class login extends React.Component {
                             <Space style={{alignItems: 'center'}}>
                                 <Input size='large' placeholder='验证码' prefix={<SafetyCertificateOutlined/>}/>
                                 <img height={36} width={100}
-                                     src={SysUtils.wrapServerUrl( "admin/auth/captchaImage?_random=" + this.state.random)} onClick={() => {
+                                     src={"/admin/auth/captchaImage?_random=" + this.state.random} onClick={() => {
                                     this.setState({random: Math.random()})
                                 }}></img>
                             </Space>

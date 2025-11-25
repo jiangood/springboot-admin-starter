@@ -15,7 +15,7 @@ import {
 } from 'antd'
 import React from 'react'
 import {PlusOutlined} from "@ant-design/icons";
-import {ButtonList, Page, ProTable, StringUtils, ValueType} from "../../framework";
+import {ButtonList, Page, ProTable, StringUtils, ValueType} from "../../../framework";
 
 
 const cronOptions = [

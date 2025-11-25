@@ -83,7 +83,7 @@ data:
 
         - id: job
           name: 作业调度
-          path: /job
+          path: /system/job
           icon: OrderedListOutlined
           perms:
             - perm: job:view

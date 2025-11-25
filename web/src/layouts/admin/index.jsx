@@ -45,7 +45,7 @@ export default class extends React.Component {
 
 
     initMenu = () => {
-        HttpUtils.get('admin/menuInfo').then(info => {
+        HttpUtils.get('/admin/menuInfo').then(info => {
             const {menuTree, pathMenuMap, menuMap} = info
             this.setState({menuMap})
 
