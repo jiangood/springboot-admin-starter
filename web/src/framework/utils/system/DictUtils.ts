@@ -1,4 +1,6 @@
 // 假设的类型定义，你需要确保与你的实际数据结构匹配
+import {SysUtils} from "./SysUtils";
+
 export interface DictItem {
     code: string;
     text: string;
@@ -17,8 +19,7 @@ export interface DictMap {
 // 实际使用时需要确保路径和模块存在
 import { Tag } from 'antd';
 import React from 'react';
-import { SysUtil } from "./sys"; // 假设 SysUtil 模块
-import { StrUtil } from "../utils"; // 假设 StrUtil 模块
+import {StringUtils} from "../StringUtils";
 
 // 字典选项的格式
 export interface DictOption {
@@ -39,7 +40,7 @@ export class DictUtils {
      */
     public static dictList(code: string): DictItem[] {
         // 假设 SysUtil.getDictInfo() 返回 DictMap
-        const map: DictMap | undefined = SysUtil.getDictInfo();
+        const map: DictMap | undefined = SysUtils.getDictInfo();
         if (map === undefined) {
             return [];
         }
@@ -47,7 +48,7 @@ export class DictUtils {
         // 尝试使用原始大写Code
         const code1: string = code.toUpperCase();
         // 尝试使用下划线大写Code (例如 'userStatus' -> 'USER_STATUS')
-        const code2: string = StrUtil.toUnderlineCase(code).toUpperCase();
+        const code2: string = StringUtils.toUnderlineCase(code).toUpperCase();
 
         // 优先匹配 code1，然后 code2
         return map[code1] || map[code2] || [];

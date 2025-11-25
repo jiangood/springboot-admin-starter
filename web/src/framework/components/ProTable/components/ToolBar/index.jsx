@@ -5,8 +5,7 @@ import {HistoryOutlined, ReloadOutlined} from '@ant-design/icons';
 import {Button, Input, message, Modal, Table} from 'antd';
 import React from 'react';
 import './index.less';
-import {PageUtil} from "../../../../system";
-import {DateUtil, StorageUtil} from "../../../../utils";
+import {DateUtil, PageUtils, StorageUtil} from "../../../../utils";
 
 export default class Toolbar extends React.Component {
 
@@ -94,7 +93,7 @@ export default class Toolbar extends React.Component {
     }
 
     getParamKey() {
-        return 'query-params-' + PageUtil.currentPathname();
+        return 'query-params-' + PageUtils.currentPathname();
     }
 
     onSaveHistory = () => {

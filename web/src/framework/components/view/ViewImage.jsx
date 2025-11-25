@@ -1,6 +1,5 @@
 import React from 'react';
 import {Modal} from 'antd';
-import {SysUtil} from "../../system";
 
 
 export class ViewImage extends React.Component {
@@ -26,11 +25,11 @@ export class ViewImage extends React.Component {
       }
 
       if (isId) {
-        urlList.push(SysUtil.getServerUrl() + 'sysFile/preview/' + v);
+        urlList.push( 'admin/sysFile/preview/' + v);
         continue;
       }
 
-      urlList.push(SysUtil.getServerUrl() + v);
+      urlList.push( v);
     }
 
     const imgs = urlList.map((url) => (

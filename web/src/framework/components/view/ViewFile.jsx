@@ -1,6 +1,5 @@
 import React from 'react';
 import {Carousel, Empty} from 'antd';
-import {SysUtil} from "../../system";
 
 
 export class ViewFile extends React.Component {
@@ -15,7 +14,7 @@ export class ViewFile extends React.Component {
 
         let arr = fileId.split(',');
 
-        let urlList = arr.map(id => SysUtil.wrapServerUrl('admin/sysFile/preview/' + id));
+        let urlList = arr.map(id => 'admin/sysFile/preview/' + id);
         let height = this.props.height;
 
         if(urlList.length === 1){

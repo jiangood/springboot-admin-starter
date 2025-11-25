@@ -1,8 +1,8 @@
 import axios, { AxiosRequestConfig, AxiosResponse, Method } from "axios";
 import { message as messageUtil, Modal } from "antd";
 import qs from 'qs';
-import { MsgBox } from "../components";
-import {PageUtils} from "./PageUtils"; // 假设路径正确
+import {PageUtils} from "./PageUtils";
+import {MsgBox} from "../../components"; // 假设路径正确
 
 /**
  * @description 请求配置接口，继承AxiosConfig并添加自定义选项

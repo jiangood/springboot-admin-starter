@@ -1,7 +1,7 @@
 import React from 'react';
 import {Select, Spin, message} from 'antd';
 import {debounce} from 'lodash';
-import {HttpUtil} from "../system";
+import {HttpUtils} from "../utils";
 
 export class FieldRemoteSelectMultiple extends React.Component {
     constructor(props) {
@@ -35,7 +35,7 @@ export class FieldRemoteSelectMultiple extends React.Component {
         this.setState({loading: true});
 
         try {
-            const data = await HttpUtil.get(url, {searchText, selected: value});
+            const data = await HttpUtils.get(url, {searchText, selected: value});
 
             if (fetchId === this.fetchIdRef) {
                 this.setState({options: data || []});

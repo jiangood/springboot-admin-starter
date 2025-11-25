@@ -1,13 +1,10 @@
 import React from "react";
 import {Button} from "antd";
-import {PageUtil} from "../system";
+import {PageUtils} from "../utils";
 
-export class LinkButton extends React.Component {
-
-    render() {
-        const {path,label, children, size='small', ...rest} = this.props;
-        return <Button size={size} {...rest} onClick={()=>{
-            PageUtil.open(path,label)
-        }}>{children}</Button>
-    }
+export function LinkButton(props) {
+    const {path, label, children, size = 'small', ...rest} = props;
+    return <Button size={size} {...rest} onClick={() => {
+        PageUtils.open(path, label)
+    }}>{children}</Button>
 }

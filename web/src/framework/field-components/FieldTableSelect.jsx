@@ -1,7 +1,7 @@
 import React from "react";
 import {Button, Select} from "antd";
-import {HttpUtil} from "../system";
 import {ProTable} from "../components";
+import {HttpUtils} from "../utils";
 
 /**
  * 下拉表格
@@ -52,7 +52,7 @@ export class FieldTableSelect extends React.Component {
             showToolbarSearch
             request={(params) => {
                 params.selected = this.props.value
-                return HttpUtil.get(this.props.url, params);
+                return HttpUtils.get(this.props.url, params);
             }}>
         </ProTable>
     };

@@ -1,7 +1,6 @@
 import React from 'react';
 import {Select, Spin, message} from 'antd';
 import {debounce} from 'lodash';
-import {HttpUtil} from "../system";
 
 export class FieldRemoteSelect extends React.Component {
     constructor(props) {

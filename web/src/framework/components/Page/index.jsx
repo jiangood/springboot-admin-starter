@@ -1,6 +1,6 @@
 import React from "react";
 import './index.less'
-import {theme} from "../../system";
+import {ThemeUtils} from "../../utils";
 
 /**
  * 上下间隔
@@ -18,7 +18,7 @@ export class Page extends React.Component {
             style.padding = 16
         }
         if(this.props.backgroundGray){
-            style.backgroundColor = theme["background-color"]
+            style.backgroundColor = ThemeUtils.getColor("background-color")
         }
 
 

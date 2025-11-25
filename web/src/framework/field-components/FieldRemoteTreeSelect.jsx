@@ -1,8 +1,7 @@
 import {Spin, TreeSelect} from 'antd';
 
 import React from 'react';
-import {StrUtil} from "../utils";
-import {HttpUtil} from "../system";
+import {HttpUtils, StringUtils} from "../utils";
 
 export class FieldRemoteTreeSelect extends React.Component {
 
@@ -26,7 +25,7 @@ export class FieldRemoteTreeSelect extends React.Component {
         const {url} = this.props;
         this.setState({loading: true});
         try {
-            const rs = await HttpUtil.get(url)
+            const rs = await HttpUtils.get(url)
             this.setState({data: rs});
         } finally {
             this.setState({loading: false});
@@ -58,7 +57,7 @@ export class FieldRemoteTreeSelect extends React.Component {
 
                 filterTreeNode={(inputValue, treeNode) => {
                     const {title} = treeNode
-                    return StrUtil.contains(title, inputValue)
+                    return StringUtils.contains(title, inputValue)
                 }}
                 treeLine={{showLeafIcon: true}}
                 treeDefaultExpandAll={this.props.treeDefaultExpandAll}
