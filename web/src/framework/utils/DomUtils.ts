@@ -5,7 +5,7 @@
 /**
  * 封装了获取元素位置和尺寸的工具方法。
  */
-export class DOMUtils {
+export class DomUtils {
     /**
      * 获取元素相对于视口的偏移量（top 和 left）。
      *

@@ -4,7 +4,7 @@ export * from "./UrlUtils"
 export * from "./StringUtils"
 export * from "./EventBusUtils";
 export * from "./ColorsUtils"
-export * from "./DOMUtils"
+export * from "./DomUtils"
 export * from "./UuidUtils";
 export * from "./StringUtils"
 export * from "./TreeUtils";
