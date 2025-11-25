@@ -5,8 +5,7 @@ import {Badge, Layout, Menu, Watermark} from 'antd';
 
 import {history, Link} from 'umi';
 import "./index.less"
-import {MenuFoldOutlined, MenuUnfoldOutlined} from '@ant-design/icons';
-import {Gap, HttpUtil, isMobileDevice, NamedIcon, PageUtil, SysUtil, theme, TreeUtil} from "../../framework";
+import {Gap, HttpUtils, NamedIcon, PageUtil, SysUtil, theme, TreeUtil} from "../../framework";
 
 import HeaderRight from "./HeaderRight";
 import TabPageRender from "./TabPageRender";
@@ -46,7 +45,7 @@ export default class extends React.Component {
 
 
     initMenu = () => {
-        HttpUtil.get('admin/menuInfo').then(info => {
+        HttpUtils.get('admin/menuInfo').then(info => {
             const {menuTree, pathMenuMap, menuMap} = info
             this.setState({menuMap})
 
@@ -80,7 +79,7 @@ export default class extends React.Component {
             if (!messageCountUrl) {
                 continue
             }
-            HttpUtil.get(messageCountUrl).then(rs => {
+            HttpUtils.get(messageCountUrl).then(rs => {
                 const {menuTree} = this.state
                 const menu = TreeUtil.findByKey(id, menuTree, 'key')
                 if (menu) {

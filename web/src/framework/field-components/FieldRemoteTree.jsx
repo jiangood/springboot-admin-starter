@@ -1,6 +1,6 @@
 import React from "react";
-import {HttpUtil} from "../system";
 import {Spin, Tree} from "antd";
+import {HttpUtils} from "../utils";
 
 export class FieldRemoteTree extends React.Component {
 
@@ -18,7 +18,7 @@ export class FieldRemoteTree extends React.Component {
         this.setState({treeLoading: true})
         let url = this.props.url;
         try {
-            const treeData = await HttpUtil.get(url)
+            const treeData = await HttpUtils.get(url)
             this.setState({treeData})
         } catch (e) {
             console.log(e)

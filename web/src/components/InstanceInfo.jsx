@@ -2,7 +2,7 @@ import React from "react";
 import {Card, Empty, Modal, Skeleton, Table, Tabs, Typography} from "antd";
 
 import {FormOutlined, ShareAltOutlined} from "@ant-design/icons";
-import {formRegistry, Gap, HttpUtil} from "../framework";
+import {FormRegistryUtils, Gap, HttpUtils} from "../framework";
 
 export default class InstanceInfo extends React.Component {
 
@@ -27,7 +27,7 @@ export default class InstanceInfo extends React.Component {
 
     componentDidMount() {
         const {id, businessKey} = this.props;
-        HttpUtil.get("admin/flowable/my/getInstanceInfo", {id, businessKey}).then(rs => {
+        HttpUtils.get("admin/flowable/my/getInstanceInfo", {id, businessKey}).then(rs => {
             this.setState(rs)
             this.setState({data: rs})
         }).catch(e => {
@@ -118,7 +118,7 @@ export default class InstanceInfo extends React.Component {
         const {processDefinitionKey, businessKey} = data
 
         let formKey = this.props.formKey || processDefinitionKey + 'Form';
-        let ExForm = formRegistry.get(formKey);
+        let ExForm = FormRegistryUtils.get(formKey);
         if (!ExForm) {
             return <div>
                 <p>

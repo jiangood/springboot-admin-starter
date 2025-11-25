@@ -1,10 +1,10 @@
 import React from "react";
-import {dictOptions} from "../system";
 import {Select} from "antd";
+import {DictUtils} from "../utils";
 
 export function FieldDictSelect(props) {
     const {value, onChange, typeCode, ...rest} = props
-    const options = dictOptions(typeCode)
+    const options = DictUtils.dictOptions(typeCode)
 
     return <Select value={value}
                    onChange={onChange}

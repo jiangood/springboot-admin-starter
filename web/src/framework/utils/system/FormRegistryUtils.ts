@@ -10,7 +10,7 @@ type FormComponent = React.ComponentType<any>;
  * 一个静态工具类，用于注册、获取和管理表单组件。
  * 调用时无需实例化，直接使用 FormRegistryUtils.methodName()。
  */
-class FormRegistryUtils {
+export class FormRegistryUtils {
   // 静态私有属性：存储表单组件的 Map
   private static forms: Map<string, FormComponent> = new Map<string, FormComponent>();
 
@@ -75,14 +75,3 @@ class FormRegistryUtils {
   }
 }
 
-// 导出类本身，以便在其他文件中使用静态调用
-export default FormRegistryUtils;
-
-// --- 调用示例 ---
-/*
-// 在另一个文件中:
-import FormRegistryUtils from './path/to/FormRegistryUtils';
-
-FormRegistryUtils.register('my-form', MyReactComponent);
-const Component = FormRegistryUtils.get('my-form');
-*/

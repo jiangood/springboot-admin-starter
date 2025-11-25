@@ -1,6 +1,6 @@
 import React from "react";
 import {Button, Modal, Spin} from "antd";
-import {HttpUtil} from "../system";
+import {HttpUtils} from "../utils";
 
 
 export class DownloadFileButton extends React.Component {
@@ -12,7 +12,7 @@ export class DownloadFileButton extends React.Component {
     onClick(){
         const {url, params, children, ...rest} = this.props;
         this.setState({open:true})
-        HttpUtil.downloadFile(url,params).then(rs=>{
+        HttpUtils.downloadFile(url,params).then(rs=>{
 
         }).finally(()=>{
             this.setState({open:false})
