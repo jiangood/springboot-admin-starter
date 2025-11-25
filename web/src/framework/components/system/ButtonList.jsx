@@ -5,6 +5,7 @@ import {PermUtils} from "../../utils";
 
 
 /**
+ * 带权限的按钮列表
  * @param maxNum: 显示子节点的个数， 超过的为收缩起来
  *
  */
