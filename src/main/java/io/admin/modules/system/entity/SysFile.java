@@ -60,7 +60,7 @@ public class SysFile extends BaseEntity {
     private Long size;
 
 
-    @Column(length = 20)
+    @Column(length = 50)
     private String mimeType;
 
     @Enumerated(EnumType.STRING)
