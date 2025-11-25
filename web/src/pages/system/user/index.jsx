@@ -4,7 +4,7 @@ import React from 'react';
 import {
     ButtonList, DictUtils,
     FieldBoolean,
-    FieldSysOrgTreeSelect,
+    FieldSysOrgTreeSelect, HttpUtils,
     OrgTree,
     Page,
     ProTable,

@@ -9,6 +9,7 @@ import {PermUtils} from "../../utils";
  *
  */
 export class ButtonList extends React.Component {
+
   static defaultProps = {
     maxNum: 2
   }
@@ -16,8 +17,7 @@ export class ButtonList extends React.Component {
   render() {
     let {children, maxNum} = this.props;
 
-
-// 单节点
+    // 单节点
     if (children.length === undefined) {
       const node = children;
 
@@ -40,8 +40,6 @@ export class ButtonList extends React.Component {
         if (child === null || child === undefined) {
           continue;
         }
-        // @ts-ignore
-
         if (child ) {
           if(  child.props == null || child.props.perm == null || PermUtils.hasPermission(child.props.perm)){
             menus.push(child);
@@ -61,31 +59,24 @@ export class ButtonList extends React.Component {
       }
     }
 
-    return (
-      <Space>
-        {showList}
-        {dropdownList.length > 0 && (
-          <Dropdown
-            overlay={
-              <Menu>
-                {dropdownList.map((d, i) => {
-                  // @ts-ignore
-                  let disabled = d.props.disabled;
-                  return (
-                    <Menu.Item key={i} disabled={disabled}>
-                      {d}
-                    </Menu.Item>
-                  );
-                })}
-              </Menu>
-            }
-          >
-            <a className="ant-dropdown-link" onClick={(e) => e.preventDefault()}>
-              <DownSquareTwoTone style={{fontSize: 14}}/>
-            </a>
-          </Dropdown>
-        )}
-      </Space>
-    );
+    return <Space>
+      {showList}
+      {dropdownList.length > 0 && <Dropdown
+          overlay={
+            <Menu>
+              {dropdownList.map((d, i) => {
+                let disabled = d.props.disabled;
+                return <Menu.Item key={i} disabled={disabled}>
+                  {d}
+                </Menu.Item>;
+              })}
+            </Menu>
+          }
+        >
+          <a className="ant-dropdown-link" onClick={(e) => e.preventDefault()}>
+            <DownSquareTwoTone style={{fontSize: 14}}/>
+          </a>
+        </Dropdown>}
+    </Space>;
   }
 }
