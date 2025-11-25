@@ -57,7 +57,7 @@ export class UuidUtils {
      * 生成一个符合 v4 标准的 UUID。
      * @returns 一个 UUID 字符串。
      */
-    public static uid(): string {
+    public static uuidV4(): string {
         // 为加速而缓冲一些随机字节
         if (UuidUtils.buf === undefined || (UuidUtils.bufIdx + 16 > UuidUtils.BUFFER_SIZE)) {
             UuidUtils.bufIdx = 0;
