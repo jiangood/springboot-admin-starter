@@ -1,6 +1,6 @@
 
 import {is} from 'bpmn-js/lib/util/ModelUtil';
-import {ServiceTaskProps} from "./parts/ServiceTaskProps";
+import {ServiceTaskProps} from "./properties/ServiceTaskProps";
 
 const LOW_PRIORITY = 10001;
 

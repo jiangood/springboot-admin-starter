@@ -8,7 +8,6 @@ import BpmnModeler from 'bpmn-js/lib/Modeler'
 
 import './index.css'
 import customTranslate from "../../../components/flow/customTranslate/customTranslate";
-import ServiceTaskForm from "../../../components/flow/design/form/ServiceTaskForm";
 import ConditionForm from "../../../components/flow/design/form/ConditionForm";
 import palette from "../../../components/flow/design/palette";
 import contextPad from "../../../components/flow/design/contextPad";
@@ -47,7 +46,8 @@ export default class extends React.Component {
         this.state.id = params.id
         this.bpmnModeler = new BpmnModeler({
             propertiesPanel: {
-                parent: '#js-properties-panel'
+                parent: '#js-properties-panel',
+
             },
             additionalModules: [
                 // 汉化翻译
@@ -178,7 +178,7 @@ export default class extends React.Component {
                 </Splitter.Panel>
 
                 <Splitter.Panel defaultSize={300}>
-                    <div id={'js-properties-panel'}></div>
+                    <div id={'js-properties-panel'} style={{height:500}}></div>
                     {this.renderForm()}
                     {this.renderMultiInstanceLoopCharacteristics()}
                 </Splitter.Panel>
