@@ -151,8 +151,8 @@ public class ModelDesignController {
         return AjaxResult.ok().data(options);
     }
     @GetMapping("formOptions")
-    public AjaxResult formOptions(String id) {
-        SysFlowableModel model = service.findOne(id);
+    public AjaxResult formOptions(String code) {
+        SysFlowableModel model = service.findByCode(code);
         List<FormKey> formKeyList = model.getFormKeyList();
 
 

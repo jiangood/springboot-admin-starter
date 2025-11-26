@@ -37,14 +37,7 @@ export default class extends React.Component {
         this.state.initData = data;
         this.state.assignmentType = data.assignmentType
 
-        if(this.props.model.formKeyList){
-            this.state.formKeyOptions = props.model.formKeyList.map(k=>{
-                return {
-                    label:k.label,
-                    value:k.value
-                }
-            })
-        }
+
 
     }
 
@@ -199,11 +192,8 @@ export default class extends React.Component {
 
 
 
-                <Divider />
 
-                <Form.Item label='指定表单' name='flowable:formKey'>
-                    <Select options={this.state.formKeyOptions} placeholder='请选择表单' allowClear/>
-                </Form.Item>
+
 
             </Form>
         </>;

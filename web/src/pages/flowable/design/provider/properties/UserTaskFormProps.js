@@ -6,7 +6,7 @@ export  function UserTaskFormProps () {
 
     return [
         {
-            id: 'delegateExpression',
+            id: 'userTaskForm',
             component: Component,
             isEdited: isTextFieldEntryEdited,
         }
@@ -19,36 +19,36 @@ function Component(props) {
 
     const modeling = useService('modeling');
     const debounce = useService('debounceInput');
-
-    debugger
+    const canvas = useService('canvas');
+    const rootElement = canvas.getRootElement();
+    const processId = rootElement.id;
     const getValue = (element) => {
-        return element.businessObject.delegateExpression || '';
+        return element.businessObject.formKey || '';
     };
 
     const setValue = value => {
         return modeling.updateProperties(element, {
-            delegateExpression: value
+            formKey: value
         });
     };
 
     const [ options, setOptions ] = useState([]);
 
     useEffect(async () => {
-        const rs = await HttpUtils.get('admin/flowable/model/formOptions')
+        const rs = await HttpUtils.get('admin/flowable/model/formOptions',{code:processId})
         setOptions(rs)
     }, [ setOptions ]);
 
     return SelectEntry({
         element,
         id: id,
-        label: '代理表达式',
-        description: '实现JavaDelegate接口的Bean名称， 如 ${demoDelegate}',
+        label: '选择表单',
         getValue,
         setValue,
         debounce,
 
         getOptions: () => {
-            return options
+            return [{ value: '', label: '<留空>'},...options]
         }
     })
 

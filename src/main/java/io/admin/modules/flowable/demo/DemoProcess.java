@@ -9,7 +9,10 @@ import org.springframework.stereotype.Component;
 import java.util.Map;
 
 @Component
-@ProcessDefinitionDescription(key = "demo",name = "demo-派车流程", formKeys = @FormKeyDescription(value = "driverForm",label = "司机表单"))
+@ProcessDefinitionDescription(key = "demo",name = "demo-派车流程",
+        formKeys = {@FormKeyDescription(value = "driverForm",label = "司机表单"),
+                    @FormKeyDescription(value = "finishForm",label = "结束表单")
+})
 public class DemoProcess implements ProcessDefinition {
 
     @Override
