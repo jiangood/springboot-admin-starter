@@ -2,11 +2,11 @@ import {isTextFieldEntryEdited, SelectEntry} from '@bpmn-io/properties-panel';
 import { useService } from 'bpmn-js-properties-panel';
 import { useEffect, useState } from '@bpmn-io/properties-panel/preact/hooks';
 import {HttpUtils} from "../../../../../framework";
-export  function UserTaskFormProps () {
+export  function FormProps () {
 
     return [
         {
-            id: 'userTaskForm',
+            id: 'form',
             component: Component,
             isEdited: isTextFieldEntryEdited,
         }

@@ -1,7 +1,7 @@
 
 import {is} from 'bpmn-js/lib/util/ModelUtil';
-import {ServiceTaskProps} from "./properties/ServiceTaskProps";
-import {UserTaskFormProps} from "./properties/UserTaskFormProps";
+import {DelegateExpressionProps} from "./properties/DelegateExpressionProps";
+import {FormProps} from "./properties/FormProps";
 
 const LOW_PRIORITY = 10001;
 
@@ -12,17 +12,22 @@ export default function MagicPropertiesProvider(propertiesPanel) {
         return function (groups) {
             if(is(element, 'bpmn:ServiceTask')){
                 groups.push({
-                    id: 'ServiceTaskLike',
-                    label: "任务处理器",
-                    entries: ServiceTaskProps(element),
+                    id: 'processBean',
+                    label: "处理器",
+                    entries: DelegateExpressionProps(element),
                 })
             }
 
             if(is(element,'bpmn:UserTask')){
                 groups.push({
-                    id: 'UserTaskLike',
+                    id: 'user',
+                    label: "用户设置",
+                    entries: DelegateExpressionProps(element),
+                })
+                groups.push({
+                    id: 'form',
                     label: "表单",
-                    entries: UserTaskFormProps(element),
+                    entries: FormProps(element),
                 })
             }
 
