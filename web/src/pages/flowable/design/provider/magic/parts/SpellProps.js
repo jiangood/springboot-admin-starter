@@ -11,6 +11,12 @@ export default function(element) {
       element,
       component: Spell,
       isEdited: isTextFieldEntryEdited
+    },
+    {
+      id: 'spell2',
+      element,
+      component: Spell,
+      isEdited: isTextFieldEntryEdited
     }
   ];
 }
@@ -19,6 +25,7 @@ function Spell(props) {
   const { element, id } = props;
 
   const modeling = useService('modeling');
+  const debounce = useService('debounceInput');
 
   const getValue = () => {
     return element.businessObject.spell || '';
@@ -37,5 +44,6 @@ function Spell(props) {
     label='开始时间'
     getValue=${ getValue }
     setValue=${ setValue }
+    debounce=${ debounce }
   />`;
 }
