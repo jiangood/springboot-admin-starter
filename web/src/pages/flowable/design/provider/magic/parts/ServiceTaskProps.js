@@ -1,5 +1,3 @@
-import { html } from 'htm/preact';
-
 import { TextFieldEntry, isTextFieldEntryEdited } from '@bpmn-io/properties-panel';
 import { useService } from 'bpmn-js-properties-panel';
 
@@ -31,15 +29,14 @@ function ServiceTaskComponent(props) {
     });
   };
 
+  return TextFieldEntry({
+    element,
+    id: id,
+    label: 'Java服务类表达式',
+    description: '实现了JavaDelegate的Bean名称表达式， 如 ${demoDelegate}',
+    getValue,
+    setValue,
+    debounce
+  })
 
-
-  return html`<${TextFieldEntry}
-    id=${ id }
-    element=${ element }
-    label='Java服务类表达式'
-    description='实现了JavaDelegate的Bean名称表达式， 如 \${demoDelegate}'
-    getValue=${ getValue }
-    setValue=${ setValue }
-    debounce=${ debounce }
-  />`;
 }
