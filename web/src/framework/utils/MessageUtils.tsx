@@ -62,9 +62,9 @@ export class MessageUtils {
      */
     static prompt(message: React.ReactNode, initialValue?: string, placeholder?: string, config?: Omit<ModalFuncProps, 'content' | 'title' | 'icon' | 'onOk'>) {
         return new Promise((resolve) => {
-
             const ref = React.createRef()
             Modal.confirm({
+                icon: null,
                 title: '提示',
                 content: <div>
                     <div style={{marginBottom: 4}}>{message}</div>
@@ -157,24 +157,14 @@ export class MessageUtils {
     /**
      * 弹出成功通知
      */
-    static notifySuccess(
-        message: React.ReactNode,
-        description: React.ReactNode,
-        placement?: NotificationPlacement,
-        config?: Omit<ArgsProps, 'message' | 'description' | 'placement'>,
-    ) {
+    static notifySuccess(message: React.ReactNode, description: React.ReactNode, placement?: NotificationPlacement, config?: Omit<ArgsProps, 'message' | 'description' | 'placement'>) {
         MessageUtils.notify(message, description, 'success', placement, config);
     }
 
     /**
      * 弹出失败通知
      */
-    static notifyError(
-        message: React.ReactNode,
-        description: React.ReactNode,
-        placement?: NotificationPlacement,
-        config?: Omit<ArgsProps, 'message' | 'description' | 'placement'>,
-    ) {
+    static notifyError(message: React.ReactNode, description: React.ReactNode, placement?: NotificationPlacement, config?: Omit<ArgsProps, 'message' | 'description' | 'placement'>) {
         MessageUtils.notify(message, description, 'error', placement, config);
     }
 

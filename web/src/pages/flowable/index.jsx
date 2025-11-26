@@ -1,7 +1,7 @@
-import {Alert, Button, Card, Divider, Modal, Popconfirm, Space, Typography} from 'antd';
+import {Button, Popconfirm, Space, Typography} from 'antd';
 import React from 'react';
-import {PlusOutlined, QuestionCircleOutlined, QuestionCircleTwoTone, QuestionOutlined} from "@ant-design/icons";
-import {HttpUtils, MsgBox, MessageUtils, PageUtils, ProTable, Gap} from "../../framework";
+import {QuestionCircleOutlined} from "@ant-design/icons";
+import {Gap, HttpUtils, MessageUtils, PageUtils, ProTable} from "../../framework";
 
 export default class extends React.Component {
 
@@ -60,13 +60,11 @@ public class DemoProcess implements ProcessDefinition {
 }
 `
         demo = <div style={{overflowX: "auto"}}>
+            <Gap/><Gap/>
             <Typography.Text>不支持页面创建， 请参考Java代码</Typography.Text>
             <pre>{demo}</pre>
         </div>
-     // MessageUtils.alert(demo,  {width: 800})
-       MessageUtils.prompt('请输入', '135','xxx').then(value=>{
-            alert('您输入的是' + value)
-        })
+        MessageUtils.alert(demo, {width: 800})
 
 
     }
