@@ -9,14 +9,14 @@ export default function(element) {
     {
       id: 'spell',
       element,
-      component: ServiceTaskProps,
-      isEdited: isTextFieldEntryEdited
+      component: ServiceTaskComponent,
+      isEdited: isTextFieldEntryEdited,
     }
 
   ];
 }
 
-function ServiceTaskProps(props) {
+function ServiceTaskComponent(props) {
   const { element, id } = props;
 
   const modeling = useService('modeling');
@@ -35,8 +35,8 @@ function ServiceTaskProps(props) {
   return html`<${TextFieldEntry}
     id=${ id }
     element=${ element }
-    description='触发时间 如2019-10-01T12:00:00Z'
-    label='开始时间'
+    description='支持表达式'
+    label='监听类'
     getValue=${ getValue }
     setValue=${ setValue }
     debounce=${ debounce }
