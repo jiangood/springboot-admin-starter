@@ -64,9 +64,8 @@ function createMagicGroup(element, translate) {
   // create a group called "Magic properties".
   const magicGroup = {
     id: 'magic',
-    label: translate('Magic properties'),
+    label: "时间设置",
     entries: spellProps(element),
-    tooltip: translate('Make sure you know what you are doing!')
   };
 
   return magicGroup;

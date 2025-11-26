@@ -8,11 +8,14 @@
   },
   "peerDependencies": {
     "@ant-design/icons": "^5.4.0",
+    "@bpmn-io/properties-panel": "^3.34.0",
     "@tinymce/tinymce-react": "^6.0.0",
     "@umijs/types": "^3.5.43",
     "antd": "^6.0.0",
     "antd-img-crop": "^4.23.0",
     "axios": "^1.13.2",
+    "bpmn-js": "^18.7.0",
+    "bpmn-js-properties-panel": "^5.43.0",
     "dayjs": "^1.11.13",
     "jsencrypt": "^3.5.4",
     "lodash": "^4.17.21",
@@ -20,11 +23,7 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-lazylog": "^4.5.3",
-    "umi": "^4.0.0",
-    "bpmn-js": "^18.7.0",
-    "dagre-d3": "^0.6.0",
-    "@bpmn-io/properties-panel": "^3.34.0",
-    "bpmn-js-properties-panel": "^5.43.0"
+    "umi": "^4.0.0"
   },
   "name": "@jiangood/springboot-admin-starter",
   "description": "springboot-admin-starter",
@@ -37,6 +36,8 @@
     "dev": "umi dev",
     "build": "tsc --outDir config/dist --skipLibCheck --noEmitOnError false config/index.ts"
   },
-  "version": "0.0.1-beta.28"
-
+  "version": "0.0.1-beta.28",
+  "dependencies": {
+    "htm": "^3.1.1"
+  }
 }

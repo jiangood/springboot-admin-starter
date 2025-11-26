@@ -1,7 +1,7 @@
-import { is } from 'bpmn-js/lib/util/ModelUtil';
-import { TextFieldEntry, isTextFieldEntryEdited } from '@bpmn-io/properties-panel';
+import {is} from 'bpmn-js/lib/util/ModelUtil';
+import {TextFieldEntry} from '@bpmn-io/properties-panel';
 
-export default function(element, bpmnFactory, translate) {
+export default function (element, bpmnFactory, translate) {
     const assigneeEntry = {
         id: 'flowable-assignee',
         element,
@@ -16,13 +16,14 @@ export default function(element, bpmnFactory, translate) {
         },
         // 4. 写入属性值
         setValue: (element, value) => {
-            return { 'flowable:assignee': value }; // 👈 写入 Moddle 属性
+            return {'flowable:assignee': value}; // 👈 写入 Moddle 属性
         },
-        is}
+        is
+    }
 
     return {
         id: 'assignment',
         label: translate('Assignment'),
-        entries: [ assigneeEntry ]
+        entries: [assigneeEntry]
     };
 }

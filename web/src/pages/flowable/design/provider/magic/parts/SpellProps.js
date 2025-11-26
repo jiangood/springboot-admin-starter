@@ -19,8 +19,6 @@ function Spell(props) {
   const { element, id } = props;
 
   const modeling = useService('modeling');
-  const translate = useService('translate');
-  const debounce = useService('debounceInput');
 
   const getValue = () => {
     return element.businessObject.spell || '';
@@ -35,11 +33,9 @@ function Spell(props) {
   return html`<${TextFieldEntry}
     id=${ id }
     element=${ element }
-    description=${ translate('Apply a black magic spell') }
-    label=${ translate('Spell') }
+    description='触发时间 如2019-10-01T12:00:00Z'
+    label='开始时间'
     getValue=${ getValue }
     setValue=${ setValue }
-    debounce=${ debounce }
-    tooltip=${ translate('Check available spells in the spellbook.') }
   />`;
 }
