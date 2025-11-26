@@ -35,7 +35,7 @@ function ServiceTaskComponent(props) {
   return html`<${TextFieldEntry}
     id=${ id }
     element=${ element }
-    label='服务类'
+    label='Java服务类表达式'
     description='实现了JavaDelegate的Bean名称表达式， 如 \${demoDelegate}'
     getValue=${ getValue }
     setValue=${ setValue }
