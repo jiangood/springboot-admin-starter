@@ -2,7 +2,7 @@ import {Form} from "antd";
 import {
     FieldRemoteSelect,
     FieldRemoteSelectMultipleInline,
-    StringUtils, UuidUtils
+    StringUtils
 } from "../../../../../framework";
 import React from "react";
 import {useService} from "bpmn-js-properties-panel";
