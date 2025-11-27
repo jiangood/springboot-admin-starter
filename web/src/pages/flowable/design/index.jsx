@@ -193,7 +193,7 @@ export default class extends React.Component {
             return
         }
 
-        const {elementType, conditionVariable} = this.state;
+        const {elementType} = this.state;
         const {curBo} = this
 
 
@@ -214,9 +214,6 @@ export default class extends React.Component {
         return <Card title='多实例配置'>
             <Form layout='vertical' onValuesChange={this.onMultiInstanceLoopCharacteristicsChange}
                   initialValues={initialValues}>
-                <Form.Item label='循环基数' name='loopCardinality'>
-                    <Input placeholder='数字或表达式，如 ${userCount}'/>
-                </Form.Item>
 
                 <Form.Item label='集合' name='flowable:collection'>
                     <Input placeholder='如 userList'/>
