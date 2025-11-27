@@ -227,10 +227,6 @@ export default class extends React.Component {
                 ></Table>
 
 
-                <div className="q-my-md"></div>
-
-                <div>条件表达式: {this.state.expression}</div>
-                <div className="q-my-md"></div>
 
 
                 <ProModal actionRef={this.addRef} title="添加条件">

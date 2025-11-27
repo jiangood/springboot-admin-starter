@@ -4,7 +4,7 @@ import {DelegateExpressionProps} from "./properties/DelegateExpressionProps";
 import {FormProps} from "./properties/FormProps";
 import {PreactUserTaskForm, renderReact, UserTaskForm} from "./properties/UserTaskForm";
 import {isTextFieldEntryEdited} from "@bpmn-io/properties-panel";
-import {ConditionProps} from "./properties/ConditionForm";
+import {ConditionProps} from "./properties/ConditionProps";
 
 const LOW_PRIORITY = 10001;
 
