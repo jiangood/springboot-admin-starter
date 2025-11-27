@@ -20,12 +20,35 @@ function Component(props) {
     const modeling = useService('modeling');
     const debounce = useService('debounceInput');
     const getValue = (element) => {
-        return element.businessObject.formKey || '';
+        const condition = element.businessObject.conditionExpression;
+        return condition ? condition.body : '';
     };
 
     const setValue = value => {
-        return modeling.updateProperties(element, {
-            formKey: value
+        const businessObject = element.businessObject;
+        let conditionExpression = businessObject.conditionExpression;
+
+        if (!value) {
+            // 移除条件表达式
+            modeling.updateProperties(element, {
+                conditionExpression: undefined
+            });
+            return;
+        }
+
+        if (!conditionExpression) {
+            // 创建一个新的 tFormalExpression 元素
+            const bpmnFactory = useService('bpmnFactory');
+            conditionExpression = bpmnFactory.create('bpmn:tFormalExpression');
+
+            modeling.updateProperties(element, {
+                conditionExpression: conditionExpression
+            });
+        }
+
+        // 更新表达式主体
+        modeling.updateModdleProperties(element, conditionExpression, {
+            body: value
         });
     };
 
