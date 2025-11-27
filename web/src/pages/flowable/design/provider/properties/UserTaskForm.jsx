@@ -2,9 +2,13 @@ import {Form} from "antd";
 import {
     FieldRemoteSelect,
     FieldRemoteSelectMultipleInline,
-    StringUtils
+    StringUtils, UuidUtils
 } from "../../../../../framework";
 import React from "react";
+import {useService} from "bpmn-js-properties-panel";
+import {h} from "preact";
+import {createRoot} from "react-dom/client";
+import {useEffect} from "@bpmn-io/properties-panel/preact/hooks";
 
 export function UserTaskForm(props) {
     const {element, modeling} = props
@@ -28,6 +32,21 @@ export function UserTaskForm(props) {
             <Form.Item label="候选人" name='candidateUsers'>
                 <FieldRemoteSelectMultipleInline url='admin/flowable/model/candidateUsersOptions'/>
             </Form.Item>
-        </Form></div>
+        </Form>
+    </div>
     )
+}
+export function PreactUserTaskForm(props) {
+    const {element, id} = props;
+    const modeling = useService('modeling');
+    let elementId = UuidUtils.uuidV4();
+
+    useEffect(() => {
+        const dom = document.getElementById(elementId)
+        const root = createRoot(dom);
+        root.render(<UserTaskForm element={element} modeling={modeling} />);
+
+    }, []);
+
+    return h('div', {id: elementId})
 }
