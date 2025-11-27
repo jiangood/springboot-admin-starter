@@ -6,14 +6,13 @@ import org.flowable.engine.delegate.JavaDelegate;
 import org.springframework.stereotype.Component;
 
 
-@Remark("demo-Java处理类")
 @Component
-public class DemoDelegate implements JavaDelegate {
+public class DemoDelegate2 implements JavaDelegate {
 
 
 
     @Override
     public void execute(DelegateExecution execution) {
-        System.out.println("demo-Java处理类执行....");
+        System.out.println("demo-Java处理类2执行....");
     }
 }
