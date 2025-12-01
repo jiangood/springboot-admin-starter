@@ -3,7 +3,7 @@ import React from "react";
 
 import {ConfigProvider} from "antd";
 
-import {history, Outlet, withRouter} from "umi";
+import {Outlet, withRouter} from "umi";
 import zhCN from 'antd/locale/zh_CN';
 import {
     ArrUtils,
@@ -105,10 +105,6 @@ class _Layouts extends React.Component {
 
     render() {
         return <ConfigProvider
-            modal={
-                {
-                }
-            }
             input={{autoComplete: 'off'}}
             form={{
                 validateMessages: {
