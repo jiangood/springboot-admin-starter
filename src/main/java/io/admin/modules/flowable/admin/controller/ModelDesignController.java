@@ -75,7 +75,7 @@ public class ModelDesignController {
     @PostMapping("saveContent")
     public AjaxResult saveContent(@RequestBody SysFlowableModel param) {
         SysFlowableModel save = service.saveContent(param);
-        return AjaxResult.ok().data(save);
+        return AjaxResult.ok().data(save).msg("服务端：保存xml内容成功");
     }
 
     @HasPermission("flowableModel:deploy")

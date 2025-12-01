@@ -1,6 +1,6 @@
 import React from "react";
 import {Button, Card, Form, Input} from "antd";
-import {HttpUtils, PageLoading} from "../../../framework";
+import {HttpUtils, PageLoading, PageUtils} from "../../../framework";
 
 export default class extends React.Component {
 
@@ -10,7 +10,7 @@ export default class extends React.Component {
 
 
   componentDidMount() {
-    let params = PageUtils.currentLocationQuery()
+    let params = PageUtils.currentParams()
     const id = this.id = params.id
 
     HttpUtils.get('admin/flowable/test/get', {id}).then(rs=>{
