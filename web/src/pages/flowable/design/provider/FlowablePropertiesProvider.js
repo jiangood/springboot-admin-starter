@@ -1,28 +1,28 @@
-
 import {is} from 'bpmn-js/lib/util/ModelUtil';
 import {DelegateExpressionProps} from "./properties/DelegateExpressionProps";
 import {FormProps} from "./properties/FormProps";
 import {PreactUserTaskForm, renderReact, UserTaskForm} from "./properties/UserTaskForm";
 import {isTextFieldEntryEdited} from "@bpmn-io/properties-panel";
 import {ConditionProps} from "./properties/ConditionProps";
+import {MultiInstanceProps} from "./properties/MultiInstanceProps";
 
-const LOW_PRIORITY = 10001;
+const LOW_PRIORITY = 500;
 
 
 export default function FlowablePropertiesProvider(propertiesPanel) {
 
     this.getGroups = function (element) {
         return function (groups) {
-            if(is(element, 'bpmn:ServiceTask')){
+            if (is(element, 'bpmn:ServiceTask')) {
                 groups.push({
                     id: 'processBean',
                     label: "处理器",
                     entries: DelegateExpressionProps(element),
-                    shouldOpen:true
+                    shouldOpen: true
                 })
             }
 
-            if(is(element,'bpmn:UserTask')){
+            if (is(element, 'bpmn:UserTask')) {
                 groups.push({
                     id: 'user',
                     label: "用户",
@@ -33,7 +33,7 @@ export default function FlowablePropertiesProvider(propertiesPanel) {
                             isEdited: isTextFieldEntryEdited,
                         }
                     ],
-                    shouldOpen:true
+                    shouldOpen: true
                 })
                 groups.push({
                     id: 'form',
@@ -41,14 +41,27 @@ export default function FlowablePropertiesProvider(propertiesPanel) {
                     entries: FormProps(element),
                 })
             }
-            if(is(element,'bpmn:SequenceFlow')){
+            if (is(element, 'bpmn:SequenceFlow')) {
                 groups.push({
                     id: 'condition',
                     label: "条件",
                     entries: ConditionProps(element),
-                    shouldOpen:true
+                    shouldOpen: true
                 })
             }
+
+            let group = {
+                label: '多实例（集合设置）',
+                id: 'multiInstanceCollection',
+                entries: MultiInstanceProps({element}),
+                shouldOpen: true
+            };
+
+            if(group.entries.length){
+                groups.push(group)
+            }
+
+
 
             return groups;
         }

@@ -1,64 +1,201 @@
+import {
+    getBusinessObject,
+    is
+} from 'bpmn-js/lib/util/ModelUtil';
 
-/***
- <subProcess id="Activity_1eb8pbl">
- <multiInstanceLoopCharacteristics flowable:collection="userList" flowable:elementVariable="user" />
- <startEvent id="Event_128j9jr" />
- </subProcess>
- **/
+import { TextFieldEntry, isTextFieldEntryEdited } from '@bpmn-io/properties-panel';
+import {useService} from "bpmn-js-properties-panel";
 
 
-import {isTextFieldEntryEdited, SelectEntry} from '@bpmn-io/properties-panel';
-import { useService } from 'bpmn-js-properties-panel';
-import { useEffect, useState } from '@bpmn-io/properties-panel/preact/hooks';
-import {HttpUtils} from "../../../../../framework";
-export  function DelegateExpressionProps () {
+/**
+ * @returns {Array<Entry>} entries
+ */
+export function MultiInstanceProps(props) {
+    const {
+        element
+    } = props;
 
-    return [
+    if (!isMultiInstanceSupported(element)) {
+        return [];
+    }
+    const entries = [
         {
-            id: 'delegateExpression',
-            component: Component,
-            isEdited: isTextFieldEntryEdited,
+            id: '集合',
+            component: LoopCardinality,
+            isEdited: isTextFieldEntryEdited
+        },
+        {
+            id:'元素变量',
+            component: CompletionCondition,
+            isEdited: isTextFieldEntryEdited
         }
-
     ];
+
+    return entries;
 }
 
-function Component(props) {
-    const { element, id } = props;
+function LoopCardinality(props) {
+    const { element } = props;
 
-    const modeling = useService('modeling');
+    const bpmnFactory = useService('bpmnFactory');
     const debounce = useService('debounceInput');
+    const commandStack = useService('commandStack');
+    const translate = useService('translate');
 
-    const getValue = (element) => {
-        return element.businessObject.delegateExpression || '';
+    const getValue = () => {
+        return getLoopCardinalityValue(element);
     };
 
-    const setValue = value => {
-        return modeling.updateProperties(element, {
-            delegateExpression: value
-        });
+    const setValue = (value) => {
+        return createOrUpdateFormalExpression(
+            element,
+            getLoopCharacteristics(element),
+            'loopCardinality',
+            value,
+            bpmnFactory,
+            commandStack
+        );
     };
 
-    const [ options, setOptions ] = useState([]);
-
-    useEffect(async () => {
-        const rs = await HttpUtils.get('admin/flowable/model/javaDelegateOptions')
-        setOptions(rs)
-    }, [ setOptions ]);
-
-    return SelectEntry({
+    return TextFieldEntry({
         element,
-        id: id,
-        label: 'delegateExpression',
-        description: '实现JavaDelegate接口的Bean名称， 如 ${demoDelegate}',
+        id: 'loopCardinality',
+        label: translate('Loop cardinality'),
         getValue,
         setValue,
-        debounce,
-
-        getOptions: () => {
-            return options
-        }
-    })
-
+        debounce
+    });
 }
 
+function CompletionCondition(props) {
+    const { element } = props;
+
+    const bpmnFactory = useService('bpmnFactory');
+    const debounce = useService('debounceInput');
+    const commandStack = useService('commandStack');
+    const translate = useService('translate');
+
+    const getValue = () => {
+        return getCompletionConditionValue(element);
+    };
+
+    const setValue = (value) => {
+        return createOrUpdateFormalExpression(
+            element,
+            getLoopCharacteristics(element),
+            'completionCondition',
+            value,
+            bpmnFactory,
+            commandStack
+        );
+    };
+
+    return TextFieldEntry({
+        element,
+        id: 'completionCondition',
+        label: translate('Completion condition'),
+        getValue,
+        setValue,
+        debounce
+    });
+}
+
+
+// helper ////////////////////////////
+
+// generic ///////////////////////////
+
+/**
+ * isMultiInstanceSupported - check whether given element supports MultiInstanceLoopCharacteristics.
+ *
+ * @param {djs.model.Base} element
+ * @return {boolean}
+ */
+function isMultiInstanceSupported(element) {
+    const loopCharacteristics = getLoopCharacteristics(element);
+    return !!loopCharacteristics && is(loopCharacteristics, 'bpmn:MultiInstanceLoopCharacteristics');
+}
+
+/**
+ * getBody - get the body of a given expression.
+ *
+ * @param {ModdleElement<bpmn:FormalExpression>} expression
+ * @return {string} the body (value) of the expression
+ */
+function getBody(expression) {
+    return expression && expression.get('body');
+}
+
+/**
+ * getProperty - get a property value of the loop characteristics.
+ *
+ * @param {djs.model.Base} element
+ * @param {string} propertyName
+ *
+ * @return {any} the property value
+ */
+function getProperty(element, propertyName) {
+    const loopCharacteristics = getLoopCharacteristics(element);
+    return loopCharacteristics && loopCharacteristics.get(propertyName);
+}
+
+/**
+ * getLoopCharacteristics - get loopCharacteristics of a given element.
+ *
+ * @param {djs.model.Base} element
+ * @return {ModdleElement<bpmn:MultiInstanceLoopCharacteristics> | undefined}
+ */
+function getLoopCharacteristics(element) {
+    const bo = getBusinessObject(element);
+    return bo.loopCharacteristics;
+}
+
+// loopCardinality
+
+/**
+ * getLoopCardinality - get the loop cardinality of the loop characteristics.
+ *
+ * @param {djs.model.Base} element
+ *
+ * @return {ModdleElement<bpmn:FormalExpression>} an expression representing the loop cardinality
+ */
+function getLoopCardinality(element) {
+    return getProperty(element, 'loopCardinality');
+}
+
+/**
+ * getLoopCardinalityValue - get the loop cardinality value of the loop characteristics.
+ *
+ * @param {djs.model.Base} element
+ *
+ * @return {string} the loop cardinality value
+ */
+function getLoopCardinalityValue(element) {
+    const loopCardinality = getLoopCardinality(element);
+    return getBody(loopCardinality);
+}
+
+// completionCondition /////////////////////
+
+/**
+ * getCompletionCondition - get the completion condition of the loop characteristics.
+ *
+ * @param {djs.model.Base} element
+ *
+ * @return {ModdleElement<bpmn:FormalExpression>} an expression representing the completion condition
+ */
+function getCompletionCondition(element) {
+    return getProperty(element, 'completionCondition');
+}
+
+/**
+ * getCompletionConditionValue - get the completion condition value of the loop characteristics.
+ *
+ * @param {djs.model.Base} element
+ *
+ * @return {string} the completion condition value
+ */
+function getCompletionConditionValue(element) {
+    const completionCondition = getCompletionCondition(element);
+    return getBody(completionCondition);
+}
