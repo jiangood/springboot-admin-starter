@@ -1,13 +1,15 @@
 package io.admin.modules.flowable.core.service;
 
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import io.admin.common.utils.FriendlyUtils;
 import io.admin.common.utils.SpringUtils;
 import io.admin.modules.flowable.core.FlowableProperties;
-import io.admin.modules.flowable.core.assignment.AssignmentTypeProvider;
 import io.admin.modules.flowable.core.dto.TaskHandleType;
 import io.admin.modules.flowable.core.dto.response.TaskResponse;
+import io.admin.modules.system.entity.SysRole;
+import io.admin.modules.system.entity.SysUser;
 import io.admin.modules.system.service.SysUserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -217,16 +219,12 @@ public class FlowableService {
         query.taskCandidateUser(userId);
 
         // 人员及 分组
-        Collection<AssignmentTypeProvider> providerList = SpringUtils.getBeans(AssignmentTypeProvider.class);
-        Set<String> groupIds = new HashSet<>();
-        for (AssignmentTypeProvider provider : providerList) {
-            List<String> groups = provider.findGroupsByUser(userId);
-            if (groups != null) {
-                groupIds.addAll(groups);
+        SysUser user = sysUserService.findOne(userId);
+        Set<SysRole> roles = user.getRoles();
+        if(CollUtil.isNotEmpty(roles)){
+            for (SysRole role : roles) {
+                query.taskCandidateGroup(role.getId());
             }
-        }
-        if (!CollectionUtils.isEmpty(groupIds)) {
-            query.taskCandidateGroupIn(groupIds);
         }
         query.endOr();
 

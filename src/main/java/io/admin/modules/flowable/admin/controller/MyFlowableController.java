@@ -49,7 +49,6 @@ public class MyFlowableController {
 
     private TaskService taskService;
     private HistoryService historyService;
-    private SysFlowableModelService myFlowModelService;
     private FlowableService flowableService;
     @GetMapping("todoCount")
     public AjaxResult todo() {

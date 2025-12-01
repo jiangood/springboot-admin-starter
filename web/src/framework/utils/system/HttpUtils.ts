@@ -43,8 +43,9 @@ export class HttpUtils {
             if (success == undefined) { // 如果没有success字段，说明非标准接口
                 return response;
             }
+
             if (!success) {
-                messageUtil.success(message || '操作失败');
+                messageUtil.error(message || '操作失败');
                 return
             }
 

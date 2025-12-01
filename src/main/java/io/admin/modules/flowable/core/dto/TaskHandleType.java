@@ -9,6 +9,6 @@ public enum TaskHandleType {
 
     APPROVE("同意"), REJECT("不同意"), BACK("退回");
 
-    String message;
+    final String message;
 
 }

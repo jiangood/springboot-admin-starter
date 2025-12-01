@@ -16,6 +16,7 @@ import {BpmnPropertiesPanelModule, BpmnPropertiesProviderModule} from 'bpmn-js-p
 
 import flowablePropertiesProviderModule from './provider';
 import flowableModdleDescriptor from './descriptors/flowable';
+import Loading from "../../../loading";
 
 export default class extends React.Component {
 
@@ -30,21 +31,24 @@ export default class extends React.Component {
 
     preXmlRef = React.createRef()
 
-    componentDidMount() {
+    async componentDidMount() {
         let params = PageUtils.currentParams()
         this.state.id = params.id
+        const rs = await HttpUtils.get('admin/flowable/model/detail', {id: this.state.id})
+        let {conditionVariable, model} = rs;
+        this.setState({model, conditionVariable}, this.initBpmn)
+    }
+
+    initBpmn = () => {
+        let container = this.bpmRef.current;
+        let xml = this.state.model.content;
+
         this.bpmnModeler = new BpmnModeler({
-            propertiesPanel: {
-                parent: '#js-properties-panel',
-
-            },
+            container: container,
+            propertiesPanel: {parent: '#js-properties-panel',},
             additionalModules: [
-                // 汉化翻译
-                {
-                    translate: ['value', customTranslate]
-                },
+                {translate: ['value', customTranslate]},
                 contextPad,
-
                 BpmnPropertiesPanelModule,
                 BpmnPropertiesProviderModule,
                 flowablePropertiesProviderModule
@@ -54,26 +58,7 @@ export default class extends React.Component {
             }
         });
 
-        this.modeling = this.bpmnModeler.get('modeling'); // 建模， 包含很多方法
-        this.moddle = this.bpmnModeler.get('moddle'); // 数据模型， 主要存储元数据
-
-
-        HttpUtils.get('admin/flowable/model/detail', {id: this.state.id}).then(rs => {
-            let {conditionVariable, model} = rs;
-            this.setState({model, conditionVariable}, () => this.initBpmn(model.content))
-        })
-
-
-        window.bpmnModeler = this.bpmnModeler
-        window.moddle = this.moddle;
-        window.modeling = this.modeling;
-    }
-
-    initBpmn = xml => {
-        let parentNode = this.bpmRef.current;
-        this.bpmnModeler.attachTo(parentNode);
         this.bpmnModeler.importXML(xml)
-
         this.bpmnModeler.on('element.contextmenu', e => e.preventDefault()) // 关闭右键，影响操作
     };
 
@@ -110,7 +95,9 @@ export default class extends React.Component {
 
 
     render() {
-
+        if (this.state.model == null) {
+            return <Loading/>
+        }
         return <Card title={'流程设计  ' + this.state.model?.name}
                      extra={<Space>
                          <Button type='primary' icon={<SaveOutlined/>} onClick={this.handleSave}>暂存</Button>
