@@ -53,6 +53,14 @@ public class ModelDesignController {
         return AjaxResult.ok().data(page);
     }
 
+    @GetMapping("detail")
+    public AjaxResult detail(String id) {
+        SysFlowableModel model = service.findOne(id);
+
+        return AjaxResult.ok().data(model);
+    }
+
+
 
     @HasPermission("flowableModel:design")
     @GetMapping("delete")
@@ -87,20 +95,6 @@ public class ModelDesignController {
         return AjaxResult.ok().msg("部署成功");
     }
 
-
-    @GetMapping("detail")
-    public AjaxResult detail(String id) {
-        SysFlowableModel model = service.findOne(id);
-        if (StringUtils.isBlank(model.getContent())) {
-            String xml = service.createDefaultModel(model.getCode(), model.getName());
-            model.setContent(xml);
-        }
-
-        ProcessDefinitionInfo info = registry.getInfo(model.getCode());
-
-
-        return AjaxResult.ok().data(info);
-    }
 
 
 

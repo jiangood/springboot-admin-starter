@@ -2,6 +2,7 @@
 package io.admin.modules.flowable.admin.service;
 
 import cn.hutool.core.util.StrUtil;
+import io.admin.common.utils.SpringUtils;
 import io.admin.framework.data.query.JpaQuery;
 import io.admin.framework.data.service.BaseService;
 import io.admin.modules.flowable.admin.dao.SysFlowableModelDao;
@@ -43,13 +44,10 @@ public class SysFlowableModelService extends BaseService<SysFlowableModel> {
     SysFlowableModelDao sysFlowableModelDao;
 
 
-    @Resource
-    RepositoryService repositoryService;
 
 
-    @Resource
-    @Lazy
-    protected ProcessEngineConfigurationImpl processEngineConfiguration;
+
+
 
     public SysFlowableModel findByCode(String code) {
         return sysFlowableModelDao.findByCode(code);
@@ -104,6 +102,8 @@ public class SysFlowableModelService extends BaseService<SysFlowableModel> {
 
 
         String resourceName = name + ".bpmn20.xml";
+
+        RepositoryService repositoryService = SpringUtils.getBean(RepositoryService.class);
         repositoryService.createDeployment()
                 .addBpmnModel(resourceName, bpmnModel)
                 .name(name)
@@ -185,6 +185,7 @@ public class SysFlowableModelService extends BaseService<SysFlowableModel> {
                 }
 
                 try {
+                     ProcessEngineConfigurationImpl processEngineConfiguration = SpringUtils.getBean(ProcessEngineConfigurationImpl.class);
                     processEngineConfiguration.getExpressionManager().createExpression(conditionExpression);
                 } catch (Exception e) {
                     throw new IllegalArgumentException("条件表达式异常:" + e.getMessage());
