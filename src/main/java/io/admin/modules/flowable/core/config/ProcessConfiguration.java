@@ -24,7 +24,7 @@ public class ProcessConfiguration {
 
     @PostConstruct
     void init() throws IOException {
-        ProcessConfiguration cfg = YmlUtils.parseYml("classpath*:application-process", ProcessConfiguration.class);
+        ProcessConfiguration cfg = YmlUtils.parseYml("classpath:application-process.yml", ProcessConfiguration.class);
         this.definitions = cfg.getDefinitions();
     }
 }
