@@ -3,7 +3,6 @@ package io.admin.modules.flowable.admin.controller;
 
 import cn.hutool.core.util.StrUtil;
 import io.admin.common.dto.AjaxResult;
-import io.admin.common.utils.BeanTool;
 import io.admin.framework.config.security.HasPermission;
 import io.admin.modules.common.LoginUtils;
 import io.admin.modules.flowable.core.service.FlowableService;
@@ -11,7 +10,6 @@ import io.admin.modules.flowable.core.dto.request.SetAssigneeRequest;
 import io.admin.modules.flowable.core.dto.response.MonitorTaskResponse;
 import io.admin.modules.system.service.SysUserService;
 import lombok.AllArgsConstructor;
-import org.flowable.common.engine.api.query.Query;
 import org.flowable.engine.RepositoryService;
 import org.flowable.engine.RuntimeService;
 import org.flowable.engine.TaskService;
@@ -21,7 +19,6 @@ import org.flowable.engine.runtime.ProcessInstance;
 import org.flowable.engine.runtime.ProcessInstanceQuery;
 import org.flowable.task.api.Task;
 import org.flowable.task.api.TaskQuery;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -38,7 +36,7 @@ import java.util.Map;
 @RequestMapping("admin/flowable/monitor")
 @RestController
 @AllArgsConstructor
-public class FlowableMonitorController {
+public class MonitorController {
 
     private RepositoryService repositoryService;
     private RuntimeService runtimeService;
@@ -47,16 +45,36 @@ public class FlowableMonitorController {
 
     private FlowableService flowableService;
 
-    @GetMapping("processDefinitionPage")
+    @GetMapping("definitionPage")
     public AjaxResult processDefinition(Pageable pageable) {
         ProcessDefinitionQuery query = repositoryService.createProcessDefinitionQuery();
 
         long count = query.count();
         List<ProcessDefinition> list = query.listPage((int) pageable.getOffset(), pageable.getPageSize());
 
-        PageImpl<ProcessDefinition> page = new PageImpl<>(list, pageable, count);
+        List<Map<String, Object>> mapList = list.stream().map(processDefinition -> {
+            Map<String, Object> map = new HashMap<>();
+            map.put("id", processDefinition.getId());
+            map.put("category", processDefinition.getCategory());
+            map.put("name", processDefinition.getName());
+            map.put("key", processDefinition.getKey());
+            map.put("description", processDefinition.getDescription());
+            map.put("version", processDefinition.getVersion());
+            map.put("resourceName", processDefinition.getResourceName());
+            map.put("deploymentId", processDefinition.getDeploymentId());
+            map.put("diagramResourceName", processDefinition.getDiagramResourceName());
+            map.put("hasStartFormKey", processDefinition.hasStartFormKey());
+            map.put("hasGraphicalNotation", processDefinition.hasGraphicalNotation());
+            map.put("isSuspended", processDefinition.isSuspended());
+            map.put("tenantId", processDefinition.getTenantId());
+            map.put("derivedFrom", processDefinition.getDerivedFrom());
+            map.put("derivedFromRoot", processDefinition.getDerivedFromRoot());
+            map.put("derivedVersion", processDefinition.getDerivedVersion());
+            return map;
+        }).toList();
 
-        return AjaxResult.ok().data(page);
+
+        return AjaxResult.ok().data(new PageImpl<>(mapList, pageable, count));
     }
 
     @GetMapping("processInstance")
