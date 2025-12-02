@@ -77,16 +77,43 @@ public class MonitorController {
         return AjaxResult.ok().data(new PageImpl<>(mapList, pageable, count));
     }
 
-    @GetMapping("processInstance")
-    public AjaxResult processInstance(Pageable pageable) {
+    @GetMapping("instancePage")
+    public AjaxResult instancePage(Pageable pageable) {
         ProcessInstanceQuery query = runtimeService.createProcessInstanceQuery();
 
         long count = query.count();
         List<ProcessInstance> list = query.listPage((int) pageable.getOffset(), pageable.getPageSize());
+        List<Map<String, Object>> mapList = list.stream().map(processInstance -> {
+            Map<String, Object> map = new HashMap<>();
 
-        PageImpl<ProcessInstance> page = new PageImpl<>(list, pageable, count);
+            map.put("id", processInstance.getId());
+            map.put("processDefinitionId", processInstance.getProcessDefinitionId());
+            map.put("processDefinitionName", processInstance.getProcessDefinitionName());
+            map.put("processDefinitionKey", processInstance.getProcessDefinitionKey());
+            map.put("processDefinitionVersion", processInstance.getProcessDefinitionVersion());
+            map.put("processDefinitionCategory", processInstance.getProcessDefinitionCategory());
+            map.put("deploymentId", processInstance.getDeploymentId());
+            map.put("businessKey", processInstance.getBusinessKey());
+            map.put("businessStatus", processInstance.getBusinessStatus());
+            map.put("suspended", processInstance.isSuspended());
+            map.put("processVariables", processInstance.getProcessVariables());
+            map.put("tenantId", processInstance.getTenantId());
+            map.put("name", processInstance.getName());
+            map.put("description", processInstance.getDescription());
+            map.put("localizedName", processInstance.getLocalizedName());
+            map.put("localizedDescription", processInstance.getLocalizedDescription());
+            map.put("startTime", processInstance.getStartTime());
+            map.put("startUserId", processInstance.getStartUserId());
+            map.put("callbackId", processInstance.getCallbackId());
+            map.put("callbackType", processInstance.getCallbackType());
+            map.put("parentId", processInstance.getParentId());
+            map.put("rootProcessInstanceId", processInstance.getRootProcessInstanceId());
+            map.put("superExecutionId", processInstance.getSuperExecutionId());
+            map.put("activityId", processInstance.getActivityId());
+            return map;
+        }).toList();
 
-        return AjaxResult.ok().data(page);
+        return AjaxResult.ok().data(new PageImpl<>(mapList, pageable, count));
     }
 
     @GetMapping("processInstance/close")
