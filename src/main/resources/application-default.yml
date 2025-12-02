@@ -13,7 +13,6 @@ spring:
     username: ${db_username}
     password: ${db_password}
     hikari:
-      register-mbeans: true # 用于监控连接池的信息
       minimum-idle: 20
       maximum-pool-size: 200
 
