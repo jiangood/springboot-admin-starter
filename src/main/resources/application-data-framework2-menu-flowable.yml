@@ -2,27 +2,20 @@ data:
   menus:
     - id: sys
       children:
-        - id: flowableMgr
+        - id: flowableModel
           name: 流程引擎
-          icon: BranchesOutlined
-          seq: 100
-          children:
-            - id: flowableModel
-              name: 模型管理
-              path: /flowable
-              perms:
-                - perm: flowableModel:design
-                  name: 设计
-                - perm: flowableModel:deploy
-                  name: 部署
+          path: /flowable
+          perms:
+            - perm: flowableModel:design
+              name: 设计
+            - perm: flowableModel:deploy
+              name: 部署
+            - perm: flowableTask:setAssignee
+              name: 动态修改受理人
 
 
-            - id: flowableMonitor
-              name: 流程管理
-              path: /flowable/monitor
-              perms:
-                - perm: flowableTask:setAssignee
-                  name: 设置任务受理人
+
+
 
     - name: 我的任务
       id: myFlowableTask

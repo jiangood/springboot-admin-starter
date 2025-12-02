@@ -29,7 +29,7 @@ export function renderReact(props, ReactComponent, moreProps) {
             <ReactComponent element={element} modeling={modeling} bpmnFactory={bpmnFactory}
                             processId={processId} {...moreProps}/></ConfigProvider>
         );
-    }, []);
+    }, [element]);
 
     return h('div', {ref: domRef})
 }

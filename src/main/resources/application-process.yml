@@ -8,11 +8,10 @@ process:
       variables:
         - name: "days"
           label: "请假天数"
-          type: "number" # 优化：使用小写类型名
+          value-type: number
           required: true
         - name: "reason"
           label: "请假原因"
-          type: "string"
           required: true
 
       # 流程中各个节点对应的表单定义

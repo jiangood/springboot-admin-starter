@@ -52,7 +52,7 @@ export default class extends React.Component {
                 flowablePropertiesProviderModule
             ],
             moddleExtensions: {
-             //  flowable: flowableJson
+               flowable: flowableJson
             }
         });
 
@@ -103,7 +103,6 @@ export default class extends React.Component {
                          <Button onClick={this.showXML}>XML</Button>
                          <Button
                              onClick={() => PageUtils.open('/flowable/test?id=' + this.state.id, "流程测试")}> 测试 </Button>
-
                      </Space>}>
 
 

@@ -16,6 +16,7 @@ export function PreactUserTaskForm(props) {
 
 // react 组件，方便使用antd
 function UserTaskForm(props) {
+    console.log('UserTaskForm', props)
     const {element, modeling} = props
     let initialValues = {
         assignee: element.businessObject.assignee,

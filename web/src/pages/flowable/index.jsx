@@ -1,7 +1,7 @@
 import {Button, Popconfirm, Space, Typography} from 'antd';
 import React from 'react';
 import {QuestionCircleOutlined} from "@ant-design/icons";
-import {Gap, HttpUtils, MessageUtils, PageUtils, ProTable} from "../../framework";
+import {ButtonList, Gap, HttpUtils, MessageUtils, PageUtils, ProTable} from "../../framework";
 
 export default class extends React.Component {
 
@@ -33,7 +33,6 @@ export default class extends React.Component {
                 <Space>
                     <Button size='small' type='primary'
                             onClick={() => PageUtils.open('/flowable/design?id=' + record.id, '流程设计' + record.name)}> 设计 </Button>
-                    <Button size='small' onClick={() => this.handleEdit(record)}> 编辑 </Button>
                     <Popconfirm perm='flowable/model:delete' title={'是否确定删除流程模型'}
                                 onConfirm={() => this.handleDelete(record)}>
                         <Button size='small' danger>删除</Button>
@@ -61,6 +60,13 @@ export default class extends React.Component {
                 request={(params) => HttpUtils.get('admin/flowable/model/page', params)}
                 columns={this.columns}
                 showToolbarSearch={true}
+                toolBarRender={() => {
+                    return <ButtonList>
+                        <Button type='primary'     onClick={() => PageUtils.open('/flowable/monitor', "流程监控")}>
+                            监控
+                        </Button>
+                    </ButtonList>
+                }}
             />
 
 
