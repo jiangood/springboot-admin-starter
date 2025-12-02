@@ -10,6 +10,8 @@ import io.admin.modules.flowable.core.definition.ProcessVariable;
 import io.admin.modules.flowable.core.dto.ProcessDefinitionInfo;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.flowable.bpmn.model.BpmnModel;
+import org.flowable.bpmn.model.FlowElement;
 import org.flowable.engine.IdentityService;
 import org.flowable.engine.RepositoryService;
 import org.flowable.engine.RuntimeService;
@@ -20,20 +22,14 @@ import org.springframework.util.CollectionUtils;
 
 import java.util.*;
 
-import static io.admin.modules.flowable.FlowableConsts.VAR_DEPT_LEADER;
+import static io.admin.modules.flowable.FlowableConsts.*;
 
 @Slf4j
 @Component
 @AllArgsConstructor
 public class FlowableManagerImpl implements FlowableManager {
 
-    // 变量KEY
-    public static final String VAR_USER_ID = "userId";
-    public static final String VAR_USER_NAME = "userName";
-    public static final String VAR_UNIT_ID = "unitId";
-    public static final String VAR_UNIT_NAME = "unitName";
-    public static final String VAR_DEPT_ID = "deptId";
-    public static final String VAR_DEPT_NAME = "deptName";
+
 
 
     private SysFlowableModelService modelService;
@@ -58,18 +54,20 @@ public class FlowableManagerImpl implements FlowableManager {
         // 添加一些发起人的相关信息
         String startUserId = initVariable(bizKey, variables, loginUser);
 
-        validate(processDefinitionKey, bizKey, variables);
-
         // 流程名称
         ProcessDefinition def = repositoryService.createProcessDefinitionQuery()
                 .processDefinitionKey(processDefinitionKey).active()
                 .latestVersion()
                 .singleResult();
+        Assert.notNull(def, "流程部署");
+
 
         if (title == null) {
             String day = DateFormatTool.formatDayCn(new Date());
             title = loginUser.getName() + day + "发起的【" + def.getName() + "】";
         }
+
+        validate(def, bizKey, variables);
 
         // 设置发起人, 该方法会自动设置流程变量 INITIATOR -> startUserId
         identityService.setAuthenticatedUserId(startUserId);
@@ -85,16 +83,13 @@ public class FlowableManagerImpl implements FlowableManager {
     }
 
 
-    private void validate(String processDefinitionKey, String bizKey, Map<String, Object> variables) {
-        long count = repositoryService.createDeploymentQuery().deploymentKey(processDefinitionKey).count();
-        Assert.state(count > 0, "流程未配置，请联系管理配置流程" + processDefinitionKey);
-
+    private void validate(ProcessDefinition definition, String bizKey, Map<String, Object> variables) {
         long instanceCount = runtimeService.createProcessInstanceQuery().processInstanceBusinessKey(bizKey).active().count();
         Assert.state(instanceCount == 0, "流程审批中，请勿重复提交");
 
 
         // 判断必填流程变量
-        ProcessDefinitionInfo info = registry.getInfo(processDefinitionKey);
+        ProcessDefinitionInfo info = registry.getInfo(definition.getKey());
         List<ProcessVariable> variableList = info.getConditionVariableList();
         if (!CollectionUtils.isEmpty(variableList)) {
             for (ProcessVariable formItem : variableList) {
@@ -105,6 +100,15 @@ public class FlowableManagerImpl implements FlowableManager {
             }
         }
 
+        // 判断相对变量，如部门领导
+        BpmnModel bpmnModel = repositoryService.getBpmnModel(definition.getId());
+        for (FlowElement flowElement : bpmnModel.getMainProcess().getFlowElements()) {
+            if (flowElement instanceof org.flowable.bpmn.model.UserTask ut) {
+                if (ut.getAssignee() != null && ut.getAssignee().contains(VAR_DEPT_LEADER)) {
+                    Assert.notNull(variables.get(VAR_DEPT_LEADER), "必填变量缺失：部门领导");
+                }
+            }
+        }
 
 
     }

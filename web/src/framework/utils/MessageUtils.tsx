@@ -2,10 +2,10 @@ import {Input, message, Modal, notification} from 'antd';
 import type {ModalFuncProps} from 'antd/es/modal/interface';
 import type {ArgsProps, NotificationPlacement} from 'antd/es/notification/interface';
 import React from 'react';
-import {ThemeUtils} from "./system";
+import {ThemeUtils} from './system/ThemeUtils';
 
 
-let color = ThemeUtils.getColor('primary-color');
+let color =  ThemeUtils.getColor('primary-color');
 const buttonStyles = {
     root: {
         backgroundColor: color

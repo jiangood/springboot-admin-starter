@@ -15,13 +15,6 @@ export class ThemeUtils {
     };
 
     /**
-     * @description 构造函数私有化，防止类被实例化，强调其作为工具类的作用
-     */
-    private constructor() {
-        // 工具类通常不需要实例化
-    }
-
-    /**
      * @description 可选：提供一个获取主题颜色的静态方法，增强工具类的可用性
      * @param key 主题颜色键名
      * @returns 对应的颜色值，如果键名不存在则返回undefined
@@ -31,8 +24,4 @@ export class ThemeUtils {
     }
 }
 
-// 示例：如果你需要在其他地方导入并使用主题颜色
-// import { ThemeUtils } from './your-file-path';
-// const primaryColor = ThemeUtils.theme["primary-color"];
-// 或者使用静态方法
-// const successColor = ThemeUtils.getColor("success-color");
+
