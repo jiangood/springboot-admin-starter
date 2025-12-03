@@ -72,7 +72,7 @@ data:
             - name: 删除
               perm: sysDict:delete
         - id: sysFile
-          name: 存储文件
+          name: 文件管理
           path: /system/file
           icon: FolderOpenOutlined
           perms:
@@ -81,19 +81,7 @@ data:
             - perm: sysFile:delete
               name: 删除
 
-        - id: job
-          name: 作业调度
-          path: /system/job
-          icon: OrderedListOutlined
-          perms:
-            - perm: job:view
-              name: 查看
-            - perm: job:save
-              name: 保存
-            - name: 执行一次
-              perm: job:triggerJob
-            - name: 清理日志
-              perm: job:jobLogClean
+
         - id: sysLog
           name: 操作日志
           path: /system/log
@@ -108,3 +96,17 @@ data:
           perms:
             - name: 管理
               perm: api
+
+        - id: job
+          name: 作业调度
+          path: /system/job
+          icon: OrderedListOutlined
+          perms:
+            - perm: job:view
+              name: 查看
+            - perm: job:save
+              name: 保存
+            - name: 执行一次
+              perm: job:triggerJob
+            - name: 清理日志
+              perm: job:jobLogClean
