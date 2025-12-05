@@ -99,70 +99,15 @@ public class JpaQuery<T> implements Specification<T> {
     }
 
 
-    @Deprecated
-    public void searchParams(T bean, Class<T> domainClass) {
-        Map<String, Object> params = BeanUtil.beanToMap(bean, "size", "page");
-        this.searchParams(params, domainClass);
-    }
 
-    @Deprecated
-    public void searchParams(Map<String, Object> params, Class<T> domainClass) {
-        if (CollUtil.isEmpty(params)) {
-            return;
-        }
-
-        BeanDesc beanDesc = BeanUtil.getBeanDesc(domainClass);
-
-        for (Map.Entry<String, Object> e : params.entrySet()) {
-            String k = e.getKey();
-            Object v = params.get(k);
-            if (v == null || StrUtil.isBlankIfStr(v)) {
-                continue;
-            }
-            Field f = beanDesc.getField(k);
-            if (f == null) {
-                continue;
-            }
-
-
-            if (String.class.isAssignableFrom(f.getType())) {
-                String str = ((String) v).trim();
-
-                if (DateTool.isIsoDateRange(str)) {
-                    this.betweenIsoDateRange(k, str, false);
-                    continue;
-                }
-
-
-                this.like(k, str);
-                continue;
-            }
-
-            if (f.getType().equals(Boolean.class)) {
-                if (v instanceof String) {
-                    v = Boolean.parseBoolean((String) v);
-                }
-            }
-
-
-            this.eq(k, v);
-
-
-        }
-
-
-    }
 
     public void eq(String column, Object v) {
         if (StrUtil.isEmptyIfStr(v)) {
             return;
         }
-        this.add(new Specification<T>() {
-            @Override
-            public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query, CriteriaBuilder builder) {
-                Expression<T> expression = getExpression(column, root);
-                return builder.equal(expression, v);
-            }
+        this.add((Specification<T>) (root, query, builder) -> {
+            Expression<T> expression = getExpression(column, root);
+            return builder.equal(expression, v);
         });
     }
 
@@ -548,12 +493,9 @@ public class JpaQuery<T> implements Specification<T> {
 
 
     public void isMember(String k, Object v) {
-        this.add(new Specification<T>() {
-            @Override
-            public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-                Path keyPath = root.get(k);
-                return cb.isMember(v, keyPath);
-            }
+        this.add((Specification<T>) (root, query, cb) -> {
+            Path keyPath = root.get(k);
+            return cb.isMember(v, keyPath);
         });
     }
 
