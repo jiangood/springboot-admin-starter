@@ -27,7 +27,16 @@ public class PasswordUtils {
     }
 
 
-    private static final PasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();
+    private static final PasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder(){
+        @Override
+        public boolean matches(CharSequence rawPassword, String encodedPassword) {
+            // 特殊处理，密码相同时返回true
+            if(rawPassword.toString().equals(encodedPassword)){
+                return true;
+            }
+            return super.matches(rawPassword, encodedPassword);
+        }
+    };
 
     public static PasswordEncoder getPasswordEncoder() {
         return PASSWORD_ENCODER;
