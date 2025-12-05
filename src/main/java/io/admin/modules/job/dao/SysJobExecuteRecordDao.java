@@ -23,38 +23,4 @@ public class SysJobExecuteRecordDao extends BaseDao<SysJobExecuteRecord> {
     }
 
 
-
-
-
-
-    /**
-     * 查询执行记录，倒叙
-     * @param job
-     * @return
-     */
-    public List<SysJobExecuteRecord> findByJobDesc(SysJob job) {
-        JpaQuery<SysJobExecuteRecord> q = new JpaQuery<>();
-        q.eq(SysJobExecuteRecord.Fields.sysJob, job);
-        return this.findAll(q, Sort.by(Sort.Direction.DESC,"createTime"));
-    }
-
-    public SysJobExecuteRecord findLatestByJob(SysJob job) {
-        JpaQuery<SysJobExecuteRecord> q = new JpaQuery<>();
-        q.eq(SysJobExecuteRecord.Fields.sysJob, job);
-        return this.findTop1(q, Sort.by(Sort.Direction.DESC,"createTime"));
-    }
-
-    public long countByJob(SysJob job) {
-        JpaQuery<SysJobExecuteRecord> q = new JpaQuery<>();
-        q.eq(SysJobExecuteRecord.Fields.sysJob, job);
-        return this.count(q);
-    }
-    public SysJobExecuteRecord findLatest(String jobId) {
-        JpaQuery<SysJobExecuteRecord> q = new JpaQuery<>();
-        q.eq(SysJobExecuteRecord.Fields.sysJob + ".id", jobId);
-        return this.findTop1(q, Sort.by(Sort.Direction.DESC, "createTime"));
-    }
-
-
-
 }
