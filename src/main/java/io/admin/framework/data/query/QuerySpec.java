@@ -112,6 +112,24 @@ public class QuerySpec<T> implements Specification<T> {
         return this;
     }
 
+    // 添加到 QuerySpec<T> 类中
+
+    /**
+     * 关联查询的 LIKE 条件。
+     */
+    public QuerySpec<T> joinLike(String joinProperty, String joinField, String value) {
+        if (value == null || value.isEmpty()) {
+            return this;
+        }
+        String likeValue = "%" + value.toLowerCase() + "%";
+        JoinType joinType = JoinType.INNER;
+        specifications.add((root, query, cb) -> {
+            Join<?, ?> join = getOrCreateJoin(root, joinProperty, joinType);
+            return cb.like(cb.lower(join.get(joinField)), likeValue);
+        });
+        return this;
+    }
+
     // ---------------------- 逻辑 OR 条件 ----------------------
 
     /**
@@ -148,6 +166,24 @@ public class QuerySpec<T> implements Specification<T> {
         }
 
         specifications.add(orSpec);
+        return this;
+    }
+
+    // 添加到 QuerySpec<T> 类中
+
+    /**
+     * 非空查询: field IS NOT NULL
+     */
+    public QuerySpec<T> isNotNull(String field) {
+        specifications.add((root, query, cb) -> cb.isNotNull(root.get(field)));
+        return this;
+    }
+
+    /**
+     * 空值查询: field IS NULL
+     */
+    public QuerySpec<T> isNull(String field) {
+        specifications.add((root, query, cb) -> cb.isNull(root.get(field)));
         return this;
     }
 }
