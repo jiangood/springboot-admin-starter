@@ -13,10 +13,10 @@
 包含以下几个部分
 
 ### 介绍
-解析pom.xml和 web/package.json文件得到主要信息
-说明开发环境
-说明maven版本号，![Maven Version](https://img.shields.io/maven-central/v/io.github.jiangood/springboot-admin-starter)
-说明npm版本号，![NPM Version](https://img.shields.io/npm/v/@jiangood/springboot-admin-starter)
+读取pom.xml和 web/package.json文件得到主要信息
+描述开发环境
+描述maven如何引用，版本号使用 ![Maven Version](https://img.shields.io/maven-central/v/io.github.jiangood/springboot-admin-starter)
+描述npm如何引用，版本号使用 ![NPM Version](https://img.shields.io/npm/v/@jiangood/springboot-admin-starter)
 
 描述后端依赖
 描述前端依赖（只解析peerDependencies部分）
