@@ -24,19 +24,9 @@ public class ApiAccessLogController  {
     @Deprecated
     @RequestMapping("page")
     public AjaxResult page(@PageableDefault(direction = Sort.Direction.DESC, sort = "updateTime") Pageable pageable) throws Exception {
-        JpaQuery<ApiAccessLog> q = new JpaQuery<>();
-
-
-        Page<ApiAccessLog> page = service.findPageByRequest(q, pageable);
-
-
-
+        Page<ApiAccessLog> page = service.findPageByRequest(null, pageable);
         return AjaxResult.ok().data(page);
     }
-
-
-
-
 
 
 }

@@ -14,8 +14,6 @@ public class ApiAccountService extends BaseService<ApiAccount> {
     ApiAccountDao apiAccountDao;
 
     public ApiAccount findByAppId(String appId) {
-        JpaQuery<ApiAccount> q = new JpaQuery<>();
-        q.eq(ApiAccount.Fields.appId, appId);
-        return apiAccountDao.findOne(q);
+        return apiAccountDao.findByField(ApiAccount.Fields.appId, appId);
     }
 }

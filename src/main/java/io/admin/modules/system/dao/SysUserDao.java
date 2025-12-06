@@ -35,10 +35,7 @@ public class SysUserDao extends BaseDao<SysUser> {
      * 查询状态正常的ID
      */
     public List<SysUser> findValid() {
-        JpaQuery<SysUser> q = new JpaQuery<>();
-        q.eq(SysUser.Fields.enabled, true);
-
-        return this.findAll(q);
+        return this.findAllByField("enabled", true);
     }
 
     private static final Cache<String, String> NAME_CACHE = CacheUtil.newTimedCache(1000 * 60 * 5);
@@ -82,9 +79,7 @@ public class SysUserDao extends BaseDao<SysUser> {
 
 
     public List<SysUser> findByRole(SysRole role) {
-        JpaQuery<SysUser> q = new JpaQuery<>();
-        q.isMember(SysUser.Fields.roles, role);
-        return this.findAll(q);
+        return this.findAll(Spec.<SysUser>of().isMember(SysUser.Fields.roles, role));
     }
 
 
