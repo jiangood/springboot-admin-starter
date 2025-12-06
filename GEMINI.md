@@ -23,8 +23,9 @@
 - pom.xml
 - web/package.json
 首先说明引用方式，其中版本号使用shields.io生成，不要使用文件中声明的版本号
+然后说明开发环境，包含前后端的开发环境
 然后描述项目依赖，使用表格，包含名称和版本，简要说明
-解析 src/main/resources/application-data-framework.yml，生成表格方式的说明
+解析 src/main/resources/application-data-framework.yml，生成功能列表
 最后增加每个文档的链接
 
 ### front.md
