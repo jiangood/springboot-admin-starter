@@ -1,13 +1,12 @@
 package io.admin.modules.api.service;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import io.admin.common.utils.ann.Remark;
+import io.admin.common.utils.annotation.Remark;
 import io.admin.common.utils.field.FieldDescription;
 import io.admin.modules.api.ApiMapping;
 import io.admin.modules.api.entity.ApiResource;
 import io.admin.modules.api.entity.ApiResourceArgument;
 import io.admin.modules.api.entity.ApiResourceArgumentReturn;
-import jakarta.annotation.Resource;
 import org.springframework.core.StandardReflectionParameterNameDiscoverer;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

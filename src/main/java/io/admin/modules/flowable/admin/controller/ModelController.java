@@ -5,7 +5,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import io.admin.common.dto.AjaxResult;
 import io.admin.common.dto.antd.Option;
 import io.admin.common.utils.SpringUtils;
-import io.admin.common.utils.ann.RemarkUtils;
+import io.admin.common.utils.annotation.RemarkUtils;
 import io.admin.framework.config.security.HasPermission;
 
 import io.admin.framework.data.specification.Spec;

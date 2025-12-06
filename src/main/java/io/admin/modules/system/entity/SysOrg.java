@@ -2,7 +2,7 @@
 package io.admin.modules.system.entity;
 
 import io.admin.common.utils.tree.TreeNode;
-import io.admin.common.utils.ann.Remark;
+import io.admin.common.utils.annotation.Remark;
 import io.admin.framework.data.domain.BaseEntity;
 import io.admin.modules.system.enums.OrgType;
 import lombok.Getter;

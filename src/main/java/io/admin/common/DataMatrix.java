@@ -10,13 +10,13 @@ import java.util.List;
 import java.util.Map;
 
 // 二维数组
-public class Matrix extends LinkedList<List<Object>> {
+public class DataMatrix extends LinkedList<List<Object>> {
 
-    public Matrix() {
+    public DataMatrix() {
 
     }
 
-    public Matrix(int rows, int cols) {
+    public DataMatrix(int rows, int cols) {
         for (int r = 0; r < rows; r++) {
             ArrayList<Object> rowData = new ArrayList<>();
             this.add(rowData);
@@ -42,7 +42,7 @@ public class Matrix extends LinkedList<List<Object>> {
      * @param data
      * @return
      */
-    public Matrix add(Matrix data) {
+    public DataMatrix add(DataMatrix data) {
         if (!data.isEmpty()) {
             this.addAll(data);
         }
@@ -104,10 +104,10 @@ public class Matrix extends LinkedList<List<Object>> {
     }
 
 
-    public Matrix clone() {
+    public DataMatrix clone() {
         int rowSize = this.getRowSize();
         int colSize = getColSize();
-        Matrix rs = new Matrix(rowSize, colSize);
+        DataMatrix rs = new DataMatrix(rowSize, colSize);
         for (int i = 0; i < rowSize; i++) {
             for (int j = 0; j < colSize; j++) {
                 rs.setValue(i, j , this.getValue(i, j));
@@ -141,14 +141,14 @@ public class Matrix extends LinkedList<List<Object>> {
     }
 
 
-    public List<Matrix> split(int rows){
-        List<Matrix> list = new ArrayList<>();
+    public List<DataMatrix> split(int rows){
+        List<DataMatrix> list = new ArrayList<>();
 
         int total = this.size();
         int splitCount = total / rows;
 
         for(int i = 0; i < splitCount; i++){
-            Matrix item = new Matrix();
+            DataMatrix item = new DataMatrix();
             for(int j = 0; j < rows; j++){
                 item.add(this.get(i * rows + j));
             }

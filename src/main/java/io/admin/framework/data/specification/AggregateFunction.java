@@ -1,6 +1,9 @@
 package io.admin.framework.data.specification;
 
-public enum Fuc {
+/**
+ * 聚合函数
+ */
+public enum AggregateFunction {
         SUM,
         COUNT,
 

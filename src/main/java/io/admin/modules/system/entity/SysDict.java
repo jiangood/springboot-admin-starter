@@ -1,7 +1,7 @@
 
 package io.admin.modules.system.entity;
 
-import io.admin.common.utils.ann.Remark;
+import io.admin.common.utils.annotation.Remark;
 import io.admin.framework.data.domain.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;

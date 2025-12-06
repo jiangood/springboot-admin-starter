@@ -1,4 +1,4 @@
-package io.admin.common.utils.ann;
+package io.admin.common.utils.annotation;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;

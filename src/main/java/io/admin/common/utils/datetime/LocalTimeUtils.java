@@ -1,4 +1,4 @@
-package io.admin.common.utils;
+package io.admin.common.utils.datetime;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;

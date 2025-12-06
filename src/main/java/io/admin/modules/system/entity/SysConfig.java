@@ -2,7 +2,7 @@
 package io.admin.modules.system.entity;
 
 import io.admin.framework.data.domain.BaseEntity;
-import io.admin.common.utils.ann.Remark;
+import io.admin.common.utils.annotation.Remark;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;

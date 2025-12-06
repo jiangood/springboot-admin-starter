@@ -1,4 +1,4 @@
-package io.admin.common.utils.ann;
+package io.admin.common.utils.annotation;
 
 import java.lang.annotation.*;
 

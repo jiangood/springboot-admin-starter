@@ -1,6 +1,6 @@
 package io.admin.modules.job.entity;
 
-import io.admin.common.utils.ann.Remark;
+import io.admin.common.utils.annotation.Remark;
 import io.admin.framework.data.domain.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.admin.framework.data.DBConstants;

@@ -2,7 +2,7 @@ package io.admin.common.utils.enums;
 
 import cn.hutool.core.util.EnumUtil;
 import cn.hutool.core.util.StrUtil;
-import io.admin.common.utils.ann.Remark;
+import io.admin.common.utils.annotation.Remark;
 import org.springframework.http.MediaType;
 import org.springframework.http.MediaTypeFactory;
 

@@ -1,6 +1,5 @@
 package io.admin.modules.flowable.demo;
 
-import io.admin.common.utils.ann.Remark;
 import org.flowable.engine.delegate.DelegateExecution;
 import org.flowable.engine.delegate.JavaDelegate;
 import org.springframework.stereotype.Component;

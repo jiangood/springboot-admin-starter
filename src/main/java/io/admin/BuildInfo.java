@@ -9,7 +9,7 @@ import java.util.Properties;
 /**
  * 打包时会替换为真实的值，如版本，时间等
  */
-public class Build {
+public class BuildInfo {
 
     private static String version;
 

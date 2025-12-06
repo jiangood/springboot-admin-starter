@@ -3,7 +3,7 @@ package io.admin.common.utils;
 
 import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
-import io.admin.common.utils.ann.RemarkUtils;
+import io.admin.common.utils.annotation.RemarkUtils;
 import jakarta.persistence.RollbackException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;

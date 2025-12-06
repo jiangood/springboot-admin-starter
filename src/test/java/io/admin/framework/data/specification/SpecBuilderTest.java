@@ -1,7 +1,6 @@
 package io.admin.framework.data.specification;
 
 import io.admin.common.utils.JsonUtils;
-import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,8 +47,8 @@ public class SpecBuilderTest {
     void testGroup() {
         Spec<User> spec = Spec.<User>of()
                 .select("username")
-                .selectFnc(Fuc.SUM, "age")
-                .selectFnc(Fuc.COUNT, "age")
+                .selectFnc(AggregateFunction.SUM, "age")
+                .selectFnc(AggregateFunction.COUNT, "age")
                 .groupBy("username")
                 ;
         List<Map<String, Object>> age = userDao.stats(spec);

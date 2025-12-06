@@ -1,6 +1,6 @@
 package io.admin.modules.api.entity;
 
-import io.admin.common.utils.ann.Remark;
+import io.admin.common.utils.annotation.Remark;
 import io.admin.framework.data.converter.ToListConverter;
 import io.admin.framework.validator.ValidateIpv4;
 import io.admin.framework.data.domain.BaseEntity;
@@ -9,7 +9,6 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.FieldNameConstants;
-import org.apache.xmlbeans.impl.xb.xsdschema.impl.TopLevelAttributeImpl;
 
 import java.util.ArrayList;
 import java.util.Date;

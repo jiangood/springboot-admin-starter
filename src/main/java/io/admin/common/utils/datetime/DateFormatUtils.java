@@ -1,4 +1,4 @@
-package io.admin.common.utils;
+package io.admin.common.utils.datetime;
 
 import java.util.Date;
 

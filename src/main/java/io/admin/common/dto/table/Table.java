@@ -4,8 +4,8 @@ package io.admin.common.dto.table;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.DateUtil;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import io.admin.common.Matrix;
-import io.admin.common.utils.ann.Remark;
+import io.admin.common.DataMatrix;
+import io.admin.common.utils.annotation.Remark;
 import jakarta.persistence.Lob;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -103,8 +103,8 @@ public class Table<T> {
      *
      * @return
      */
-    public Matrix getRenderMatrix() {
-        Matrix m = new Matrix(dataSource.size() + 1, columns.size());
+    public DataMatrix getRenderMatrix() {
+        DataMatrix m = new DataMatrix(dataSource.size() + 1, columns.size());
 
         for (int i = 0; i < columns.size(); i++) {
             TableColumn<T> column = columns.get(i);

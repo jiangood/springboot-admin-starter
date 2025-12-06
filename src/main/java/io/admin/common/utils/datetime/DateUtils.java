@@ -1,4 +1,4 @@
-package io.admin.common.utils;
+package io.admin.common.utils.datetime;
 
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;

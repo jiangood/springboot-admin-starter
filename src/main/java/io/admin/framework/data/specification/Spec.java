@@ -27,7 +27,7 @@ public class Spec<T> implements Specification<T> {
     }
 
 
-    public Spec<T> selectFnc(Fuc fn, String field) {
+    public Spec<T> selectFnc(AggregateFunction fn, String field) {
         return this.add((Specification<T>) (root, query, cb) -> {
 
             Path<Number> x = root.get(field);
