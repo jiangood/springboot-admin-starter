@@ -30,9 +30,11 @@ import java.util.function.Function;
 
 /**
  * 基础dao
- * BaseDao的查询条件不依赖JpaQuery
  */
-public class BaseDao<T extends Persistable<String>> {
+@Transactional(readOnly = true)
+public abstract class BaseDao<T extends Persistable<String>> {
+
+    // --- 1. 字段和资源注入 ---
 
     @Getter
     @PersistenceContext
@@ -47,6 +49,8 @@ public class BaseDao<T extends Persistable<String>> {
     @Resource
     private Validator validator;
 
+    // --- 2. 生命周期与初始化 ---
+
     @PostConstruct
     private void init() {
         this.domainClass = parseDomainClass();
@@ -54,219 +58,7 @@ public class BaseDao<T extends Persistable<String>> {
         this.rep = new SimpleJpaRepository<>(domainClass, entityManager);
     }
 
-
-    @Transactional
-    public void deleteById(String id) {
-        rep.deleteById(id);
-    }
-
-    public boolean isFieldUnique(String id, String fieldName, Object value) {
-        JpaQuery<T> q = new JpaQuery<>();
-        q.ne("id", id);
-        q.eq(fieldName, value);
-        return rep.exists(q);
-    }
-
-
-    @Transactional
-    public void delete(T entity) {
-        rep.delete(entity);
-    }
-
-    @Transactional
-    public void deleteAllById(Iterable<String> ids) {
-        rep.deleteAllById(ids);
-    }
-
-    @Transactional
-    public void deleteAllById(String[] ids) {
-        rep.deleteAllById(List.of(ids));
-    }
-
-
-    @Transactional
-    public void deleteAllByIdInBatch(Iterable<String> ids) {
-        rep.deleteAllByIdInBatch(ids);
-    }
-
-    @Transactional
-    public void deleteAll(Iterable<T> entities) {
-        rep.deleteAll(entities);
-    }
-
-    @Transactional
-    public void deleteAllInBatch(Iterable<T> entities) {
-        rep.deleteAllInBatch(entities);
-    }
-
-    @Transactional
-    public void deleteAll() {
-        rep.deleteAll();
-    }
-
-    @Transactional
-    public void deleteAllInBatch() {
-        rep.deleteAllInBatch();
-    }
-
-    public T findById(String id) {
-        return rep.findById(id).orElse(null);
-    }
-
-    public T findByIdAndRefresh(String id) {
-        T t = this.findById(id);
-        this.refresh(t);
-        return t;
-    }
-
-    public T findByField(String key, Object value) {
-        JpaQuery<T> q = new JpaQuery<>();
-        q.eq(key, value);
-        return this.findOne(q);
-    }
-
-    public T findByField(String key, Object value, String key2, Object value2) {
-        JpaQuery<T> q = new JpaQuery<>();
-        q.eq(key, value);
-        q.eq(key2, value2);
-        return this.findOne(q);
-    }
-
-    public List<T> findAllByField(String key, Object value) {
-        JpaQuery<T> q = new JpaQuery<>();
-        q.eq(key, value);
-        return this.findAll(q);
-    }
-
-    public List<T> findAllByField(String key, Object value, String key2, Object value2) {
-        JpaQuery<T> q = new JpaQuery<>();
-        q.eq(key, value);
-        q.eq(key2, value2);
-        return this.findAll(q);
-    }
-
-    /**
-     * 将实体刷新，避免从缓存取
-     */
-    public void refresh(T t) {
-        if (t != null) {
-            entityManager.refresh(t);
-        }
-    }
-
-    public boolean existsById(String id) {
-        return rep.existsById(id);
-    }
-
-    public List<T> findAll() {
-        return rep.findAll();
-    }
-
-    public List<T> findAllById(Iterable<String> ids) {
-        return rep.findAllById(ids);
-    }
-
-    public List<T> findAllById(String[] ids) {
-        return rep.findAllById(List.of(ids));
-    }
-
-    public List<T> findAll(Sort sort) {
-        return rep.findAll(sort);
-    }
-
-    public Page<T> findAll(Pageable pageable) {
-        return rep.findAll(pageable);
-    }
-
-
-    public List<T> findAll(Specification<T> spec) {
-        return rep.findAll(spec);
-    }
-
-    public Page<T> findAll(Specification<T> spec, Pageable pageable) {
-        return rep.findAll(spec, pageable);
-    }
-
-    public List<T> findAll(Specification<T> spec, Sort sort) {
-        return rep.findAll(spec, sort);
-    }
-
-    public boolean exists(Specification<T> spec) {
-        return rep.exists(spec);
-    }
-
-    @Transactional
-    public long delete(Specification<T> spec) {
-        return rep.delete(spec);
-    }
-
-    public <R> R findBy(Specification<T> spec, Function<FluentQuery.FetchableFluentQuery<T>, R> queryFunction) {
-        return rep.findBy(spec, queryFunction);
-    }
-
-    public T findOne(Example<T> example) {
-        return rep.findOne(example).orElse(null);
-    }
-
-    public T findOne(Specification<T> spec) {
-        return rep.findOne(spec).orElse(null);
-    }
-
-    public T findOne(T t) {
-        return rep.findById(t.getId()).orElse(null);
-    }
-
-    public T findOne(String key, Object value) {
-        JpaQuery<T> q = new JpaQuery<>();
-        q.eq(key, value);
-        return this.findOne(q);
-    }
-
-    public T findOne(String key, Object value, String key2, Object value2) {
-        JpaQuery<T> q = new JpaQuery<>();
-        q.eq(key, value);
-        q.eq(key2, value2);
-        return this.findOne(q);
-    }
-
-    public T findOne(String key, Object value, String key2, Object value2, String key3, Object value3) {
-        JpaQuery<T> q = new JpaQuery<>();
-        q.eq(key, value);
-        q.eq(key2, value2);
-        q.eq(key3, value3);
-        return this.findOne(q);
-    }
-
-    public long count(Example<T> example) {
-        return rep.count(example);
-
-    }
-
-    public boolean exists(Example<T> example) {
-        return rep.exists(example);
-    }
-
-    public List<T> findAll(Example<T> example) {
-        return rep.findAll(example);
-    }
-
-    public List<T> findAll(Example<T> example, Sort sort) {
-        return rep.findAll(example, sort);
-    }
-
-    public <S extends T> Page<S> findAll(Example<S> example, Pageable pageable) {
-        return rep.findAll(example, pageable);
-    }
-
-
-    public long count() {
-        return rep.count();
-
-    }
-
-    public long count(Specification<T> spec) {
-        return rep.count(spec);
-    }
+    // --- 3. 核心写入操作 (CRUD - Create, Update, Delete) ---
 
     /**
      * 插入或更新
@@ -276,54 +68,40 @@ public class BaseDao<T extends Persistable<String>> {
      */
     @Transactional
     public T save(T entity) {
-        Assert.notNull(entity, "Entity must not be null");
+       return rep.save(entity);
+    }
 
-        // 新增
-        if (this.entityInformation.isNew(entity)) {
-            this.entityManager.persist(entity);
-            return entity;
-        }
 
-        return this.entityManager.merge(entity);
+    /**
+     * 批量新增/更新 (委托给 SimpleJpaRepository 的 saveAll)
+     */
+    @Transactional
+    public List<T> saveAll(Iterable<T> entities) {
+        return rep.saveAll(entities);
     }
 
     @Transactional
     public T saveAndFlush(T entity) {
         T result = save(entity);
         flush();
-
         return result;
-    }
-
-    @Transactional
-    public List<T> saveAll(Iterable<T> entities) {
-        List<T> result = new ArrayList<>();
-        for (T entity : entities) {
-            result.add(save(entity));
-        }
-
-        return result;
-    }
-
-    @Transactional
-    public List<T> saveAllAndFlush(Iterable<T> entities) {
-        List<T> result = saveAll(entities);
-        flush();
-
-        return result;
-    }
-
-
-    @Transactional
-    public T merge(T entity) {
-        return entityManager.merge(entity);
     }
 
     /**
-     * 更新指定字段
-     * 对比save方法更新的时所有字段，只更新指定字段
-     *
-     * @gendoc
+     * 批量新增/更新并立即同步
+     */
+    @Transactional
+    public List<T> saveAllAndFlush(Iterable<T> entities) {
+        return rep.saveAllAndFlush(entities);
+    }
+
+    @Transactional
+    public void flush() {
+        entityManager.flush();
+    }
+
+    /**
+     * 更新指定字段：先find再更新 (Find-then-Update)
      */
     @Transactional
     public void updateField(T entity, List<String> fieldsToUpdate) {
@@ -342,12 +120,7 @@ public class BaseDao<T extends Persistable<String>> {
 
 
     /**
-     * 直接更新指定字段
-     * 不会先find，再更新
-     * 对比save方法更新的时所有字段，改方法只更新指定字段
-     * 注意：主要用于更新单个实体的字段， 不能更新多对多等关联关系
-     *
-     * @gendoc
+     * 直接更新指定字段：使用 CriteriaUpdate (Direct Update)
      */
     @Transactional
     public void updateFieldDirect(T entity, List<String> fieldsToUpdate) {
@@ -380,39 +153,242 @@ public class BaseDao<T extends Persistable<String>> {
     }
 
 
-    /**
-     * 保存数据
-     * 和save的区别是不再判断实体是否存在
-     *
-     * @param entity
-     * @return
-     */
     @Transactional
-    public T persist(T entity) {
-        entityManager.persist(entity);
-        return entity;
+    public void delete(T entity) {
+        rep.delete(entity);
+    }
+
+    @Transactional
+    public void deleteById(String id) {
+        rep.deleteById(id);
+    }
+
+    @Transactional
+    public void deleteAllById(Iterable<String> ids) {
+        rep.deleteAllById(ids);
+    }
+
+    @Transactional
+    public void deleteAllById(String[] ids) {
+        rep.deleteAllById(List.of(ids));
+    }
+
+    @Transactional
+    public void deleteAll(Iterable<T> entities) {
+        rep.deleteAll(entities);
+    }
+
+    @Transactional
+    public void deleteAllInBatch() {
+        rep.deleteAllInBatch();
+    }
+
+    @Transactional
+    public void deleteAll() {
+        rep.deleteAll();
+    }
+
+    @Transactional
+    public void deleteAllInBatch(Iterable<T> entities) {
+        rep.deleteAllInBatch(entities);
+    }
+
+    @Transactional
+    public void deleteAllByIdInBatch(Iterable<String> ids) {
+        rep.deleteAllByIdInBatch(ids);
+    }
+
+    @Transactional
+    public long delete(Specification<T> spec) {
+        return rep.delete(spec);
     }
 
 
-    @Transactional
-    public void flush() {
-        entityManager.flush();
-    }
+    // --- 4. 核心读取操作 (CRUD - Read) ---
 
+    public T findById(String id) {
+        return rep.findById(id).orElse(null);
+    }
 
     public T findOne(String id) {
         return rep.findById(id).orElse(null);
     }
 
-    public Map<String, T> findKeyed(Iterable<String> ids) {
-        List<T> list = this.findAllById(ids);
-        Map<String, T> map = new HashMap<>();
-        for (T t : list) {
-            map.put(t.getId(), t);
-        }
-        return map;
+    public T findOne(T t) {
+        return rep.findById(t.getId()).orElse(null);
     }
 
+    public boolean existsById(String id) {
+        return rep.existsById(id);
+    }
+
+    public List<T> findAll() {
+        return rep.findAll();
+    }
+
+    public List<T> findAll(Sort sort) {
+        return rep.findAll(sort);
+    }
+
+    public List<T> findAllById(Iterable<String> ids) {
+        return rep.findAllById(ids);
+    }
+
+    public List<T> findAllById(String[] ids) {
+        return rep.findAllById(List.of(ids));
+    }
+
+    public Page<T> findAll(Pageable pageable) {
+        return rep.findAll(pageable);
+    }
+
+    public long count() {
+        return rep.count();
+    }
+
+    /**
+     * 将实体刷新，避免从缓存取
+     */
+    public void refresh(T t) {
+        if (t != null) {
+            entityManager.refresh(t);
+        }
+    }
+
+    public T findByIdAndRefresh(String id) {
+        T t = this.findById(id);
+        this.refresh(t);
+        return t;
+    }
+
+    // --- 5. 定制化查询 (Specification/Example/JpaQuery) ---
+
+    public T findOne(Specification<T> spec) {
+        return rep.findOne(spec).orElse(null);
+    }
+
+    // 补充：SimpleJpaRepository 的 findOne(Example)
+    public <S extends T> T findOne(Example<S> example) {
+        return rep.findOne(example).orElse(null);
+    }
+
+    public List<T> findAll(Specification<T> spec) {
+        return rep.findAll(spec);
+    }
+
+    public List<T> findAll(Specification<T> spec, Sort sort) {
+        return rep.findAll(spec, sort);
+    }
+
+    public Page<T> findAll(Specification<T> spec, Pageable pageable) {
+        return rep.findAll(spec, pageable);
+    }
+
+    // 补充：SimpleJpaRepository 的 findAll(Example)
+    public <S extends T> List<S> findAll(Example<S> example) {
+        return rep.findAll(example);
+    }
+
+    // 补充：SimpleJpaRepository 的 findAll(Example, Sort)
+    public <S extends T> List<S> findAll(Example<S> example, Sort sort) {
+        return rep.findAll(example, sort);
+    }
+
+    // 补充：SimpleJpaRepository 的 findAll(Example, Pageable)
+    public <S extends T> Page<S> findAll(Example<S> example, Pageable pageable) {
+        return rep.findAll(example, pageable);
+    }
+
+    public boolean exists(Specification<T> spec) {
+        return rep.exists(spec);
+    }
+
+    // 补充：SimpleJpaRepository 的 exists(Example)
+    public <S extends T> boolean exists(Example<S> example) {
+        return rep.exists(example);
+    }
+
+    public long count(Specification<T> spec) {
+        return rep.count(spec);
+    }
+
+    // 补充：SimpleJpaRepository 的 count(Example)
+    public <S extends T> long count(Example<S> example) {
+        return rep.count(example);
+    }
+
+    public <R> R findBy(Specification<T> spec, Function<FluentQuery.FetchableFluentQuery<T>, R> queryFunction) {
+        return rep.findBy(spec, queryFunction);
+    }
+
+
+    // --- 5.1 JpaQuery/字段等值查询 (Custom Query Helpers) ---
+
+    public T findByField(String key, Object value) {
+        JpaQuery<T> q = new JpaQuery<>();
+        q.eq(key, value);
+        return this.findOne(q);
+    }
+
+    public T findByField(String key, Object value, String key2, Object value2) {
+        JpaQuery<T> q = new JpaQuery<>();
+        q.eq(key, value);
+        q.eq(key2, value2);
+        return this.findOne(q);
+    }
+
+    public T findOne(String key, Object value) {
+        JpaQuery<T> q = new JpaQuery<>();
+        q.eq(key, value);
+        return this.findOne(q);
+    }
+
+    public T findOne(String key, Object value, String key2, Object value2) {
+        JpaQuery<T> q = new JpaQuery<>();
+        q.eq(key, value);
+        q.eq(key2, value2);
+        return this.findOne(q);
+    }
+
+    public T findOne(String key, Object value, String key2, Object value2, String key3, Object value3) {
+        JpaQuery<T> q = new JpaQuery<>();
+        q.eq(key, value);
+        q.eq(key2, value2);
+        q.eq(key3, value3);
+        return this.findOne(q);
+    }
+
+    public List<T> findAllByField(String key, Object value) {
+        JpaQuery<T> q = new JpaQuery<>();
+        q.eq(key, value);
+        return this.findAll(q);
+    }
+
+    public List<T> findAllByField(String key, Object value, String key2, Object value2) {
+        JpaQuery<T> q = new JpaQuery<>();
+        q.eq(key, value);
+        q.eq(key2, value2);
+        return this.findAll(q);
+    }
+
+    public boolean isFieldUnique(String id, String fieldName, Object value) {
+        JpaQuery<T> q = new JpaQuery<>();
+        q.ne("id", id);
+        q.eq(fieldName, value);
+        return rep.exists(q);
+    }
+
+    public List<T> findByExampleLike(T t, Sort sort) {
+        JpaQuery<T> c = new JpaQuery<>();
+        c.likeExample(t);
+        return this.rep.findAll(c, sort);
+    }
+
+    public Page<T> findByExampleLike(T example, Pageable pageable) {
+        JpaQuery<T> query = new JpaQuery<>();
+        query.likeExample(example);
+        return this.rep.findAll(query, pageable);
+    }
 
     public T findTop1(Specification<T> c, Sort sort) {
         PageRequest pageRequest = PageRequest.of(0, 1, sort);
@@ -437,11 +413,6 @@ public class BaseDao<T extends Persistable<String>> {
 
     /***
      * 查询字段列表
-     * 如姓名列表
-     * @param fieldName
-     * @param c
-     * @return
-     * @param <R>
      */
     public <R> List<R> findField(String fieldName, Specification<T> c) {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
@@ -456,11 +427,9 @@ public class BaseDao<T extends Persistable<String>> {
         return (List<R>) entityManager.createQuery(query).getResultList();
     }
 
-    /**
-     * 分组统计
-     *
-     * @return
-     */
+
+    // --- 6. 统计与聚合 (Statistics and Aggregation) ---
+
     public List<Map> groupStats(Specification<T> spec, String[] groupFields, StatField... statFields) {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Map> query = builder.createQuery(Map.class);
@@ -555,7 +524,7 @@ public class BaseDao<T extends Persistable<String>> {
     }
 
     /**
-     * 分株统计数量
+     * 分组统计数量
      *
      * @param q
      * @param groupField
@@ -586,11 +555,20 @@ public class BaseDao<T extends Persistable<String>> {
         return map;
     }
 
+
+    // --- 7. 结果集映射 (Dictionary Mapping) ---
+
+    public Map<String, T> findKeyed(Iterable<String> ids) {
+        List<T> list = this.findAllById(ids);
+        Map<String, T> map = new HashMap<>();
+        for (T t : list) {
+            map.put(t.getId(), t);
+        }
+        return map;
+    }
+
     /**
      * 将查找接口转换为map， key为id，value为对象
-     *
-     * @param spec
-     * @return
      */
     public Map<String, T> dict(Specification<T> spec) {
         List<T> list = this.findAll(spec);
@@ -615,12 +593,6 @@ public class BaseDao<T extends Persistable<String>> {
 
     /**
      * 将查询结果的两个字段组装成map
-     *
-     * @param spec
-     * @param keyField
-     * @param valueField
-     * @param <V>
-     * @return
      */
     public <V> Map<String, V> dict(Specification<T> spec, Function<T, String> keyField, Function<T, V> valueField) {
         List<T> list = this.findAll(spec);
@@ -634,19 +606,12 @@ public class BaseDao<T extends Persistable<String>> {
         return map;
     }
 
-    public List<T> findByExampleLike(T t, Sort sort) {
-        JpaQuery<T> c = new JpaQuery<>();
-        c.likeExample(t);
-        return this.rep.findAll(c, sort);
-    }
 
+    // --- 8. 工具与帮助方法 ---
 
-    public Page<T> findByExampleLike(T example, Pageable pageable) {
-        JpaQuery<T> query = new JpaQuery<>();
-        query.likeExample(example);
-        return this.rep.findAll(query, pageable);
-    }
-
+    /**
+     * 解析泛型参数获取领域实体类
+     */
     private Class<T> parseDomainClass() {
         Type type = getClass().getGenericSuperclass();
 
@@ -665,6 +630,5 @@ public class BaseDao<T extends Persistable<String>> {
         }
         throw new IllegalStateException("解析DomainClass失败");
     }
-
 
 }
