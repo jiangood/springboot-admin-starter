@@ -123,39 +123,6 @@ public class Spec<T> implements Specification<T> {
         return this;
     }
 
-    // ---------------------- 关联 JOIN 条件 (使用缓存) ----------------------
-
-    /**
-     * 辅助方法：获取或创建 Join 实例，并缓存。
-     */
-    private Join<?, ?> getOrCreateJoin(Root<T> root, String joinProperty, JoinType joinType) {
-        // 使用属性名+JoinType作为Key，确保唯一性
-        return joinCache.computeIfAbsent(joinProperty + joinType.name(), k -> root.join(joinProperty, joinType));
-    }
-
-    /**
-     * 显式关联查询的等值条件：根据关联实体 (Join) 的字段进行过滤。
-     */
-    public Spec<T> joinEqual(String joinProperty, String joinField, Object value, JoinType joinType) {
-        return this.addIfValuePresent(value, (root, query, cb) -> {
-            Join<?, ?> join = getOrCreateJoin(root, joinProperty, joinType);
-            return cb.equal(join.get(joinField), value);
-        });
-    }
-
-    /**
-     * 显式关联查询的 LIKE 条件。
-     */
-    public Spec<T> joinLike(String joinProperty, String joinField, String value, JoinType joinType) {
-        if (!StringUtils.hasText(value)) {
-            return this;
-        }
-        String likeValue = "%" + value.toLowerCase() + "%";
-        return this.add((root, query, cb) -> {
-            Join<?, ?> join = getOrCreateJoin(root, joinProperty, joinType);
-            return cb.like(cb.lower(join.get(joinField)), likeValue);
-        });
-    }
 
     // ---------------------- 逻辑 OR 条件 ----------------------
 
