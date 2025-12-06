@@ -2,7 +2,7 @@ package io.admin.framework.data.domain;
 
 import com.fasterxml.jackson.annotation.*;
 import io.admin.framework.data.DBConstants;
-import io.admin.framework.data.id.ann.GenerateUuid7;
+import io.admin.framework.data.id.ann.GenerateUuidV7;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -19,7 +19,7 @@ public abstract class BaseEntity extends BaseNoIdEntity implements Serializable 
 
 
     @Id
-    @GenerateUuid7
+    @GenerateUuidV7
     @Column(length = DBConstants.LEN_ID)
     private String id;
 

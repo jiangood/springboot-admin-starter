@@ -26,7 +26,7 @@ import java.util.Properties;
  */
 public class DailyTableGenerator extends TableGenerator {
 
-    public static final String TABLE_NAME = "sys_id_daily_generator";
+    public static final String TABLE_NAME = "sys_sequence_ids_daily";
 
     private static final int DATE_LEN = DatePattern.PURE_DATE_PATTERN.length();
 
