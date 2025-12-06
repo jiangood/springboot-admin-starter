@@ -62,9 +62,3 @@
 |---|---|
 | `dev` | 开发模式运行 |
 | `build` | 构建项目 |
-
-## 文档链接
-*   [前端框架文档](front-framework.md)
-*   [后端框架文档](back-framework.md)
-
-
