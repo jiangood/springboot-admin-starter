@@ -21,12 +21,12 @@
 ### index.md
 解析pom.xml和 web/package.json
 首先分别说明引用方式，使用maven、npm的引用方式 其中版本号使用shields.io生成，参照项目名称引用，不要写死
-然后说明开发环境，包含前后端的开发环境
+然后说明开发环境，包含前后端的开发环境，最后一列增加文档的链接
 然后描述项目依赖，但是前端忽略开发依赖
 
-解析 src/main/resources/application-data-framework.yml，生成功能列表（只要功能名称和描述）及配置说明，
+解析 src/main/resources/application-data-framework.yml
 
-最后增加每个文档的链接
+
 
 ### front.md
 表格形式
