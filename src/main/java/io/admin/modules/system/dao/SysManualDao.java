@@ -12,7 +12,7 @@ public class SysManualDao extends BaseDao<SysManual> {
 
 
     public int findMaxVersion(String name){
-        Spec<SysManual> q = spec().eq(SysManual.Fields.name, name);
+        Spec<SysManual> q = Spec.<SysManual>of().eq(SysManual.Fields.name, name);
 
         SysManual e = this.findTop1(q, Sort.by(Sort.Direction.DESC, SysManual.Fields.version));
 

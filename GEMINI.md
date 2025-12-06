@@ -15,8 +15,8 @@
 ### 介绍
 读取pom.xml和 web/package.json文件得到主要信息
 描述开发环境
-描述maven如何引用，版本号使用 ![Maven Version](https://img.shields.io/maven-central/v/io.github.jiangood/springboot-admin-starter)
-描述npm如何引用，版本号使用 ![NPM Version](https://img.shields.io/npm/v/@jiangood/springboot-admin-starter)
+描述maven如何引用，版本号使用占位符号，并说明最新版本为： ![Maven Version](https://img.shields.io/maven-central/v/io.github.jiangood/springboot-admin-starter)
+描述npm如何引用，版本号使用占位符号，并说明最新版本为： ![NPM Version](https://img.shields.io/npm/v/@jiangood/springboot-admin-starter)
 
 描述后端依赖
 描述前端依赖（只解析peerDependencies部分）
@@ -32,7 +32,7 @@
 ### 前端
 
 读取 web/src/framework 目录下组件和工具类
-描述组件和工具类，表格形式，包含名称，参数，说明
+描述组件和工具类，表格形式，包含三列：名称，参数（属性），说明
 
 
 ### 后端
@@ -42,7 +42,10 @@
 - src/main/java/io/admin/framework/data/specification/Spec.java
 
 ### 模板代码
-生成业务代码模板，该模板主要是让业务项目使用，所以前端引用时，使用模块名即可，以学生为例
-参考src/main/java/io/admin/modules/system目录下的SysManual相关文件，生成entity，dao,service,controller,
+生成业务代码模板，，以学生为例
+参考src/main/java/io/admin/modules/system/entity/SysManual.java生成entity
+参考src/main/java/io/admin/modules/system/dao/SysManualDao.java生成dao
+参考src/main/java/io/admin/modules/system/service/SysManualService.java生成service
+参考src/main/java/io/admin/modules/system/controller/SysManualController.java生成controller
 参考src/main/resources/application-data-framework.yml，生成菜单配置
-参考web/src/pages/system/sysManual/index.jsx 生成页面模板
+参考web/src/pages/system/sysManual/index.jsx 生成页面模板，主要是让业务项目使用，所以前端引用时，使用模块名@jiangood/springboot-admin-starter即可

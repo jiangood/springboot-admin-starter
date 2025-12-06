@@ -1,5 +1,6 @@
 ## 框架的核心配置项和菜单结构。 业务项目需在 application-data-biz.yml 中进行配置。
 data:
+  # 数据库配置元数据
   configs:
     - group-name: 邮件配置
       children:
@@ -28,6 +29,7 @@ data:
           description: 非必填，可用于拼接完整请求地址
         - code: sys.jwtSecret
           name: jwt密码
+  # 菜单配置
   menus:
     - name: 我的任务
       id: myFlowableTask
