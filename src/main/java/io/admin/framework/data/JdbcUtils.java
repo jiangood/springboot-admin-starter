@@ -1,10 +1,24 @@
 package io.admin.framework.data;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.map.CaseInsensitiveLinkedMap;
 import cn.hutool.core.util.StrUtil;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.dialect.Dialect;
+import org.hibernate.dialect.MySQLDialect;
+import org.hibernate.engine.jdbc.Size;
+import org.hibernate.engine.spi.SessionFactoryImplementor;
+import org.hibernate.query.spi.Limit;
+import org.hibernate.type.BasicType;
+import org.hibernate.type.BasicTypeRegistry;
+import org.hibernate.type.descriptor.java.JavaType;
+import org.hibernate.type.descriptor.jdbc.JdbcType;
+import org.hibernate.type.descriptor.sql.spi.DdlTypeRegistry;
+import org.hibernate.type.spi.TypeConfiguration;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -36,16 +50,22 @@ import java.util.*;
 @Slf4j
 public class JdbcUtils {
 
-    @Getter
     private final JdbcTemplate jdbcTemplate;
+
+    private final Dialect dialect;
+    private final TypeConfiguration typeConfiguration;
 
     /**
      * 构造函数：通过数据源（DataSource）初始化 JdbcTemplate。
      *
      * @param dataSource 数据库连接池的数据源
      */
-    public JdbcUtils(DataSource dataSource) {
+    public JdbcUtils(DataSource dataSource, EntityManagerFactory entityManagerFactory) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
+        SessionFactoryImplementor sessionFactory = entityManagerFactory.unwrap(SessionFactoryImplementor.class);
+
+        dialect = sessionFactory.getJdbcServices().getDialect();
+        typeConfiguration = sessionFactory.getTypeConfiguration();
     }
 
     // --- 1. DML/DDL 操作 ---
@@ -345,14 +365,14 @@ public class JdbcUtils {
     /**
      * 辅助方法：拼接 LIMIT/OFFSET 子句。
      */
-    private String appendLimitOffset(String sql, Pageable pageable) {
-        long offset = pageable.getOffset();
-        int pageSize = pageable.getPageSize();
-
-        return String.format("%s LIMIT %d OFFSET %d",
-                sql,
-                pageSize,
-                offset);
+    private String appendLimitOffset(String sql, Pageable p) {
+        /*if (dialect.getLimitHandler() == null) {
+            return String.format("%s LIMIT %d OFFSET %d",
+                    sql,
+                    pageSize,
+                    offset);
+        }*/
+        return dialect.getLimitHandler().processSql(sql, new Limit((int) p.getOffset(), p.getPageSize()));
     }
 
     // --- 4. 动态 DML 和元数据 ---
@@ -472,21 +492,6 @@ public class JdbcUtils {
         return this.executeQuietly("DROP TABLE IF EXISTS " + tableName);
     }
 
-    /**
-     * 根据 Java 类结构，自动生成并执行建表 SQL，表名默认为类名的下划线命名。
-     */
-    public int createTable(Class<?> cls) {
-        return this.createTable(cls, StrUtil.toUnderlineCase(cls.getSimpleName()));
-    }
-
-    /**
-     * 根据 Java 类结构，自动生成并执行建表 SQL。
-     */
-    public int createTable(Class<?> cls, String tableName) {
-        String sql = generateCreateTableSql(cls, tableName);
-        log.info("建表SQL：\n{}", sql);
-        return this.execute(sql);
-    }
 
     // --- 6. 辅助工具方法 ---
 
@@ -537,88 +542,72 @@ public class JdbcUtils {
     }
 
     /**
-     * 根据 Java 类结构和指定的表名，生成 CREATE TABLE SQL 语句。
+     * 根据 Java 类结构，生成 MySQL 的 CREATE TABLE SQL 语句。
+     * 规则：
+     * 1. 字段名：驼峰命名转下划线命名。
+     * 2. 默认第一个非静态、非瞬态字段作为自增主键（如果类型为 Long/Integer）。
      */
-    public String generateCreateTableSql(Class<?> clazz, String tableName) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("CREATE TABLE IF NOT EXISTS `").append(tableName).append("` (\n");
-
+    public String generateCreateTableSql(Class<?> cls, String tableName) {
         List<Field> allFields = new ArrayList<>();
-        Class<?> currentClass = clazz;
-        while (currentClass != null && currentClass != Object.class) {
-            Field[] fields = currentClass.getDeclaredFields();
-            for (Field field : fields) {
-                if (Modifier.isStatic(field.getModifiers())) continue;
-                allFields.add(field);
-            }
-            currentClass = currentClass.getSuperclass();
+
+        // 1. 收集所有非静态、非瞬态字段（包括父类）
+        org.springframework.util.ReflectionUtils.doWithFields(cls, allFields::add,
+                field -> !Modifier.isStatic(field.getModifiers()) && !Modifier.isTransient(field.getModifiers()));
+
+
+        if (allFields.isEmpty()) {
+            throw new IllegalArgumentException("Class " + cls.getName() + " has no fields for table creation.");
         }
 
-        List<String> fieldDefinitions = new ArrayList<>();
-        String primaryKey = null;
+        Field primaryKeyField = allFields.get(0);
+        StringBuilder sql = new StringBuilder();
+        sql.append("CREATE TABLE IF NOT EXISTS `").append(tableName).append("` (\n");
 
+        // 2. 遍历字段，生成列定义
         for (Field field : allFields) {
-            String javaFieldName = field.getName();
-            String columnName = StrUtil.toUnderlineCase(javaFieldName);
-            String sqlType = getSqlType(field.getType());
+            String columnName = StrUtil.toUnderlineCase(field.getName());
+            String sqlDataType = mapJavaTypeToSql(field.getType()); // 使用简化的映射方法
 
-            String definition = "`" + columnName + "` " + sqlType;
+            sql.append("    `").append(columnName).append("` ").append(sqlDataType);
 
-            if ("id".equalsIgnoreCase(javaFieldName)) {
-                if (field.getType() == Long.class || field.getType() == long.class ||
-                        field.getType() == Integer.class || field.getType() == int.class) {
-                    definition += " NOT NULL AUTO_INCREMENT";
-                } else {
-                    definition += " NOT NULL";
-                }
-                primaryKey = columnName;
-            } else if (field.getType().isPrimitive()) {
-                definition += " NOT NULL";
+            // 3. 处理主键和自增
+            if (field == primaryKeyField) {
+                sql.append(" NOT NULL");
+            } else {
+                sql.append(" NULL");
             }
 
-            fieldDefinitions.add(definition);
+            sql.append(",\n");
         }
 
-        sb.append(String.join(",\n", fieldDefinitions));
+        // 4. 补上主键定义
+        String pkColumnName = StrUtil.toUnderlineCase(primaryKeyField.getName());
+        sql.append("    PRIMARY KEY (`").append(pkColumnName).append("`)\n");
 
-        if (primaryKey != null) {
-            sb.append(",\n").append("PRIMARY KEY (`").append(primaryKey).append("`)");
-        }
+        sql.append(")");
 
-        sb.append("\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;");
-
-        return sb.toString();
+        return sql.toString();
     }
 
     /**
-     * 将 Java 类型映射到常见的 MySQL/SQL 数据库类型。
+     * 【Hibernate 6.x】
+     * 使用 Hibernate Dialect 内部的类型映射，将 Java 类型转换为对应的 SQL 类型名称。
      */
-    public static String getSqlType(Class<?> cls) {
-        if (cls == null) return "VARCHAR(255)";
+    private String mapJavaTypeToSql(Class<?> javaTypeClass) {
+        // 注意使用的是hibernate6.x
+        DdlTypeRegistry ddlTypeRegistry = typeConfiguration.getDdlTypeRegistry();
+        BasicTypeRegistry basicTypeRegistry = typeConfiguration.getBasicTypeRegistry();
 
-        if (Enum.class.isAssignableFrom(cls)) return "VARCHAR(50)";
-        if (BigDecimal.class.isAssignableFrom(cls)) return "DECIMAL(19,4)";
-        if (String.class.isAssignableFrom(cls)) return "VARCHAR(255)";
+        BasicType hibernateType = basicTypeRegistry.getRegisteredType(javaTypeClass);
+        if (hibernateType == null) {
+            hibernateType = basicTypeRegistry.getRegisteredType(String.class);
+        }
+        JdbcType jdbcType = hibernateType.getJdbcType();
 
-        String typeName = cls.getSimpleName().toLowerCase();
+        String typeName = ddlTypeRegistry.getTypeName(jdbcType.getDdlTypeCode(), dialect);
 
-        return switch (typeName) {
-            case "byte", "short", "int", "integer" -> "INT";
-            case "long", "biginteger" -> "BIGINT";
-            case "float" -> "FLOAT";
-            case "double", "bigdecimal" -> "DOUBLE";
-            case "boolean" -> "TINYINT(1)";
-            case "char" -> "CHAR(1)";
-            case "date", "timestamp", "localdatetime" -> "DATETIME(6)";
-            case "localdate" -> "DATE";
-            case "localtime" -> "TIME";
-            case "list", "set", "map", "byte[]" -> "LONGBLOB";
-            default -> {
-                if (cls.isPrimitive() || cls.getName().startsWith("java.lang.")) {
-                    throw new IllegalStateException("Unsupported Java type: " + cls.getName());
-                }
-                yield "TEXT";
-            }
-        };
+        return typeName;
     }
+
+
 }
