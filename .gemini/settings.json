@@ -1,5 +1,8 @@
 {
   "model": {
     "name": "gemini-2.5-flash"
+  },
+  "agent": {
+    "yoloMode": true
   }
 }
