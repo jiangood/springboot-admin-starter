@@ -390,6 +390,12 @@ public abstract class BaseDao<T extends Persistable<String>> {
 
     // --- 6. 统计与聚合 (Statistics and Aggregation) ---
 
+    /**
+     * 分组统计
+     * @param spec
+     * @param statFields
+     * @return 列表， 每一行数据分别为group字段， 聚合字段
+     */
     public List<Object[]> stats(Specification<T> spec, StatField... statFields) {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Object[]> query = builder.createQuery(Object[].class);

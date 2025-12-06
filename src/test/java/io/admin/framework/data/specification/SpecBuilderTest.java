@@ -1,11 +1,6 @@
 package io.admin.framework.data.specification;
 
 import io.admin.framework.data.query.StatField;
-import io.admin.framework.data.query.StatType;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Predicate;
-import jakarta.persistence.criteria.Root;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,8 +11,6 @@ import jakarta.persistence.EntityManager;
 import org.springframework.context.annotation.Import;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -53,8 +46,6 @@ public class SpecBuilderTest {
     @Test
     void testGroup(){
         Spec<User> spec = Spec.<User>of().groupBy("username");
-
-
         List<Object[]> age = userDao.stats(spec,  StatField.count("age"));
 
 

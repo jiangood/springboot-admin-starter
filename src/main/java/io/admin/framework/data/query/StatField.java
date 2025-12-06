@@ -21,4 +21,18 @@ public class StatField {
     public static StatField count(String name){
         return new StatField(name,StatType.COUNT);
     }
+
+
+    public enum StatType {
+        SUM,
+        COUNT,
+
+        /**
+         * 平均
+         */
+        AVG,
+
+        MIN,
+        MAX
+    }
 }
