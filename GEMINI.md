@@ -10,15 +10,10 @@
 
 ## 文档结构
 生成的文档主要放到docs目录下
-文档包含以下文件
-- 首页 文件名:index.md
-- 前端模块 文件名:front.md
-- 后端模块 文件名:back.md
-- 功能模块 文件名:template.md
+文档为index.md
+包含以下几个部分
 
-
-每个文件的生成规则如下
-### index.md
+### 介绍
 解析pom.xml和 web/package.json
 说明开发环境
 说明maven版本号，![Maven Version](https://img.shields.io/maven-central/v/io.github.jiangood/springboot-admin-starter)
@@ -36,18 +31,18 @@
 增加其他文档的链接
 
 
-### front.md
+### 前端
 
 解析 web/src/framework 目录下组件和工具类
 描述组件和工具类，表格形式，包含名称，参数，说明
 
-### back.md
+### 后端
 主要解析文件如下
 - pom.xml
 - src/main/java/io/admin/common/utils/tree
 - src/main/java/io/admin/framework/data/specification/Spec.java
 
-### template.md
+### 模板
 生成业务代码模板，以学生为例
 参考src/main/java/io/admin/modules/system目录，生成entity，dao,service,controller,
 参考src/main/resources/application-data-framework.yml，生成菜单配置
