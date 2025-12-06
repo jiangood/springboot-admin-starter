@@ -8,7 +8,7 @@ import cn.hutool.jwt.JWT;
 import cn.hutool.jwt.JWTUtil;
 import cn.hutool.jwt.JWTValidator;
 import cn.hutool.jwt.RegisteredPayload;
-import io.admin.common.utils.RequestTool;
+import io.admin.common.utils.RequestUtils;
 import io.admin.modules.system.dao.SysJwtDao;
 import io.admin.modules.system.entity.SysJwt;
 import jakarta.annotation.Resource;
@@ -75,13 +75,13 @@ public class JwtService {
     }
 
     public JwtInfo getJwt() {
-        HttpServletRequest request = RequestTool.currentRequest();
+        HttpServletRequest request = RequestUtils.currentRequest();
         String token = getToken(request);
         return getJwt(token);
     }
 
     public String getSubject() {
-        HttpServletRequest request = RequestTool.currentRequest();
+        HttpServletRequest request = RequestUtils.currentRequest();
         String token = getToken(request);
         return getJwt(token).getSubject();
     }

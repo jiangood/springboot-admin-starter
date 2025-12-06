@@ -3,7 +3,7 @@ package io.admin.framework.data.converter;
 
 
 import io.admin.common.utils.JsonUtils;
-import io.admin.common.utils.ReflectTool;
+import io.admin.common.utils.ReflectUtils;
 import jakarta.persistence.AttributeConverter;
 
 import java.io.Serializable;
@@ -27,7 +27,7 @@ public  class BaseToListConverter<T> implements AttributeConverter<List<T>, Stri
             return new ArrayList<>();
         }
 
-        Class<T> cls = ReflectTool.getClassGenricType(getClass());
+        Class<T> cls = ReflectUtils.getClassGenricType(getClass());
 
         return JsonUtils.jsonToBeanListQuietly(dbData, cls);
     }

@@ -1,7 +1,7 @@
 package io.admin.modules.system.controller;
 
 import cn.hutool.core.util.URLUtil;
-import io.admin.common.utils.ContentTypeTool;
+import io.admin.common.utils.ContentTypeUtils;
 import io.admin.modules.system.entity.SysFile;
 import io.admin.modules.system.service.SysFileService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -61,7 +61,7 @@ public class FilePreviewController {
         try {
             InputStream inputStream = sysFileService.getFileStream(file, w);
 
-            boolean video = ContentTypeTool.isVideo(file.getContentType());
+            boolean video = ContentTypeUtils.isVideo(file.getContentType());
             String disposition = "inline; filename=\"" + URLUtil.encode(id + "." + file.getSuffix()) + "\"";
             if (video) {
                 String rangeHeader = request.getHeader("Range");

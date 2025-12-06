@@ -7,7 +7,7 @@ import cn.hutool.core.util.StrUtil;
 import io.admin.common.dto.AjaxResult;
 import io.admin.common.dto.antd.Option;
 import io.admin.common.dto.antd.TreeOption;
-import io.admin.common.utils.tree.TreeTool;
+import io.admin.common.utils.tree.TreeUtils;
 import io.admin.framework.config.SysProp;
 import io.admin.framework.config.argument.RequestBodyKeys;
 import io.admin.framework.config.security.HasPermission;
@@ -228,7 +228,7 @@ public class SysUserController {
         List<TreeOption> userOptions = userList.stream().map(u -> new TreeOption(u.getName(), u.getId(), StrUtil.emptyToDefault(u.getDeptId(), u.getUnitId()))).toList();
         List<TreeOption> allOptions = ListUtils.union(orgOptions,userOptions);
 
-        List<TreeOption> tree = TreeTool.buildTree(allOptions);
+        List<TreeOption> tree = TreeUtils.buildTree(allOptions);
         return AjaxResult.ok().data(tree);
     }
 

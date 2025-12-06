@@ -3,7 +3,7 @@ package io.admin.common.utils;
 
 import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
-import io.admin.common.utils.ann.RemarkTool;
+import io.admin.common.utils.ann.RemarkUtils;
 import jakarta.persistence.RollbackException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
@@ -60,7 +60,7 @@ public class ExceptionToMessageUtils {
 
             if (ex instanceof SQLIntegrityConstraintViolationException) {
                 if (msg.startsWith("Duplicate")) {
-                    String result = RegexTool.findMatch("\\'(.*?)\\'", msg, 1);
+                    String result = RegexUtils.findMatch("\\'(.*?)\\'", msg, 1);
                     if (StrUtil.isNotBlank(result)) {
                         return "数据【"+result+"】重复" ;
                     }
@@ -69,7 +69,7 @@ public class ExceptionToMessageUtils {
                 {
                     // Column 'file_id' cannot be null
                     String regex = "Column '(.*)' cannot be null";
-                    String fieldName = RegexTool.findMatch(regex, msg, 1);
+                    String fieldName = RegexUtils.findMatch(regex, msg, 1);
                     if (StrUtil.isNotEmpty(fieldName)) {
                         return "字段" + fieldName + "不能为空";
                     }
@@ -91,7 +91,7 @@ public class ExceptionToMessageUtils {
             Class<?> cls = v.getRootBeanClass();
 
             Field field = ReflectUtil.getField(cls, fieldName);
-            String fieldCnName = RemarkTool.getRemark(field);
+            String fieldCnName = RemarkUtils.getRemark(field);
             if(fieldCnName != null){
                 fieldName = fieldCnName;
             }

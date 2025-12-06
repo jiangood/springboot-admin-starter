@@ -1,7 +1,6 @@
 package io.admin.framework.data.repository;
 
 import cn.hutool.core.bean.BeanUtil;
-import io.admin.framework.data.specification.ExpressionTool;
 import io.admin.framework.data.specification.Spec;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.Resource;

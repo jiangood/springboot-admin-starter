@@ -4,7 +4,7 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.collection.ListUtil;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
-import io.admin.framework.data.specification.ExpressionTool;
+import io.admin.framework.data.specification.ExpressionUtils;
 import jakarta.persistence.criteria.*;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -302,7 +302,7 @@ public class JpaQuery<T> implements Specification<T> {
         }
 
         this.add((Specification<T>) (root, query, builder) -> {
-            Expression expression = ExpressionTool.getPath(root, column);
+            Expression expression = ExpressionUtils.getPath(root, column);
 
 
             List<?> list = valueList.stream().filter(Objects::nonNull).toList();
@@ -339,7 +339,7 @@ public class JpaQuery<T> implements Specification<T> {
         }
 
         this.add((Specification<T>) (root, query, builder) -> {
-            Expression expression = ExpressionTool.getPath(root, column);
+            Expression expression = ExpressionUtils.getPath(root, column);
 
             List<?> list = valueList.stream().filter(Objects::nonNull).toList();
             boolean hasNull = CollUtil.hasNull(valueList);
@@ -431,6 +431,6 @@ public class JpaQuery<T> implements Specification<T> {
 
 
     private Expression getExpression(String column, Root<T> root) {
-        return ExpressionTool.getPath(root, column);
+        return ExpressionUtils.getPath(root, column);
     }
 }

@@ -2,17 +2,10 @@ package io.admin.framework.config.data;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
-import cn.hutool.core.util.StrUtil;
-import cn.hutool.setting.yaml.YamlUtil;
-import com.fasterxml.jackson.databind.MapperFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.PropertyNamingStrategies;
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
-import io.admin.common.utils.SpringUtils;
 import io.admin.common.utils.YmlUtils;
-import io.admin.common.utils.tree.TreeTool;
+import io.admin.common.utils.tree.TreeUtils;
 import io.admin.framework.config.data.sysconfig.ConfigGroupDefinition;
 import io.admin.framework.config.data.sysmenu.MenuDefinition;
 import jakarta.annotation.PostConstruct;
@@ -24,7 +17,6 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
 
-import java.io.InputStream;
 import java.util.*;
 
 @Slf4j
@@ -49,7 +41,7 @@ public class ConfigDataDao {
 
             // 菜单打平，方便后续合并
             List<MenuDefinition> flatList = new ArrayList<>();
-            TreeTool.walk(cur.getMenus(), MenuDefinition::getChildren, (node, parent) -> {
+            TreeUtils.walk(cur.getMenus(), MenuDefinition::getChildren, (node, parent) -> {
                 if (parent != null) {
                     node.setPid(parent.getId());
                 }

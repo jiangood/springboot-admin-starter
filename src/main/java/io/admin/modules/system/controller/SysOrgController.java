@@ -4,10 +4,10 @@ package io.admin.modules.system.controller;
 import cn.hutool.core.util.StrUtil;
 import io.admin.common.dto.antd.TreeOption;
 import io.admin.common.dto.AjaxResult;
-import io.admin.common.utils.tree.TreeTool;
+import io.admin.common.utils.tree.TreeUtils;
 import io.admin.common.dto.antd.DropEvent;
 import io.admin.common.utils.tree.drop.DropResult;
-import io.admin.common.utils.tree.drop.TreeDropTool;
+import io.admin.common.utils.tree.drop.TreeDropUtils;
 import io.admin.framework.config.argument.RequestBodyKeys;
 import io.admin.framework.config.security.HasPermission;
 import io.admin.framework.config.security.refresh.PermissionStaleService;
@@ -124,7 +124,7 @@ public class SysOrgController {
         List<SysOrg> nodes = sysOrgService.findAll();
         List<TreeOption> tree = list2Tree(nodes);
 
-        DropResult dropResult = TreeDropTool.onDrop(e, tree);
+        DropResult dropResult = TreeDropUtils.onDrop(e, tree);
 
         sysOrgService.sort(e.getDragKey(),dropResult);
 
@@ -176,7 +176,7 @@ public class SysOrgController {
             return item;
         }).toList();
 
-        List<TreeOption> tree = TreeTool.buildTree(list, TreeOption::getKey, TreeOption::getParentKey, TreeOption::getChildren, TreeOption::setChildren);
+        List<TreeOption> tree = TreeUtils.buildTree(list, TreeOption::getKey, TreeOption::getParentKey, TreeOption::getChildren, TreeOption::setChildren);
 
         return tree;
     }

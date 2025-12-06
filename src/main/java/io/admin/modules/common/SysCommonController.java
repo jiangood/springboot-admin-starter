@@ -5,7 +5,7 @@ import cn.hutool.core.lang.Dict;
 import cn.hutool.core.util.StrUtil;
 import io.admin.common.dto.antd.MenuItem;
 import io.admin.common.dto.AjaxResult;
-import io.admin.common.utils.tree.TreeTool;
+import io.admin.common.utils.tree.TreeUtils;
 import io.admin.framework.config.SysProp;
 import io.admin.framework.config.data.sysmenu.MenuDefinition;
 import io.admin.framework.config.security.LoginUser;
@@ -167,7 +167,7 @@ public class SysCommonController {
         }).toList();
 
         // ======== 开始转换 ===========
-        List<MenuItem> tree = TreeTool.buildTree(list, MenuItem::getKey, MenuItem::getParentKey, MenuItem::getChildren, MenuItem::setChildren);
+        List<MenuItem> tree = TreeUtils.buildTree(list, MenuItem::getKey, MenuItem::getParentKey, MenuItem::getChildren, MenuItem::setChildren);
         Dict data = new Dict();
         data.put("menuTree", tree);
         data.put("menuMap", menuMap);

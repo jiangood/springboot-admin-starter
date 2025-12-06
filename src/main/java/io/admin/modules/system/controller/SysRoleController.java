@@ -6,7 +6,7 @@ import io.admin.framework.config.data.sysmenu.MenuDefinition;
 import io.admin.framework.config.data.sysmenu.MenuPermission;
 import io.admin.common.dto.AjaxResult;
 import io.admin.common.dto.antd.Option;
-import io.admin.common.utils.CollectionTool;
+import io.admin.common.utils.CollectionUtils;
 import io.admin.framework.config.security.refresh.PermissionStaleService;
 import io.admin.framework.data.query.JpaQuery;
 import io.admin.modules.system.dto.request.SaveRolePermRequest;
@@ -115,7 +115,7 @@ public class SysRoleController  {
             if(CollUtil.isNotEmpty(menuDefinition.getPerms())){
                 Set<String> menuPerms = menuDefinition.getPerms().stream().map(MenuPermission::getPerm).collect(Collectors.toSet());
 
-                List<String> ownMenuPerms = CollectionTool.findExistingElements(rolePerms, menuPerms);
+                List<String> ownMenuPerms = CollectionUtils.findExistingElements(rolePerms, menuPerms);
                 permsMap.put(menuDefinition.getId(), ownMenuPerms);
             }
         }

@@ -2,7 +2,7 @@
 package io.admin.modules.system.service;
 
 import io.admin.framework.config.data.sysmenu.MenuDefinition;
-import io.admin.common.utils.tree.TreeTool;
+import io.admin.common.utils.tree.TreeUtils;
 import io.admin.modules.system.dao.SysMenuDao;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -32,7 +32,7 @@ public class SysMenuService  {
 
     public List<MenuDefinition> menuTree() {
         List<MenuDefinition> all = sysMenuDao.findAll();
-        List<MenuDefinition> tree = TreeTool.buildTree(all, MenuDefinition::getId, MenuDefinition::getPid,MenuDefinition::getChildren, MenuDefinition::setChildren);
+        List<MenuDefinition> tree = TreeUtils.buildTree(all, MenuDefinition::getId, MenuDefinition::getPid,MenuDefinition::getChildren, MenuDefinition::setChildren);
         return tree;
 
     }

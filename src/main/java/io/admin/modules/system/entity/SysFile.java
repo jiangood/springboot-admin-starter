@@ -2,8 +2,8 @@
 package io.admin.modules.system.entity;
 
 import cn.hutool.core.io.FileUtil;
-import io.admin.common.utils.ContentTypeTool;
-import io.admin.common.utils.RequestTool;
+import io.admin.common.utils.ContentTypeUtils;
+import io.admin.common.utils.RequestUtils;
 import io.admin.common.utils.enums.MaterialType;
 import io.admin.framework.data.domain.BaseEntity;
 import jakarta.persistence.*;
@@ -99,14 +99,14 @@ public class SysFile extends BaseEntity {
 
     @Transient
     public String getContentType(){
-        return ContentTypeTool.getContentTypeByExtension(getSuffix());
+        return ContentTypeUtils.getContentTypeByExtension(getSuffix());
     }
 
     @Transient
     public String getUrl() {
-        HttpServletRequest request = RequestTool.currentRequest();
+        HttpServletRequest request = RequestUtils.currentRequest();
         if (request != null) {
-            String baseUrl = RequestTool.getBaseUrl(request);
+            String baseUrl = RequestUtils.getBaseUrl(request);
             return baseUrl + "/sysFile/preview/" + getId();
         }
 

@@ -1,6 +1,6 @@
 package io.admin.framework.data.id.impl;
 
-import io.admin.common.utils.IdTool;
+import io.admin.common.utils.IdUtils;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.id.IdentifierGenerator;
 
@@ -12,6 +12,6 @@ public class Uuid7IdGenerator implements IdentifierGenerator {
 
     @Override
     public Object generate(SharedSessionContractImplementor sharedSessionContractImplementor, Object o) {
-        return IdTool.uuidV7();
+        return IdUtils.uuidV7();
     }
 }

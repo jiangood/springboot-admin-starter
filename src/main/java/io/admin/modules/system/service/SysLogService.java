@@ -2,8 +2,8 @@
 package io.admin.modules.system.service;
 
 import io.admin.common.dto.AjaxResult;
-import io.admin.common.utils.IpAddressTool;
-import io.admin.common.utils.RequestTool;
+import io.admin.common.utils.IpUtils;
+import io.admin.common.utils.RequestUtils;
 import io.admin.framework.config.security.LoginUser;
 import io.admin.framework.data.service.BaseService;
 import io.admin.framework.log.Log;
@@ -31,8 +31,8 @@ public class SysLogService extends BaseService<SysLog> {
     public void saveOperationLog(JoinPoint joinPoint, long duration, String params, AjaxResult result) {
         Date now = new Date();
 
-        HttpServletRequest request = RequestTool.currentRequest();
-        String ip = IpAddressTool.getIp(request);
+        HttpServletRequest request = RequestUtils.currentRequest();
+        String ip = IpUtils.getIp(request);
 
         LoginUser loginUser = LoginUtils.getUser();
         if (loginUser == null) {

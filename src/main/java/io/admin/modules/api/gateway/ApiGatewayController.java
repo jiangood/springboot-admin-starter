@@ -4,7 +4,7 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.extra.servlet.JakartaServletUtil;
 import io.admin.modules.api.ApiErrorCode;
-import io.admin.modules.api.ApiSignTool;
+import io.admin.modules.api.ApiSignUtils;
 import io.admin.modules.api.entity.ApiAccount;
 import io.admin.modules.api.entity.ApiResource;
 import io.admin.modules.api.service.ApiAccessLogService;
@@ -74,7 +74,7 @@ public class ApiGatewayController {
 
         // 校验签名
         String appSecret = account.getAppSecret();
-        String calcSign = ApiSignTool.sign(appId, appSecret, timestamp);
+        String calcSign = ApiSignUtils.sign(appId, appSecret, timestamp);
         this.check(sign.equals(calcSign),  ApiErrorCode.SIGN_ERROR);
 
 

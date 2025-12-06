@@ -4,7 +4,7 @@ package io.admin.framework.config;
 import cn.hutool.core.util.StrUtil;
 import io.admin.common.dto.AjaxResult;
 import io.admin.common.utils.ExceptionToMessageUtils;
-import io.admin.common.utils.HttpServletTool;
+import io.admin.common.utils.HttpServletUtils;
 import io.admin.framework.CodeException;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
@@ -92,15 +92,15 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(NoHandlerFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public AjaxResult notFound(NoHandlerFoundException e) {
-        log.error(">>> 资源不存在异常，具体信息为：{}", e.getMessage() + "，请求地址为:" + HttpServletTool.getRequest().getRequestURI());
-        return AjaxResult.err().code(404).msg("资源路径不存在，请检查请求地址，请求地址为:" + HttpServletTool.getRequest().getRequestURI());
+        log.error(">>> 资源不存在异常，具体信息为：{}", e.getMessage() + "，请求地址为:" + HttpServletUtils.getRequest().getRequestURI());
+        return AjaxResult.err().code(404).msg("资源路径不存在，请检查请求地址，请求地址为:" + HttpServletUtils.getRequest().getRequestURI());
     }
 
 
     @ExceptionHandler(FileNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public AjaxResult fileNotFoundException(FileNotFoundException e) {
-        String uri = HttpServletTool.getRequest().getRequestURI();
+        String uri = HttpServletUtils.getRequest().getRequestURI();
         log.error("文件不存在：{} ,请求地址为 {}", e.getMessage() , uri);
         return AjaxResult.err().code(404).msg(e.getMessage()).data("请求路径：" + uri);
     }

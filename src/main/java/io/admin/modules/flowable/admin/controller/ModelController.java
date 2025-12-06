@@ -5,7 +5,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import io.admin.common.dto.AjaxResult;
 import io.admin.common.dto.antd.Option;
 import io.admin.common.utils.SpringUtils;
-import io.admin.common.utils.ann.RemarkTool;
+import io.admin.common.utils.ann.RemarkUtils;
 import io.admin.framework.config.security.HasPermission;
 import io.admin.framework.data.query.JpaQuery;
 import io.admin.framework.log.Log;
@@ -23,10 +23,8 @@ import org.flowable.bpmn.model.BpmnModel;
 import org.flowable.bpmn.model.Process;
 import org.flowable.engine.RepositoryService;
 import org.flowable.engine.delegate.JavaDelegate;
-import org.flowable.engine.repository.Deployment;
 import org.flowable.engine.repository.Model;
 import org.flowable.engine.repository.ModelQuery;
-import org.flowable.engine.repository.ProcessDefinition;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -168,7 +166,7 @@ public class ModelController {
             JavaDelegate value = e.getValue();
             Class<? extends JavaDelegate> cls = value.getClass();
             log.info("{}: {}", beanName, cls);
-            String remark = RemarkTool.getRemark(cls);
+            String remark = RemarkUtils.getRemark(cls);
 
             String label = remark == null ? beanName : remark;
             String key = "${" + beanName + "}";

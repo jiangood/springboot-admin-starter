@@ -1,6 +1,6 @@
 package io.admin.framework.data.converter;
 
-import io.admin.common.utils.URLTool;
+import io.admin.common.utils.URLUtils;
 import jakarta.persistence.AttributeConverter;
 
 import java.io.Serializable;
@@ -31,7 +31,7 @@ public class ToQueryStringMapConverter implements AttributeConverter<Map<String,
 
     @Override
     public Map<String, Object> convertToEntityAttribute(String queryString) {
-        Map<String, String> map = URLTool.getParams(queryString);
+        Map<String, String> map = URLUtils.getParams(queryString);
         return new HashMap<>(map);
     }
 }

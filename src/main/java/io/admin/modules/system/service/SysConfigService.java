@@ -4,8 +4,8 @@ package io.admin.modules.system.service;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.StrUtil;
-import io.admin.common.utils.RequestTool;
-import io.admin.common.utils.tree.TreeTool;
+import io.admin.common.utils.RequestUtils;
+import io.admin.common.utils.tree.TreeUtils;
 import io.admin.framework.config.SysProp;
 import io.admin.framework.config.data.ConfigDataDao;
 import io.admin.framework.config.data.sysconfig.ConfigDefinition;
@@ -72,7 +72,7 @@ public class SysConfigService {
     public String getBaseUrl() {
         String url = this.get("sys.baseUrl");
         if (StrUtil.isEmpty(url)) {
-            url = RequestTool.getBaseUrl(RequestTool.currentRequest());
+            url = RequestUtils.getBaseUrl(RequestUtils.currentRequest());
         }
         return url;
     }
@@ -137,7 +137,7 @@ public class SysConfigService {
         }
 
 
-        TreeTool.cleanEmptyChildren(responseList, SysConfigResponse::getChildren, SysConfigResponse::setChildren);
+        TreeUtils.cleanEmptyChildren(responseList, SysConfigResponse::getChildren, SysConfigResponse::setChildren);
 
         return responseList;
     }
