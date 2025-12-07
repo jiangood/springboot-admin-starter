@@ -35,7 +35,7 @@ public class ConfigDataDao {
     public void init() {
         for (Resource configFile : this.getConfigFiles()) {
             log.info("处理数据文件 {}", configFile.getFilename());
-            DataPropConfig cur = this.parseResource(configFile);
+            DataProperties cur = this.parseResource(configFile);
             configs.addAll(cur.getConfigs());
 
 
@@ -119,8 +119,8 @@ public class ConfigDataDao {
     }
 
     @SneakyThrows
-    private DataPropConfig parseResource(Resource resource) {
-      return YmlUtils.parseYml(resource.getInputStream(), DataPropConfig.class,"data");
+    private DataProperties parseResource(Resource resource) {
+      return YmlUtils.parseYml(resource.getInputStream(), DataProperties.class,"data");
     }
 
 

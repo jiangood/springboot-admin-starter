@@ -12,10 +12,14 @@ import java.util.List;
 @Configuration
 @ConfigurationProperties(prefix = "data")
 @Data
- class DataPropConfig {
-
+public class DataProperties {
+    /**
+     * 菜单定义和
+     */
     private List<MenuDefinition> menus = new ArrayList<>();
 
-
+    /**
+     * 系统配置定义（可在系统设置中查看和修改）
+     */
     private List<ConfigGroupDefinition> configs = new ArrayList<>();
 }

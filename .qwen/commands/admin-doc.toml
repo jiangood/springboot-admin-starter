@@ -40,11 +40,11 @@ prompt = """
 读取目录 web/src/framework，生成文档并包含参数
 
 ### 后端
-配置参考文件： src/main/resources/application-data-framework.yml
+
 描述菜单列表
 描述业务项目如何配置
 
-读取如下文件、文件夹，生成文档
+读取如下文件、文件夹，生成完整文档,不要有遗漏
 - src/main/java/io/admin/framework/data/specification/Spec.java
 - src/main/java/io/admin/common/utils/tree/TreeUtils.java
 - src/main/java/io/admin/common/utils/annotation/RemarkUtils.java
@@ -59,6 +59,8 @@ prompt = """
 - src/main/java/io/admin/modules/job/example/HelloWorldJob.java
 - src/main/java/io/admin/modules/flowable/example/LeaveProcessListener.java
 
+读取如下文件，生成流程配置文档：
+- src/main/resources/application-data-framework.yml
 读取如下文件，生成流程配置文档
 - src/main/resources/application-process.yml
 
