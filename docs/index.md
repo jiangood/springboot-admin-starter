@@ -5,7 +5,9 @@
 后端最新版本： ![Maven Version](https://img.shields.io/maven-central/v/io.github.jiangood/springboot-admin-starter)
 
 前端最新版本： ![NPM Version](https://img.shields.io/npm/v/@jiangood/springboot-admin-starter)
-
+- [编码规范](编码规范.md)
+- [ai](ai.md)
+- [使用说明书](index.md)
 ## 1.1 项目信息
 
 **后端**：
@@ -752,8 +754,3 @@ data:
           name: 保存
 ```
 
-# 5 生成目录
-
-- [编码规范](编码规范.md)
-- [代码生成规则](code-gen-rule.md)
-- [使用说明书](index.md)
