@@ -5,6 +5,7 @@ import cn.hutool.core.util.ClassUtil;
 import io.admin.common.utils.annotation.Remark;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.boot.Metadata;
+import org.hibernate.boot.spi.BootstrapContext;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.integrator.spi.Integrator;
 import org.hibernate.mapping.Column;
@@ -14,51 +15,30 @@ import org.hibernate.service.spi.SessionFactoryServiceRegistry;
 
 import java.lang.reflect.Field;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 /**
  * 数据库自动生成备注
- * <p>
  * 根据注解 @Remark
- *
- * @gendoc
  */
 @Slf4j
 public class HibernateEntityCommentIntegrator implements Integrator {
     public static final HibernateEntityCommentIntegrator INSTANCE = new HibernateEntityCommentIntegrator();
 
-    public HibernateEntityCommentIntegrator() {
-        super();
-    }
 
-    /**
-     * Perform comment integration.
-     *
-     * @param metadata        The "compiled" representation of the mapping information
-     * @param sessionFactory  The session factory being created
-     * @param serviceRegistry The session factory's service registry
-     */
     @Override
-    public void integrate(Metadata metadata, SessionFactoryImplementor sessionFactory, SessionFactoryServiceRegistry serviceRegistry) {
+    public void integrate(
+            Metadata metadata,
+            BootstrapContext bootstrapContext,
+            SessionFactoryImplementor sessionFactory) {
         processComment(metadata);
     }
 
-    /**
-     * Not used.
-     *
-     * @param sessionFactoryImplementor     The session factory being closed.
-     * @param sessionFactoryServiceRegistry That session factory's service registry
-     */
     @Override
     public void disintegrate(SessionFactoryImplementor sessionFactoryImplementor, SessionFactoryServiceRegistry sessionFactoryServiceRegistry) {
     }
 
-    /**
-     * Process comment annotation.
-     *
-     * @param metadata process annotation of this {@code Metadata}.
-     */
+
     private void processComment(Metadata metadata) {
         for (PersistentClass persistentClass : metadata.getEntityBindings()) {
             // Process the Comment annotation is applied to Class
@@ -82,11 +62,8 @@ public class HibernateEntityCommentIntegrator implements Integrator {
                     }
                 }
             }
-            // Process fields with Comment annotation.
-            //noinspection unchecked
             List<Property> properties = persistentClass.getProperties();
             for (Property property : properties) {
-
                 fieldComment(persistentClass, property.getName());
             }
         }
