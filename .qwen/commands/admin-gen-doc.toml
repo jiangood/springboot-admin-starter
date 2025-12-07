@@ -7,7 +7,6 @@ prompt = """
 - 本项目是一个后端管理系统的框架，供业务项目使用。请站在业务项目如何使用的角度编写文档
 - 你的主要工作就是参考示例、代码，实现文档的编写。
 - 文档语言使用中文简体, 除了代码请勿使用英文
-- 读取文件夹时生成文档时，不要有遗漏，力求全部文件都解析并生成文档
 - 文档尽量简洁，示例代码尽量简洁，最好只显示片段即可
 - 不要使用git相关的命令
 - 由于本项目是框架级别，当前端导入相关文件时，使用模块名@jiangood/springboot-admin-starter即可，注意antd使用最新版6.x
@@ -33,10 +32,13 @@ prompt = """
 
 
 2 前端
+读取 web/src/framework 目录下的所有文件.ts,.tsx文件
+要求如下:
+组件文档包含名称，参数，说明
+工具文档包含名称，说明，举例
+确保不要遗漏任何文件，业务项目开发人员需要全部文档
 
-读取目录 web/src/framework下的所有文件（包含子目录），生成表格形式文档，组件类包含名称，参数，说明，工具类包含名称，说明，举例
-
-### 后端
+3 后端
 
 描述菜单列表
 描述业务项目如何配置
@@ -63,7 +65,7 @@ prompt = """
 - src/main/resources/application-process.yml
 - src/main/java/io/admin/modules/flowable/example/LeaveProcessListener.java
 
-3 模板代码
+4 模板代码
 读取如下文件，以学生为例生成通用代码模板，代码去掉注释，去掉多余空格、换行。
 - src/main/java/io/admin/modules/system/entity/SysManual.java
 - src/main/java/io/admin/modules/system/dao/SysManualDao.java

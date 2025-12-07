@@ -2,9 +2,14 @@
 import React from "react";
 
 declare type PageProps = {
-    // 是否有内边距
+    /**
+     * 是否有内边距
+     */
     padding?: boolean;
-    // 背景色
+
+    /**
+     * 背景色
+     */
     backgroundGray?:boolean;
 };
 
