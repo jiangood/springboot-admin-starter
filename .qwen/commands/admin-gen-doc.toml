@@ -75,7 +75,7 @@ prompt = """
 - src/main/resources/application-data-framework.yml，
 - web/src/pages/system/sysManual/index.jsx
 确保菜单配置在application-data.yml文件中，并且只包含菜单即可（不需要配置数据）
-最后整体检查一遍,修正错误
+最后整体检查一遍,修正错误，按合适的顺序生成模板
 
 以下为业务代码阅读的文本，可原样输出
 5 生成业务代码的步骤
