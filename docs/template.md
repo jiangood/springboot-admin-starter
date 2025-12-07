@@ -1,7 +1,7 @@
 # 模板代码
 
-## 实体类模板 (SysManual.java)
-存储路径：`src/main/java/io/admin/modules/system/entity/SysManual.java`
+## 实体类模板 (User.java)
+存储路径：`src/main/java/io/admin/modules/system/entity/User.java`
 
 ```java
 package io.admin.modules.system.entity;
@@ -19,13 +19,12 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.FieldNameConstants;
 
-@Remark("操作手册")
+@Remark("用户信息")
 @Entity
 @Getter
 @Setter
-@Table(uniqueConstraints = {@UniqueConstraint(name = "uk_sys_manual", columnNames = {"name", "version"})})
 @FieldNameConstants
-public class SysManual extends BaseEntity {
+public class User extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 
@@ -35,77 +34,53 @@ public class SysManual extends BaseEntity {
     @Size(max = 100, message = "名称长度不能超过100个字符")
     private String name;
 
-    @NotNull
-    @Remark("版本")
-    @Positive(message = "版本号必须为正整数")
-    private Integer version;
 
-    @Remark("文件")
-    @Column(length = 32)
-    @Size(max = 32, message = "文件ID长度不能超过32个字符")
-    private String fileId;
 }
 ```
 
-## DAO类模板 (SysManualDao.java)
-存储路径：`src/main/java/io/admin/modules/system/dao/SysManualDao.java`
+## DAO类模板 (UserDao.java)
+存储路径：`src/main/java/io/admin/modules/system/dao/UserDao.java`
 
 ```java
 package io.admin.modules.system.dao;
 
 import io.admin.framework.data.repository.BaseDao;
 import io.admin.framework.data.specification.Spec;
-import io.admin.modules.system.entity.SysManual;
+import io.admin.modules.system.entity.User;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class SysManualDao extends BaseDao<SysManual> {
-
-    public int findMaxVersion(String name) {
-        Spec<SysManual> q = Spec.<SysManual>of().eq(SysManual.Fields.name, name);
-
-        SysManual e = this.findTop1(q, Sort.by(Sort.Direction.DESC, SysManual.Fields.version));
-
-        return e == null ? 0 : e.getVersion();
-    }
+public class UserDao extends BaseDao<User> {
+   
 }
 ```
 
-## Service类模板 (SysManualService.java)
-存储路径：`src/main/java/io/admin/modules/system/service/SysManualService.java`
+## Service类模板 (UserService.java)
+存储路径：`src/main/java/io/admin/modules/system/service/UserService.java`
 
 ```java
 package io.admin.modules.system.service;
 
 import io.admin.framework.data.service.BaseService;
-import io.admin.modules.system.dao.SysManualDao;
-import io.admin.modules.system.entity.SysManual;
+import io.admin.modules.system.dao.UserDao;
+import io.admin.modules.system.entity.User;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class SysManualService extends BaseService<SysManual> {
+public class UserService extends BaseService<User> {
 
     @Resource
-    SysManualDao dao;
+    private UserDao userDao;
 
-    @Override
-    public SysManual saveOrUpdateByRequest(SysManual input, List<String> updateKeys) throws Exception {
-        if (input.isNew()) {
-            int maxVersion = dao.findMaxVersion(input.getName());
-            input.setVersion(maxVersion + 1);
-        }
-
-        return super.saveOrUpdateByRequest(input, updateKeys);
-    }
 }
 ```
 
-## Controller类模板 (SysManualController.java)
-存储路径：`src/main/java/io/admin/modules/system/controller/SysManualController.java`
+## Controller类模板 (UserController.java)
+存储路径：`src/main/java/io/admin/modules/system/controller/UserController.java`
 
 ```java
 package io.admin.modules.system.controller;
@@ -114,8 +89,8 @@ import io.admin.common.dto.AjaxResult;
 import io.admin.framework.config.argument.RequestBodyKeys;
 import io.admin.framework.config.security.HasPermission;
 import io.admin.framework.data.specification.Spec;
-import io.admin.modules.system.entity.SysManual;
-import io.admin.modules.system.service.SysManualService;
+import io.admin.modules.system.entity.User;
+import io.admin.modules.system.service.UserService;
 import jakarta.annotation.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -127,31 +102,30 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("admin/sysManual")
-public class SysManualController {
+@RequestMapping("admin/user")
+public class UserController {
 
     @Resource
-    SysManualService service;
+    private UserService service;
 
-    @HasPermission("sysManual:view")
+    @HasPermission("user:view")
     @RequestMapping("page")
     public AjaxResult page(String searchText, @PageableDefault(direction = Sort.Direction.DESC, sort = "updateTime") Pageable pageable) throws Exception {
-        Spec<SysManual> q = Spec.of();
-        q.orLike(searchText, SysManual.Fields.name);
+        Spec<User> q = Spec.<User>of().orLike(searchText, User.Fields.name);
 
-        Page<SysManual> page = service.findPageByRequest(q, pageable);
+        Page<User> page = service.findPageByRequest(q, pageable);
 
         return AjaxResult.ok().data(page);
     }
 
-    @HasPermission("sysManual:save")
+    @HasPermission("user:save")
     @PostMapping("save")
-    public AjaxResult save(@RequestBody SysManual input, RequestBodyKeys updateFields) throws Exception {
+    public AjaxResult save(@RequestBody User input, RequestBodyKeys updateFields) throws Exception {
         service.saveOrUpdateByRequest(input, updateFields);
         return AjaxResult.ok().msg("保存成功");
     }
 
-    @HasPermission("sysManual:delete")
+    @HasPermission("user:delete")
     @RequestMapping("delete")
     public AjaxResult delete(String id) {
         service.deleteByRequest(id);
@@ -161,7 +135,7 @@ public class SysManualController {
 ```
 
 ## 前端页面模板 (index.jsx)
-存储路径：`web/src/pages/system/sysManual/index.jsx`
+存储路径：`web/src/pages/system/user/index.jsx`
 
 ```jsx
 import {PlusOutlined} from '@ant-design/icons'
@@ -184,28 +158,15 @@ export default class extends React.Component {
             title: '名称',
             dataIndex: 'name',
         },
-        {
-            title: '版本',
-            dataIndex: 'version',
-            render(version) {
-                return 'v' + version;
-            }
-        },
-        {
-            title: '文件',
-            dataIndex: 'fileId',
-            render(id){
-               const url = 'admin/sysFile/preview/' + id;
-                return <a href={url} target='_blank'>查看文件</a>
-            }
-        },
+       
+       
         {
             title: '操作',
             dataIndex: 'option',
             render: (_, record) => (
                 <ButtonList>
-                    <Button size='small' perm='sysManual:save' onClick={() => this.handleEdit(record)}>编辑</Button>
-                    <Popconfirm perm='sysManual:delete' title='是否确定删除操作手册'  onConfirm={() => this.handleDelete(record)}>
+                    <Button size='small' perm='user:save' onClick={() => this.handleEdit(record)}>编辑</Button>
+                    <Popconfirm perm='user:delete' title='是否确定删除用户信息'  onConfirm={() => this.handleDelete(record)}>
                         <Button size='small'>删除</Button>
                     </Popconfirm>
                 </ButtonList>
@@ -222,34 +183,34 @@ export default class extends React.Component {
     }
 
     onFinish = values => {
-        HttpUtils.post('admin/sysManual/save', values).then(rs => {
+        HttpUtils.post('admin/user/save', values).then(rs => {
             this.setState({formOpen: false})
             this.tableRef.current.reload()
         })
     }
 
     handleDelete = record => {
-        HttpUtils.get('admin/sysManual/delete', {id: record.id}).then(rs => {
+        HttpUtils.get('admin/user/delete', {id: record.id}).then(rs => {
             this.tableRef.current.reload()
         })
     }
 
     render() {
-        return <Page>
+        return <Page padding={true}>
             <ProTable
                 actionRef={this.tableRef}
                 toolBarRender={(params, {selectedRows, selectedRowKeys}) => {
                     return <ButtonList>
-                        <Button perm='sysManual:save' type='primary' onClick={this.handleAdd}>
+                        <Button perm='user:save' type='primary' onClick={this.handleAdd}>
                             <PlusOutlined/> 新增
                         </Button>
                     </ButtonList>
                 }}
-                request={(params) => HttpUtils.get('admin/sysManual/page', params)}
+                request={(params) => HttpUtils.get('admin/user/page', params)}
                 columns={this.columns}
             />
 
-            <Modal title='操作手册'
+            <Modal title='用户信息'
                    open={this.state.formOpen}
                    onOk={() => this.formRef.current.submit()}
                    onCancel={() => this.setState({formOpen: false})}
@@ -266,9 +227,7 @@ export default class extends React.Component {
                         <Input/>
                     </Form.Item>
 
-                    <Form.Item label='文件' name='fileId' rules={[{required: true}]}>
-                        <FieldUploadFile accept=".pdf" maxCount={1} />
-                    </Form.Item>
+              
 
                 </Form>
             </Modal>
@@ -283,45 +242,15 @@ export default class extends React.Component {
 ```yaml
 data:
   menus:
-    - id: sysManual
-      name: 操作手册
-      path: /system/sysManual
+    - id: user
+      name: 用户信息
+      path: /system/user
       icon: CopyOutlined
       perms:
-        - perm: sysManual:view
+        - perm: user:view
           name: 查看
-        - perm: sysManual:delete
+        - perm: user:delete
           name: 删除
-        - perm: sysManual:save
+        - perm: user:save
           name: 保存
 ```
-
-## 完整目录结构示例
-```
-项目根目录/
-├── src/
-│   └── main/
-│       ├── java/
-│       │   └── io/
-│       │       └── admin/
-│       │           └── modules/
-│       │               └── system/
-│       │                   ├── entity/
-│       │                   │   └── SysManual.java
-│       │                   ├── dao/
-│       │                   │   └── SysManualDao.java
-│       │                   ├── service/
-│       │                   │   └── SysManualService.java
-│       │                   └── controller/
-│       │                       └── SysManualController.java
-│       └── resources/
-│           ├── application-data.yml
-│           └── application.yml
-└── web/
-    └── src/
-        └── pages/
-            └── system/
-                └── sysManual/
-                    └── index.jsx
-```
-
