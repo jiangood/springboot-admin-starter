@@ -1,5 +1,6 @@
 package io.admin.common.utils;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -46,10 +47,10 @@ public class SpringUtilsTest {
 
     @Test
     public void testGetBeanWithNullWhenNotFound() {
-        // 测试当Bean不存在时返回null
-        String nonExistentBean = SpringUtils.getBean("nonExistentBean", String.class);
-        // 注意：getBean方法在找不到Bean时可能会抛出异常，而不是返回null
-        // 具体行为取决于Spring的实现
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            // 测试当Bean不存在
+            SpringUtils.getBean("nonExistentBean", String.class);
+        });
     }
 
     @Test
