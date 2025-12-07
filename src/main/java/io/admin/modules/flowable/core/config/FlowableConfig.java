@@ -1,4 +1,3 @@
-
 package io.admin.modules.flowable.core.config;
 
 import io.admin.common.utils.IdUtils;
@@ -13,12 +12,10 @@ import java.util.ArrayList;
 
 @Slf4j
 @Configuration
-public class FlowableConfig implements EngineConfigurationConfigurer<SpringProcessEngineConfiguration>  {
+public class FlowableConfig implements EngineConfigurationConfigurer<SpringProcessEngineConfiguration> {
 
     @Resource
     private GlobalProcessListener globalProcessListener;
-
-
 
 
     @Override
@@ -30,7 +27,6 @@ public class FlowableConfig implements EngineConfigurationConfigurer<SpringProce
         }
         cfg.getEventListeners().add(globalProcessListener);
     }
-
 
 
 }

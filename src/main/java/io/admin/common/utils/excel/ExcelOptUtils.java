@@ -22,7 +22,6 @@ public class ExcelOptUtils {
      * 获取单元格中租后一列的index ,  包含合并单元格
      *
      * @param sheet
-     *
      */
     public static int getMaxCol(XSSFSheet sheet) {
         Iterator<Row> iterator = sheet.rowIterator();
@@ -221,7 +220,6 @@ public class ExcelOptUtils {
             if (removingRow != null) {
 
 
-
                 sheet.removeRow(removingRow);  // does not always work
             }
         }
@@ -295,8 +293,7 @@ public class ExcelOptUtils {
         if (value instanceof String) {
             cell.setCellValue((String) value);
         } else if (value instanceof Number) {
-            if (value instanceof Integer) {
-                Integer i = (Integer) value;
+            if (value instanceof Integer i) {
                 cell.setCellValue(String.valueOf(i));
             } else {
                 cell.setCellValue(Double.parseDouble(value.toString()));
@@ -326,14 +323,15 @@ public class ExcelOptUtils {
 
     /**
      * 删除空行
+     *
      * @param sheet
      */
     public static void removeEmptyRows(Sheet sheet) {
         // 删除空行
         List<Row> emptyRows = new ArrayList<>();
-        for(Row row :sheet){
+        for (Row row : sheet) {
             boolean empty = ExcelOptUtils.isEmpty(row);
-            if(empty){
+            if (empty) {
                 emptyRows.add(row);
             }
         }
@@ -344,6 +342,7 @@ public class ExcelOptUtils {
 
 
     }
+
     /**
      * 判断一行是否有值
      *

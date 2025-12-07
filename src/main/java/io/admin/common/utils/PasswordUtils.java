@@ -10,25 +10,25 @@ import static cn.hutool.core.util.RandomUtil.BASE_CHAR_NUMBER;
 
 public class PasswordUtils {
 
-    public static String random(){
-        return RandomUtil.randomString(BASE_CHAR_NUMBER +"_-!.@$^&*()+=",12);
+    public static String random() {
+        return RandomUtil.randomString(BASE_CHAR_NUMBER + "_-!.@$^&*()+=", 12);
     }
 
     /**
      * 生产密码的密文，每次调用都不一样
-     * @param plainText
      *
+     * @param plainText
      */
     public static String encode(String plainText) {
         return getPasswordEncoder().encode(plainText);
     }
 
 
-    private static final PasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder(){
+    private static final PasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder() {
         @Override
         public boolean matches(CharSequence rawPassword, String encodedPassword) {
             // 特殊处理，密码相同时返回true
-            if(rawPassword.toString().equals(encodedPassword)){
+            if (rawPassword.toString().equals(encodedPassword)) {
                 return true;
             }
             return super.matches(rawPassword, encodedPassword);
@@ -42,6 +42,7 @@ public class PasswordUtils {
 
     /**
      * 校验密码强度
+     *
      * @param password
      */
     public static void validateStrength(String password) {

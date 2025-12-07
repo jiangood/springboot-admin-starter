@@ -12,7 +12,7 @@ import java.util.List;
 @Getter
 @Setter
 @FieldNameConstants
-public class ApiResource  {
+public class ApiResource {
 
     String name;
 
@@ -37,6 +37,9 @@ public class ApiResource  {
     Method method;
 
 
-    public static class C1 extends BaseToListConverter<ApiResourceArgument> {}
-    public static class C2 extends BaseToListConverter<ApiResourceArgumentReturn> {}
+    public static class C1 extends BaseToListConverter<ApiResourceArgument> {
+    }
+
+    public static class C2 extends BaseToListConverter<ApiResourceArgumentReturn> {
+    }
 }

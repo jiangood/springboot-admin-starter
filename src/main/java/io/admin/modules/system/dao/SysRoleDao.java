@@ -1,4 +1,3 @@
-
 package io.admin.modules.system.dao;
 
 
@@ -8,9 +7,6 @@ import org.springframework.stereotype.Repository;
 
 /**
  * 系统角色
- *
-
- *
  */
 @Repository
 public class SysRoleDao extends BaseDao<SysRole> {
@@ -20,6 +16,6 @@ public class SysRoleDao extends BaseDao<SysRole> {
     }
 
     public long countByCode(String code) {
-        return this.count( spec().eq(SysRole.Fields.code, code));
+        return this.count(spec().eq(SysRole.Fields.code, code));
     }
 }

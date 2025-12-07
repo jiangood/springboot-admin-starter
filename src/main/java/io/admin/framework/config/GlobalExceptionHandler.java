@@ -1,4 +1,3 @@
-
 package io.admin.framework.config;
 
 import cn.hutool.core.util.StrUtil;
@@ -101,7 +100,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public AjaxResult fileNotFoundException(FileNotFoundException e) {
         String uri = HttpServletUtils.getRequest().getRequestURI();
-        log.error("文件不存在：{} ,请求地址为 {}", e.getMessage() , uri);
+        log.error("文件不存在：{} ,请求地址为 {}", e.getMessage(), uri);
         return AjaxResult.err().code(404).msg(e.getMessage()).data("请求路径：" + uri);
     }
 
@@ -118,7 +117,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({IllegalArgumentException.class, IllegalStateException.class})
     public AjaxResult assertError(RuntimeException e) {
         log.error(">>> 业务异常，具体信息为：{}", e.getMessage());
-        if(sysProperties.isPrintException()){
+        if (sysProperties.isPrintException()) {
             log.error("打印异常已开启,以下是异常详细信息", e);
         }
 
@@ -164,7 +163,6 @@ public class GlobalExceptionHandler {
     }
 
 
-
     // io中断，如预览视频
     @ExceptionHandler(AsyncRequestNotUsableException.class)
     @ResponseBody
@@ -174,10 +172,9 @@ public class GlobalExceptionHandler {
     }
 
 
-
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public AjaxResult httpMessageNotReadableException(HttpMessageNotReadableException e) {
-        log.error("请求内容错误",e);
+        log.error("请求内容错误", e);
         return AjaxResult.err().msg("请求内容不可读");
     }
 
@@ -210,7 +207,6 @@ public class GlobalExceptionHandler {
         //最终把首部的逗号去掉
         return StrUtil.removeSuffix(sb.toString(), ",");
     }
-
 
 
 }

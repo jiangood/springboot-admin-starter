@@ -19,8 +19,9 @@ import java.util.List;
 
 /**
  * 数据库自动生成备注
- *
+ * <p>
  * 根据注解 @Remark
+ *
  * @gendoc
  */
 @Slf4j
@@ -102,7 +103,7 @@ public class HibernateEntityCommentIntegrator implements Integrator {
         try {
             Class<?> cls = persistentClass.getMappedClass();
             Field field = ClassUtil.getDeclaredField(cls, columnName);
-            if(field == null){
+            if (field == null) {
                 return;
             }
             if (field.isAnnotationPresent(Remark.class)) {
@@ -126,7 +127,6 @@ public class HibernateEntityCommentIntegrator implements Integrator {
             e.printStackTrace();
         }
     }
-
 
 
 }

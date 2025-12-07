@@ -22,7 +22,6 @@ public class SysManualPublicController {
     SysManualService service;
 
 
-
     /**
      * 用户点击帮助按钮
      *
@@ -35,11 +34,11 @@ public class SysManualPublicController {
         Spec<SysManual> s = Spec.<SysManual>of().orLike(searchText, "name");
 
         // 查询并保留最大版本记录
-        List<SysManual> list = service.findAll(s,Sort.by("name", "version"));
-        Map<String,SysManual> rs = new HashMap<>();
+        List<SysManual> list = service.findAll(s, Sort.by("name", "version"));
+        Map<String, SysManual> rs = new HashMap<>();
         for (SysManual e : list) {
-            if(!rs.containsKey(e.getName())){
-                rs.put(e.getName(),e);
+            if (!rs.containsKey(e.getName())) {
+                rs.put(e.getName(), e);
             }
         }
         Collection<SysManual> values = rs.values();

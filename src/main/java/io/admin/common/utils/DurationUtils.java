@@ -4,7 +4,7 @@ import java.time.Duration;
 
 public class DurationUtils {
 
-    public static String format(Duration duration){
+    public static String format(Duration duration) {
         long days = duration.toDays();
         long hours = duration.toHoursPart();
         long minutes = duration.toMinutesPart();

@@ -1,7 +1,6 @@
 package io.admin.framework.data.converter;
 
 
-
 import io.admin.common.utils.JsonUtils;
 import io.admin.common.utils.ReflectUtils;
 import jakarta.persistence.AttributeConverter;
@@ -10,7 +9,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public  class BaseToListConverter<T> implements AttributeConverter<List<T>, String>, Serializable {
+public class BaseToListConverter<T> implements AttributeConverter<List<T>, String>, Serializable {
 
 
     private static final long serialVersionUID = 1L;
@@ -31,7 +30,6 @@ public  class BaseToListConverter<T> implements AttributeConverter<List<T>, Stri
 
         return JsonUtils.jsonToBeanListQuietly(dbData, cls);
     }
-
 
 
 }

@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ApiResourceArgument  {
+public class ApiResourceArgument {
 
     String name;
 
@@ -21,9 +21,7 @@ public class ApiResourceArgument  {
     String demo;
 
 
-
     Boolean required;
-
 
 
     Integer index;

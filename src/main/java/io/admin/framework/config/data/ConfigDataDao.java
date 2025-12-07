@@ -29,7 +29,7 @@ public class ConfigDataDao {
     private List<MenuDefinition> menus = new ArrayList<>();
 
 
-    private List<ConfigGroupDefinition> configs = new ArrayList<>();
+    private final List<ConfigGroupDefinition> configs = new ArrayList<>();
 
     @PostConstruct
     public void init() {
@@ -120,7 +120,7 @@ public class ConfigDataDao {
 
     @SneakyThrows
     private DataProperties parseResource(Resource resource) {
-      return YmlUtils.parseYml(resource.getInputStream(), DataProperties.class,"data");
+        return YmlUtils.parseYml(resource.getInputStream(), DataProperties.class, "data");
     }
 
 

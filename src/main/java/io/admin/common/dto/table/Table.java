@@ -30,14 +30,12 @@ import java.util.function.Function;
 public class Table<T> {
 
 
-    private List<TableColumn<T>> columns = new ArrayList<>();
+    private final List<TableColumn<T>> columns = new ArrayList<>();
 
-    private List<T> dataSource;
+    private final List<T> dataSource;
 
     // 分页时，总数
     private Long totalElements;
-
-
 
 
     public Table(List<T> dataSource) {
@@ -163,8 +161,6 @@ public class Table<T> {
         }
         return tb;
     }
-
-
 
 
 }

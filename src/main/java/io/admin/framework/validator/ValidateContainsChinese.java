@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
 /**
  * 包含中文字符
  */
-@Target({ElementType.FIELD,ElementType.PARAMETER})
+@Target({ElementType.FIELD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = ValidateContainsChinese.MyChineseValidator.class)
 public @interface ValidateContainsChinese {

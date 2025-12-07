@@ -9,7 +9,7 @@ import java.util.Collections;
 import java.util.Map;
 
 /**
- *  建表时添加注释
+ * 建表时添加注释
  */
 @Component
 public class HibernateConfig implements HibernatePropertiesCustomizer {

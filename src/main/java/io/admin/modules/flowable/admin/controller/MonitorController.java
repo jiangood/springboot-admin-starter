@@ -179,7 +179,8 @@ public class MonitorController {
         return AjaxResult.ok().data(new PageImpl<>(responseList));
     }
 
-    public record SetAssigneeRequest(String taskId, String assignee) {}
+    public record SetAssigneeRequest(String taskId, String assignee) {
+    }
 
     @HasPermission("flowableTask:setAssignee")
     @RequestMapping("setAssignee")

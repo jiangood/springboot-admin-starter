@@ -13,9 +13,7 @@ public class ResourceUtils {
 
     /**
      * @param path , 支持通配符 如database/*.xml
-     *
-     * @return  资源
-     *
+     * @return 资源
      * @throws IOException IO异常
      */
     public static Resource[] findAll(String path) throws IOException {

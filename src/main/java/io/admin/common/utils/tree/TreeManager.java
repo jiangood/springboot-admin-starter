@@ -12,7 +12,7 @@ import java.util.function.Function;
 public class TreeManager<T extends TreeNode<T>> {
     private static final int ROOT_LEVEL = 1;
 
-    private List<T> list;
+    private final List<T> list;
 
     @Getter
     private List<T> tree;
@@ -32,9 +32,6 @@ public class TreeManager<T extends TreeNode<T>> {
             x.setIsLeaf(this.isLeaf(x));
         }
     }
-
-
-
 
 
     public static <X extends TreeNode<X>> TreeManager<X> of(List<X> dataList) {
@@ -110,7 +107,7 @@ public class TreeManager<T extends TreeNode<T>> {
     private void buildMap() {
         map = new HashMap<>();
         for (T t : list) {
-            String id = t.getId();;
+            String id = t.getId();
             map.put(id, t);
         }
     }
@@ -165,7 +162,7 @@ public class TreeManager<T extends TreeNode<T>> {
     }
 
     public T getParent(T t) {
-        String pid =  t.getPid();
+        String pid = t.getPid();
         return map.get(pid);
     }
 
@@ -306,7 +303,7 @@ public class TreeManager<T extends TreeNode<T>> {
 
 
     private void addChildToResult(T t, List<T> result) {
-        List<T> children =  t.getChildren();
+        List<T> children = t.getChildren();
         if (children != null && !children.isEmpty()) {
             for (T child : children) {
                 result.add(child);

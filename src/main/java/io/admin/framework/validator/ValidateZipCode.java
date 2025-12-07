@@ -14,7 +14,7 @@ import java.lang.annotation.Target;
 /**
  * 邮政编码（中国）
  */
-@Target({ElementType.FIELD,ElementType.PARAMETER})
+@Target({ElementType.FIELD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = ValidateZipCode.MyValidator.class)
 public @interface ValidateZipCode {
@@ -25,7 +25,7 @@ public @interface ValidateZipCode {
 
     Class<? extends Payload>[] payload() default {};
 
-   class MyValidator implements ConstraintValidator<ValidateZipCode, String> {
+    class MyValidator implements ConstraintValidator<ValidateZipCode, String> {
 
 
         @Override

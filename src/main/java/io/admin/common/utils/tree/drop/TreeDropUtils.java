@@ -34,7 +34,7 @@ public class TreeDropUtils {
 
 
         List<String> keys = new ArrayList<>();
-        if(siblings != null){
+        if (siblings != null) {
             for (TreeOption child : siblings) {
                 keys.add(child.getKey());
             }
@@ -48,7 +48,7 @@ public class TreeDropUtils {
     public static List<String> resort(List<String> list, DropEvent e) {
         String k = e.getDragKey();
         if (e.getDropPositionEnum() == DropEvent.DropPositionEnum.INSIDE) {
-            list.add(0,k);
+            list.add(0, k);
             return list;
         }
 

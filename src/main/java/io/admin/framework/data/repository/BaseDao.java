@@ -495,8 +495,7 @@ public abstract class BaseDao<T extends Persistable<String>> {
             }
         }
 
-        if (type instanceof ParameterizedType) {
-            ParameterizedType parameterizedType = (ParameterizedType) type;
+        if (type instanceof ParameterizedType parameterizedType) {
             Type[] genericTypes = parameterizedType.getActualTypeArguments();
             return (Class<T>) genericTypes[0];
         }

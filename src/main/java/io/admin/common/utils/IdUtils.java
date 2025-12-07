@@ -13,9 +13,9 @@ public class IdUtils implements Serializable {
 
 
     public static synchronized String nextIdByDb(String tableName, String prefix, int numLen) {
-        int seq = getIdByDb(tableName, prefix) +1;
-        String id = StringUtils.leftPad(String.valueOf(seq), numLen,'0');
-        return prefix +id;
+        int seq = getIdByDb(tableName, prefix) + 1;
+        String id = StringUtils.leftPad(String.valueOf(seq), numLen, '0');
+        return prefix + id;
     }
 
     private static synchronized int getIdByDb(String tableName, String prefix) {
@@ -33,11 +33,12 @@ public class IdUtils implements Serializable {
     /**
      * 按时间排序的uuid
      * 对于一些数据库主键友好，如mysql
+     *
      * @return
      */
-    public static String uuidV7(){
+    public static String uuidV7() {
         UUID uuid = UuidCreator.getTimeOrderedEpochPlus1();
-        return  uuid.toString().replace("-","");
+        return uuid.toString().replace("-", "");
     }
 
 

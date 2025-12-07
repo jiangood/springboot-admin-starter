@@ -99,7 +99,7 @@ public class DateUtils {
                 int year = Integer.parseInt(ey) - Integer.parseInt(by);
                 int quarter = Integer.parseInt(eq) - Integer.parseInt(bq);
 
-                return year * 4 + quarter + 1;
+                return year * 4L + quarter + 1;
             } else {
                 // 年月
                 DateTime a = DateUtil.parse(begin, "yyyy-MM");

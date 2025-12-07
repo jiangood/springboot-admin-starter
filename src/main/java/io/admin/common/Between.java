@@ -9,7 +9,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public  class Between {
+public class Between {
     String begin;
     String end;
 }

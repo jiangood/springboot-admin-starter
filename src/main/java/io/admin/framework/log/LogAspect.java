@@ -45,15 +45,14 @@ public class LogAspect {
         } catch (Exception e) {
             result = AjaxResult.err(e.getMessage());
         } finally {
-            if(result instanceof AjaxResult rs){
+            if (result instanceof AjaxResult rs) {
                 long duration = System.currentTimeMillis() - startTime;
-                logService.saveOperationLog(joinPoint, duration,params, rs);
+                logService.saveOperationLog(joinPoint, duration, params, rs);
             }
         }
 
         return result;
     }
-
 
 
     private String getParams(JoinPoint joinPoint) {
@@ -76,22 +75,22 @@ public class LogAspect {
     }
 
 
-    private static ObjectWriter writer ;
+    private static ObjectWriter writer;
 
 
     // 主要是为了不保存空字段
     @SneakyThrows
-    private static String toJson(Object obj)  {
-        if(writer == null){
+    private static String toJson(Object obj) {
+        if (writer == null) {
             ObjectMapper om = new ObjectMapper();
             om.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
             om.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
             om.setSerializationInclusion(JsonInclude.Include.NON_NULL);
             writer = om.writerWithDefaultPrettyPrinter();
         }
-        if(obj == null){
+        if (obj == null) {
             return null;
         }
-        return writer.writeValueAsString( obj);
+        return writer.writeValueAsString(obj);
     }
 }

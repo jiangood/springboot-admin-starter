@@ -1,4 +1,3 @@
-
 package io.admin.common.utils;
 
 import cn.hutool.core.net.NetUtil;
@@ -35,8 +34,9 @@ public class IpUtils {
 
     /**
      * 根据ip地址定位
+     *
      * @param request 请求
-     * @return  定位
+     * @return 定位
      */
     public static String getAddress(HttpServletRequest request) {
         String ip = getIp(request);

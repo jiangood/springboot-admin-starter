@@ -1,4 +1,3 @@
-
 package io.admin.modules.system.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -39,16 +38,13 @@ public class SysUser extends BaseEntity {
     private String unitId;
 
 
-
     @Remark("所属部门")
     private String deptId;
 
 
-
-
     @Remark("账号")
     @NotNull(message = "账号不能为空")
-    @Column(unique = true,length = 50)
+    @Column(unique = true, length = 50)
     private String account;
 
     /**
@@ -76,9 +72,6 @@ public class SysUser extends BaseEntity {
     private Boolean enabled;
 
 
-
-
-
     // 扩展字段1
     private String extra1;
     private String extra2;
@@ -90,9 +83,6 @@ public class SysUser extends BaseEntity {
             joinColumns = @JoinColumn(name = "user_id", nullable = false),
             inverseJoinColumns = @JoinColumn(name = "role_id", nullable = false))
     Set<SysRole> roles = new HashSet<>();
-
-
-
 
 
     // 数据权限类型
@@ -111,7 +101,7 @@ public class SysUser extends BaseEntity {
         if (dataPermType == null) {
             dataPermType = DataPermType.CHILDREN;
         }
-        if(enabled == null){
+        if (enabled == null) {
             enabled = true;
         }
     }

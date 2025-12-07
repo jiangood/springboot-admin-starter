@@ -154,7 +154,6 @@ public class FlowableService {
                     break;
             }
 
-            return;
         }
     }
 
@@ -222,7 +221,7 @@ public class FlowableService {
         // 人员及 分组
         SysUser user = sysUserService.findOne(userId);
         Set<SysRole> roles = user.getRoles();
-        if(CollUtil.isNotEmpty(roles)){
+        if (CollUtil.isNotEmpty(roles)) {
             for (SysRole role : roles) {
                 query.taskCandidateGroup(role.getId());
             }

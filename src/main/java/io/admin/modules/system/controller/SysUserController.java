@@ -1,4 +1,3 @@
-
 package io.admin.modules.system.controller;
 
 import cn.hutool.core.collection.CollUtil;
@@ -49,7 +48,6 @@ public class SysUserController {
     private SysUserService sysUserService;
 
 
-
     @Resource
     private SysOrgService sysOrgService;
 
@@ -92,7 +90,7 @@ public class SysUserController {
 
         if (isNew) {
             return AjaxResult.ok().msg("添加成功,密码：" + sysProperties.getDefaultPassword());
-        }else {
+        } else {
             permissionStaleService.markUserStale(input.getAccount());
         }
 
@@ -138,7 +136,7 @@ public class SysUserController {
     @PostMapping("resetPwd")
     public AjaxResult resetPwd(@RequestBody SysUser user) {
         String defaultPassWord = sysProperties.getDefaultPassword();
-        Assert.hasText(defaultPassWord,"未配置默认密码，请再配置sys.default-password");
+        Assert.hasText(defaultPassWord, "未配置默认密码，请再配置sys.default-password");
         sysUserService.resetPwd(user.getId());
         return AjaxResult.ok().msg("重置成功,新密码为：" + defaultPassWord).data("新密码：" + defaultPassWord);
     }
@@ -157,8 +155,8 @@ public class SysUserController {
         Collection<String> orgIds = LoginUtils.getOrgPermissions();
         if (CollUtil.isNotEmpty(orgIds)) {
             query.or(
-                Spec.<SysUser>of().in(SysUser.Fields.unitId, orgIds),
-                Spec.<SysUser>of().in(SysUser.Fields.deptId, orgIds)
+                    Spec.<SysUser>of().in(SysUser.Fields.unitId, orgIds),
+                    Spec.<SysUser>of().in(SysUser.Fields.deptId, orgIds)
             );
 
         }
@@ -226,14 +224,11 @@ public class SysUserController {
 
         List<TreeOption> orgOptions = orgList.stream().map(o -> new TreeOption(o.getName(), o.getId(), o.getPid())).toList();
         List<TreeOption> userOptions = userList.stream().map(u -> new TreeOption(u.getName(), u.getId(), StrUtil.emptyToDefault(u.getDeptId(), u.getUnitId()))).toList();
-        List<TreeOption> allOptions = ListUtils.union(orgOptions,userOptions);
+        List<TreeOption> allOptions = ListUtils.union(orgOptions, userOptions);
 
         List<TreeOption> tree = TreeUtils.buildTree(allOptions);
         return AjaxResult.ok().data(tree);
     }
-
-
-
 
 
 }

@@ -6,7 +6,7 @@ import com.google.common.collect.Multimap;
 public class GoogleUtils {
 
     // 使用谷歌工具类创建map,其中值为列表
-    public static  <V> Multimap<String, V> newMultimap() {
+    public static <V> Multimap<String, V> newMultimap() {
         return LinkedHashMultimap.create();
     }
 

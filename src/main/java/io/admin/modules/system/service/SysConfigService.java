@@ -1,4 +1,3 @@
-
 package io.admin.modules.system.service;
 
 import cn.hutool.core.bean.BeanUtil;
@@ -51,7 +50,7 @@ public class SysConfigService {
             String sysKey = key.substring(sysKeyPrefix.length()); // 去掉前缀
             Object fieldValue = BeanUtil.getFieldValue(sysProperties, sysKey);
             if (fieldValue != null) {
-                value = Convert.convert(String.class,fieldValue);
+                value = Convert.convert(String.class, fieldValue);
             }
         }
 

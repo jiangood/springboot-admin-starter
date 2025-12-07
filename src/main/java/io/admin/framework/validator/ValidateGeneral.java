@@ -14,7 +14,7 @@ import java.lang.annotation.Target;
 /**
  * 英文字母 、数字和下划线
  */
-@Target({ElementType.FIELD,ElementType.PARAMETER})
+@Target({ElementType.FIELD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = ValidateGeneral.MyValidator.class)
 public @interface ValidateGeneral {
@@ -25,7 +25,7 @@ public @interface ValidateGeneral {
 
     Class<? extends Payload>[] payload() default {};
 
-   class MyValidator implements ConstraintValidator<ValidateGeneral, String> {
+    class MyValidator implements ConstraintValidator<ValidateGeneral, String> {
 
 
         @Override

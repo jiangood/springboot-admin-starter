@@ -15,7 +15,7 @@ public class DbConfig {
 
     @Bean
     @ConditionalOnMissingBean(value = DbUtils.class)
-    public DbUtils dbUtils(DataSource dataSource){
+    public DbUtils dbUtils(DataSource dataSource) {
         return new DbUtils(dataSource);
     }
 }

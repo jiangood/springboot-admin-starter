@@ -45,8 +45,6 @@ public class SysJobController {
     private QuartzManager quartzService;
 
 
-
-
     @HasPermission("job:view")
     @RequestMapping("page")
     public AjaxResult page(String searchText, @PageableDefault(direction = Sort.Direction.DESC, sort = "updateTime") Pageable pageable) throws SchedulerException {
@@ -162,9 +160,6 @@ public class SysJobController {
         Page<SysJobExecuteRecord> page = service.findAllExecuteRecord(q, pageable);
         return AjaxResult.ok().data(page);
     }
-
-
-
 
 
     @HasPermission("job:view")

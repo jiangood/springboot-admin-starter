@@ -11,14 +11,13 @@ import java.io.File;
 
 @Slf4j
 @Service
-public class EmailService  {
+public class EmailService {
 
     @Resource
     SysConfigService sysConfigService;
 
 
-
-    public void send(String to,String title, String content, File... files) {
+    public void send(String to, String title, String content, File... files) {
         String from = sysConfigService.get("email.from");
         String pass = sysConfigService.get("email.pass");
 
@@ -27,6 +26,6 @@ public class EmailService  {
         account.setFrom(from);
         account.setPass(pass);
 
-        MailUtil.send(account,to, title, content, false, files);
+        MailUtil.send(account, to, title, content, false, files);
     }
 }

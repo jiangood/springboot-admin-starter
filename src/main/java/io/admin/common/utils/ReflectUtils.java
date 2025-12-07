@@ -34,7 +34,7 @@ public class ReflectUtils {
 
         if (index >= params.length || index < 0) {
             logger.debug("Index: " + index + ", Size of " + clazz.getSimpleName() + "'s Parameterized Type: "
-                         + params.length);
+                    + params.length);
             return Object.class;
         }
         if (!(params[index] instanceof Class)) {

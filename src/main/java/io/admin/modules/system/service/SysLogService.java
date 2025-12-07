@@ -1,4 +1,3 @@
-
 package io.admin.modules.system.service;
 
 import io.admin.common.dto.AjaxResult;
@@ -52,13 +51,11 @@ public class SysLogService extends BaseService<SysLog> {
         sysLog.setUsername(loginUser.getName());
         sysLog.setParams(params);
         sysLog.setSuccess(result.isSuccess());
-        if(!result.isSuccess()){
+        if (!result.isSuccess()) {
             sysLog.setError(result.getMessage());
         }
         dao.save(sysLog);
     }
-
-
 
 
 }

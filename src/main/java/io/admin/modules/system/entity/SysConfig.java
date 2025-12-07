@@ -1,4 +1,3 @@
-
 package io.admin.modules.system.entity;
 
 import io.admin.common.utils.annotation.Remark;
@@ -26,7 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 @Table(name = "sys_config_value")
 public class SysConfig extends BaseEntity {
 
-    @Column(length = 64,unique = true)
+    @Column(length = 64, unique = true)
     private String code;
 
 

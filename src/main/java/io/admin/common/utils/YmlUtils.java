@@ -20,30 +20,29 @@ public class YmlUtils {
         mapper.configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS, true);
 
 
-       try(is){
-           // 处理配置了前缀的情况
-           if( StrUtil.isNotEmpty(prefix )){
-               List<String> lines = IoUtil.readUtf8Lines(is, new ArrayList<>());
-               for (int i = 0; i < lines.size(); i++) {
-                   String line = lines.get(i);
-                   if(line.trim().equals(prefix+":")){
-                       lines.set(i,"");
-                   }else {
-                       if(StrUtil.isNotBlank( line) && !line.trim().startsWith("#")){
-                           lines.set(i,line.substring(2));
-                       }
-                   }
-               }
-               String str = StrUtil.join("\n", lines);
-               return mapper.readValue(str, beanClass);
-           }
+        try (is) {
+            // 处理配置了前缀的情况
+            if (StrUtil.isNotEmpty(prefix)) {
+                List<String> lines = IoUtil.readUtf8Lines(is, new ArrayList<>());
+                for (int i = 0; i < lines.size(); i++) {
+                    String line = lines.get(i);
+                    if (line.trim().equals(prefix + ":")) {
+                        lines.set(i, "");
+                    } else {
+                        if (StrUtil.isNotBlank(line) && !line.trim().startsWith("#")) {
+                            lines.set(i, line.substring(2));
+                        }
+                    }
+                }
+                String str = StrUtil.join("\n", lines);
+                return mapper.readValue(str, beanClass);
+            }
 
 
-           return mapper.readValue(is, beanClass);
-       }
+            return mapper.readValue(is, beanClass);
+        }
 
     }
-
 
 
 }

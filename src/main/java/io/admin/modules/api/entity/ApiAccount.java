@@ -32,12 +32,11 @@ public class ApiAccount extends BaseEntity {
     private String accessIp;
 
 
-    @Column(unique = true,length = 32)
+    @Column(unique = true, length = 32)
     private String appId;
 
-    @Column(unique = true,length = 32)
+    @Column(unique = true, length = 32)
     private String appSecret;
-
 
 
     @Remark("状态")
@@ -49,11 +48,9 @@ public class ApiAccount extends BaseEntity {
     private Date endTime;
 
 
-
     @Lob
     @Convert(converter = ToListConverter.class)
     private List<String> perms = new ArrayList<>();
-
 
 
 }

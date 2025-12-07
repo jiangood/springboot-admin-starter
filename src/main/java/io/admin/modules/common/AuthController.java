@@ -28,14 +28,11 @@ public class AuthController {
     public static final String CAPTCHA_CODE = "captchaCode";
 
 
-
     @Resource
     SysProperties prop;
 
     @Resource
     CodeGenerator codeGenerator;
-
-
 
 
     @PostMapping("logout")
@@ -50,12 +47,9 @@ public class AuthController {
     }
 
 
-
-
-
     @GetMapping("captchaImage")
     public void captcha(HttpSession session, HttpServletResponse response) throws IOException {
-        log.info("正在生成验证码, sessionId={}",session.getId());
+        log.info("正在生成验证码, sessionId={}", session.getId());
         try {
             ICaptcha captcha = CaptchaUtil.createLineCaptcha(100, 50, codeGenerator, 100);
 

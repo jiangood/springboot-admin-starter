@@ -12,12 +12,9 @@ public class ConfigConsts {
     public static final String RSA_PRIVATE_KEY = "sys.rsa.privateKey";
 
 
+    private static final SysConfigService service = SpringUtil.getBean(SysConfigService.class);
 
-
-
-    private static SysConfigService service = SpringUtil.getBean(SysConfigService.class);
-
-    public static String get(String key){
+    public static String get(String key) {
         return service.get(key);
     }
 

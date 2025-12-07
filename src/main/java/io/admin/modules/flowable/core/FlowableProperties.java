@@ -17,11 +17,10 @@ public class FlowableProperties {
      * 1. 终止流程,删除流程
      * 2. 回滚到上一个节点
      */
-    private RejectType rejectType  = RejectType.DELETE; // close , rollback
+    private RejectType rejectType = RejectType.DELETE; // close , rollback
 
 
-
-    public enum RejectType{
+    public enum RejectType {
         DELETE,
         MOVE_BACK
     }

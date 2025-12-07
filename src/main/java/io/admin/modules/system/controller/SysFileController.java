@@ -1,4 +1,3 @@
-
 package io.admin.modules.system.controller;
 
 import io.admin.common.dto.AjaxResult;
@@ -29,7 +28,6 @@ public class SysFileController {
     private SysFileService service;
 
 
-
     @HasPermission("sysFile:view")
     @RequestMapping("page")
     public AjaxResult page(String dateRange,
@@ -38,7 +36,7 @@ public class SysFileController {
                            MaterialType type,
                            @PageableDefault(direction = Sort.Direction.DESC, sort = "updateTime") Pageable pageable) {
         Spec<SysFile> q = Spec.of();
-        q.betweenIsoDateRange("createTime", dateRange,true);
+        q.betweenIsoDateRange("createTime", dateRange, true);
         q.eq(SysFile.Fields.originName, originName);
         q.eq(SysFile.Fields.objectName, objectName);
         q.eq(SysFile.Fields.type, type);
@@ -75,8 +73,6 @@ public class SysFileController {
     public void downloadFile(@PathVariable String fileId, HttpServletResponse response) throws Exception {
         service.download(fileId, response);
     }
-
-
 
 
     @GetMapping("detail")

@@ -16,12 +16,10 @@ public class SysMenuController {
     SysMenuService sysMenuService;
 
 
-
     @GetMapping("menuTree")
     public AjaxResult menuTree() {
         return AjaxResult.ok().data(sysMenuService.menuTree());
     }
-
 
 
 }

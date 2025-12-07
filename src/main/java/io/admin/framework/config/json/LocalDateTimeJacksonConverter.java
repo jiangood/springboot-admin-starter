@@ -14,7 +14,7 @@ import java.time.ZoneId;
 public class LocalDateTimeJacksonConverter extends JsonDeserializer<LocalDateTime> {
 
     @Override
-    public LocalDateTime deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JsonProcessingException {
+    public LocalDateTime deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
         String originDate = p.getText();
         DateTime dateTime = DateUtil.parse(originDate);
 

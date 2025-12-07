@@ -1,4 +1,3 @@
-
 package io.admin.modules.system.entity;
 
 import io.admin.common.utils.annotation.Remark;
@@ -24,7 +23,6 @@ import java.util.List;
 public class SysOrg extends BaseEntity implements TreeNode<SysOrg> {
 
 
-
     /**
      * 父id, 如果是根节点，则为空
      */
@@ -36,7 +34,6 @@ public class SysOrg extends BaseEntity implements TreeNode<SysOrg> {
      */
     @NotNull
     private String name;
-
 
 
     /**
@@ -58,7 +55,6 @@ public class SysOrg extends BaseEntity implements TreeNode<SysOrg> {
     private SysUser leader;
 
 
-
     // 扩展字段1
     private String extra1;
     private String extra2;
@@ -67,8 +63,6 @@ public class SysOrg extends BaseEntity implements TreeNode<SysOrg> {
 
     @Transient
     List<SysOrg> children;
-
-
 
 
     @Transient
@@ -88,7 +82,7 @@ public class SysOrg extends BaseEntity implements TreeNode<SysOrg> {
 
     @PrePersist
     public void prePersist() {
-        if(enabled == null){
+        if (enabled == null) {
             enabled = true;
         }
     }

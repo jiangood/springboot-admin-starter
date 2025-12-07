@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @TestPropertySource(properties = {
-    "spring.application.name=test-app"
+        "spring.application.name=test-app"
 })
 public class SpringUtilsTest {
 
@@ -25,7 +25,7 @@ public class SpringUtilsTest {
     public void testApplicationContextInjection() {
         // 测试SpringUtils是否正确获取了ApplicationContext
         assertNotNull(SpringUtils.getApplicationContext());
-        
+
         // 验证SpringUtils的ApplicationContext与测试上下文的ApplicationContext是同一个
         assertEquals(applicationContext, SpringUtils.getApplicationContext());
     }
@@ -83,7 +83,7 @@ public class SpringUtilsTest {
         // 测试获取属性
         String appName = SpringUtils.getProperty("spring.application.name");
         assertEquals("test-app", appName);
-        
+
         // 测试获取不存在的属性
         String nonExistentProperty = SpringUtils.getProperty("non.existent.property");
         assertNull(nonExistentProperty);

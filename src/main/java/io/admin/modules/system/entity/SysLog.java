@@ -1,4 +1,3 @@
-
 package io.admin.modules.system.entity;
 
 import io.admin.framework.data.DBConstants;
@@ -12,14 +11,12 @@ import java.util.Date;
 
 /**
  * 系统操作日志表
- *
- *
  */
 @Getter
 @Setter
 @Entity
 @FieldNameConstants
-@Table(name = "sys_log",indexes = {@Index(columnList = "operation" )})
+@Table(name = "sys_log", indexes = {@Index(columnList = "operation")})
 public class SysLog extends BaseEntity {
 
     @Column(nullable = false, length = 100)
@@ -31,7 +28,6 @@ public class SysLog extends BaseEntity {
 
     @Lob
     private String result;
-
 
 
     private Boolean success;
@@ -56,7 +52,6 @@ public class SysLog extends BaseEntity {
      */
     @Column(length = 50)
     private String username;
-
 
 
     @Column(length = 64)

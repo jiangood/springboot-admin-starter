@@ -29,31 +29,27 @@ public enum MaterialType {
     AUDIO;
 
 
-    public static MaterialType parseBySuffix(String suffix){
+    public static MaterialType parseBySuffix(String suffix) {
         MediaType mediaType = MediaTypeFactory.getMediaType("." + suffix).orElse(null);
-        if(mediaType != null){
+        if (mediaType != null) {
             String type = mediaType.getType();
             LinkedHashMap<String, MaterialType> enumMap = EnumUtil.getEnumMap(MaterialType.class);
             MaterialType fileType = enumMap.get(type.toUpperCase());
-            if(fileType != null){
+            if (fileType != null) {
                 return fileType;
             }
-            if(type.contains("text")){
+            if (type.contains("text")) {
                 return MaterialType.DOCUMENT;
             }
         }
 
-        if(StrUtil.equalsAnyIgnoreCase(suffix, "pdf","doc","ppt","excel","txt","log")){
+        if (StrUtil.equalsAnyIgnoreCase(suffix, "pdf", "doc", "ppt", "excel", "txt", "log")) {
             return MaterialType.DOCUMENT;
         }
 
 
         return null;
     }
-
-
-
-
 
 
 }

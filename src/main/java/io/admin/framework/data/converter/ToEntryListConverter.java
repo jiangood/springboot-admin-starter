@@ -1,7 +1,6 @@
 package io.admin.framework.data.converter;
 
 
-
 import io.admin.common.Entry;
 import io.admin.common.utils.JsonUtils;
 import jakarta.persistence.AttributeConverter;

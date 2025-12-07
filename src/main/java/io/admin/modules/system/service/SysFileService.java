@@ -1,4 +1,3 @@
-
 package io.admin.modules.system.service;
 
 import cn.hutool.core.date.DateUtil;
@@ -243,7 +242,7 @@ public class SysFileService {
     public InputStream getFileStream(SysFile sysFile, Integer w) throws Exception {
         String objectName = getObjectName(sysFile, w);
         boolean exist = fileOperator.exist(objectName);
-        if(!exist){
+        if (!exist) {
             log.error("文件不存在 {}", objectName);
             throw new FileNotFoundException("文件不存在:" + objectName);
         }
@@ -301,7 +300,7 @@ public class SysFileService {
             }
         }
         // TODO
-       // sysFile.putExtData("imageUrls", urls);
+        // sysFile.putExtData("imageUrls", urls);
     }
 
     public Page<SysFile> findAll(Specification<SysFile> q, Pageable pageable) {

@@ -15,7 +15,7 @@ import java.lang.annotation.Target;
 /**
  * 密码
  */
-@Target({ElementType.FIELD,ElementType.PARAMETER})
+@Target({ElementType.FIELD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = ValidatePassword.MyValidator.class)
 public @interface ValidatePassword {
@@ -26,7 +26,7 @@ public @interface ValidatePassword {
 
     Class<? extends Payload>[] payload() default {};
 
-   class MyValidator implements ConstraintValidator<ValidatePassword, String> {
+    class MyValidator implements ConstraintValidator<ValidatePassword, String> {
 
 
         @Override

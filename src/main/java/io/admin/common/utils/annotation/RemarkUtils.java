@@ -48,6 +48,6 @@ public class RemarkUtils {
 
     public static String getRemark(Method method) {
         Remark ann = method.getAnnotation(Remark.class);
-        return ann == null? null: ann.value();
+        return ann == null ? null : ann.value();
     }
 }

@@ -27,14 +27,14 @@ public class BuildInfo {
     }
 
     private static void init() {
-        if(version != null){
+        if (version != null) {
             return;
         }
         try (InputStream is = ResourceUtil.getStream("build-info.properties")) {
             Properties prop = new Properties();
-                prop.load(is);
-                version = prop.getProperty("version");
-                time = prop.getProperty("time");
+            prop.load(is);
+            version = prop.getProperty("version");
+            time = prop.getProperty("time");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

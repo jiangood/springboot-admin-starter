@@ -18,6 +18,7 @@ public class AmtUtils {
                 .setScale(0, RoundingMode.HALF_UP);
         return dFen.intValueExact();
     }
+
     public static BigDecimal fenToYuan(int fen) {
         BigDecimal dFen = new BigDecimal(fen);
 

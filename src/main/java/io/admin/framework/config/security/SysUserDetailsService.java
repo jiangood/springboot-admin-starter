@@ -30,12 +30,12 @@ public class SysUserDetailsService implements UserDetailsService {
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        log.debug("loadUserByUsername {}",username);
+        log.debug("loadUserByUsername {}", username);
         SysUser user = userService.findByAccount(username);
-        if(user == null){
+        if (user == null) {
             throw new UsernameNotFoundException("用户不存在: " + username);
         }
-        if(!user.getEnabled()){
+        if (!user.getEnabled()) {
             throw new UsernameNotFoundException("用户被禁用: " + username);
         }
 
@@ -58,11 +58,11 @@ public class SysUserDetailsService implements UserDetailsService {
 
 
         SysUser deptLeader = sysOrgService.getDeptLeader(user.getId());
-        if(deptLeader != null){
+        if (deptLeader != null) {
             log.debug("登录用户 {} 的部门领导为：{}", user.getName(), deptLeader.getId());
             loginUser.setDeptLeaderId(deptLeader.getId());
-        }else {
-            log.debug("登录用户 {} 无部门领导",user.getName());
+        } else {
+            log.debug("登录用户 {} 无部门领导", user.getName());
         }
 
 

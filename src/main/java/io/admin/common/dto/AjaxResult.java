@@ -1,4 +1,3 @@
-
 package io.admin.common.dto;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -31,8 +30,6 @@ public class AjaxResult {
     Object data;
 
     String message;
-
-
 
 
     public AjaxResult() {
@@ -119,8 +116,8 @@ public class AjaxResult {
         if (data == null) {
             this.data = new HashMap<>();
         } else {
-            if (!(data instanceof Map) ) {
-                data = JsonUtils.jsonToMapQuietly( JsonUtils.toJsonQuietly(data));
+            if (!(data instanceof Map)) {
+                data = JsonUtils.jsonToMapQuietly(JsonUtils.toJsonQuietly(data));
             }
         }
         Map<String, Object> map = (Map<String, Object>) data;

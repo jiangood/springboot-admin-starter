@@ -19,7 +19,7 @@ public class LocalDateTimeUtils {
             return null;
         }
 
-        return LocalDateTime.ofInstant(instant, zoneId != null? zoneId : ZoneId.systemDefault());
+        return LocalDateTime.ofInstant(instant, zoneId != null ? zoneId : ZoneId.systemDefault());
     }
 
 }

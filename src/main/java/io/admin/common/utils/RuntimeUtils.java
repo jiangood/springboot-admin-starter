@@ -8,7 +8,7 @@ import java.io.InputStreamReader;
 public class RuntimeUtils {
 
     public static int exec(File dir, String... cmd) throws IOException, InterruptedException {
-       return exec(dir, true, cmd);
+        return exec(dir, true, cmd);
     }
 
     public static int exec(File dir, boolean consolePrint, String... cmd) throws IOException, InterruptedException {

@@ -18,14 +18,11 @@ public class ReportUtils {
     /**
      * 列表累加
      *
-     * @param list 数据
+     * @param list             数据
      * @param ignoreProperties 忽略的属性
-     *
      * @return 和
-     *
-     * @throws InvocationTargetException  反射异常
-     * @throws IllegalAccessException  反射异常
-     *
+     * @throws InvocationTargetException 反射异常
+     * @throws IllegalAccessException    反射异常
      */
     public static Map<String, BigDecimal> addAll(List<?> list, String... ignoreProperties) throws InvocationTargetException, IllegalAccessException {
         Map<String, BigDecimal> result = new HashMap<>();
@@ -45,13 +42,13 @@ public class ReportUtils {
                 String name = StrUtil.removePreAndLowerFirst(m.getName(), "getDefinition");
 
 
-                if(v != null){
-                    BigDecimal dec = new BigDecimal( v.toString());
+                if (v != null) {
+                    BigDecimal dec = new BigDecimal(v.toString());
 
-                    if(result.containsKey(name)){
+                    if (result.containsKey(name)) {
                         BigDecimal oldV = result.get(name);
                         result.put(name, oldV.add(dec));
-                    }else {
+                    } else {
                         result.put(name, dec);
                     }
                 }

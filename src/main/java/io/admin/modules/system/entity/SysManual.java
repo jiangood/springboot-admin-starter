@@ -1,4 +1,3 @@
-
 package io.admin.modules.system.entity;
 
 import io.admin.common.utils.annotation.Remark;

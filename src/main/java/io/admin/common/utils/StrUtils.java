@@ -11,34 +11,31 @@ import java.util.UUID;
 public class StrUtils {
 
 
-        /**
+    /**
      * 查找字符串中最后一个大写字母的位置
+     *
      * @param str 待查找的字符串
      * @return 最后一个大写字母的下标位置，从0开始计数；如果未找到大写字母则返回-1
      */
-    public static int lastUpperLetter(String str){
+    public static int lastUpperLetter(String str) {
         int len = str.length();
 
         // 从字符串末尾开始向前遍历查找大写字母
-        for(int i = len-1; i>=0; i--){
+        for (int i = len - 1; i >= 0; i--) {
             char c = str.charAt(i);
-            if(CharUtil.isLetterUpper(c)){
-                return  i;
+            if (CharUtil.isLetterUpper(c)) {
+                return i;
             }
         }
         return -1;
     }
 
 
-
-
     /**
      * 时间区间 逗号分割 ,2022-10-11
      *
      * @param date 时间区间
-     *
      * @return 区间对象
-     *
      */
     public static Between parseBetween(String date) {
         Between between = new Between();
@@ -56,6 +53,7 @@ public class StrUtils {
 
     /**
      * 判断是否包含中文
+     *
      * @param text
      * @return
      */
@@ -87,7 +85,7 @@ public class StrUtils {
 
     public static boolean anyContains(List<String> list, String... search) {
         for (String str : list) {
-            for(String searchItem: search){
+            for (String searchItem : search) {
                 if (str.contains(searchItem)) {
                     return true;
                 }
@@ -100,10 +98,9 @@ public class StrUtils {
     }
 
 
-
     public static String removePreAndLowerFirst(String str, String prefix) {
-        str = removePrefix(str,prefix);
-        return str.substring(0,1).toLowerCase() + str.substring(1);
+        str = removePrefix(str, prefix);
+        return str.substring(0, 1).toLowerCase() + str.substring(1);
     }
 
     public static String removePrefix(String str, String prefix) {
@@ -120,7 +117,7 @@ public class StrUtils {
     }
 
     public static String uuid() {
-        return UUID.randomUUID().toString().replace("-","");
+        return UUID.randomUUID().toString().replace("-", "");
     }
 
     public static String toUnderlineCase(String str) {

@@ -83,14 +83,14 @@ public class ToListConverterTest {
     public void testRoundTripConversion() {
         // 测试从列表转换到数据库再转换回列表
         List<String> originalList = Arrays.asList("test1", "test2", "test3");
-        
+
         // 转换为数据库字符串
         String dbString = converter.convertToDatabaseColumn(originalList);
         assertEquals("test1,test2,test3", dbString);
-        
+
         // 从数据库字符串转换回列表
         List<String> convertedList = converter.convertToEntityAttribute(dbString);
-        
+
         // 验证列表内容一致
         assertNotNull(convertedList);
         assertEquals(originalList.size(), convertedList.size());

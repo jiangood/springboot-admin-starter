@@ -12,11 +12,11 @@ import java.io.InputStream;
 public class MinioFileOperator implements FileOperator {
 
 
-    private String url;
-    private String accessKey;
-    private String secretKey;
+    private final String url;
+    private final String accessKey;
+    private final String secretKey;
 
-    private String bucketName;
+    private final String bucketName;
 
     public MinioFileOperator(String url, String accessKey, String secretKey, String bucketName) {
         this.url = url;

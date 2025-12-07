@@ -13,6 +13,7 @@ public class PermissionStaleService {
 
     /**
      * 1. 标记用户的权限已过期
+     *
      * @param username 用户名
      */
     public void markUserStale(String username) {
@@ -21,6 +22,7 @@ public class PermissionStaleService {
 
     /**
      * 2. 检查用户的权限是否过期
+     *
      * @param username 用户名
      * @return true 如果需要刷新
      */
@@ -30,6 +32,7 @@ public class PermissionStaleService {
 
     /**
      * 3. 刷新完成后，清除过期标记
+     *
      * @param username 用户名
      */
     public void clearStaleMark(String username) {

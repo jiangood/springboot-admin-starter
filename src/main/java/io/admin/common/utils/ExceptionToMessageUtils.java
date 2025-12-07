@@ -1,4 +1,3 @@
-
 package io.admin.common.utils;
 
 import cn.hutool.core.util.ReflectUtil;
@@ -31,6 +30,7 @@ public class ExceptionToMessageUtils {
         }
         return message;
     }
+
     private static String dispatch(Throwable throwable) {
         if (throwable instanceof ConstraintViolationException e) {
             return convert(e);
@@ -40,7 +40,7 @@ public class ExceptionToMessageUtils {
         if (throwable instanceof DataIntegrityViolationException e) {
             return convert(e);
         }
-        if(throwable instanceof TransactionSystemException e){
+        if (throwable instanceof TransactionSystemException e) {
             return convert(e);
         }
 
@@ -62,7 +62,7 @@ public class ExceptionToMessageUtils {
                 if (msg.startsWith("Duplicate")) {
                     String result = RegexUtils.findMatch("\\'(.*?)\\'", msg, 1);
                     if (StrUtil.isNotBlank(result)) {
-                        return "数据【"+result+"】重复" ;
+                        return "数据【" + result + "】重复";
                     }
                 }
 
@@ -92,7 +92,7 @@ public class ExceptionToMessageUtils {
 
             Field field = ReflectUtil.getField(cls, fieldName);
             String fieldCnName = RemarkUtils.getRemark(field);
-            if(fieldCnName != null){
+            if (fieldCnName != null) {
                 fieldName = fieldCnName;
             }
 

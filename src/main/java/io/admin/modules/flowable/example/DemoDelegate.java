@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 public class DemoDelegate implements JavaDelegate {
 
 
-
     @Override
     public void execute(DelegateExecution execution) {
         System.out.println("demo-Java处理类执行....");

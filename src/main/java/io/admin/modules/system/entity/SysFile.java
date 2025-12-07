@@ -1,4 +1,3 @@
-
 package io.admin.modules.system.entity;
 
 import cn.hutool.core.io.FileUtil;
@@ -26,12 +25,13 @@ public class SysFile extends BaseEntity {
 
     public SysFile() {
     }
+
     public SysFile(String id) {
         this.setId(id);
     }
 
     /**
-     *  交易号，由业务方指定
+     * 交易号，由业务方指定
      */
     @Column(length = 32)
     private String tradeNo;
@@ -98,7 +98,7 @@ public class SysFile extends BaseEntity {
     }
 
     @Transient
-    public String getContentType(){
+    public String getContentType() {
         return ContentTypeUtils.getContentTypeByExtension(getSuffix());
     }
 

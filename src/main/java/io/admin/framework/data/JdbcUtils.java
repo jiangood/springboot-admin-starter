@@ -54,7 +54,7 @@ public class JdbcUtils {
     /**
      * 构造函数：通过数据源（DataSource）初始化 JdbcTemplate。
      *
-     * @param dataSource 数据库连接池的数据源
+     * @param dataSource           数据库连接池的数据源
      * @param entityManagerFactory JPA 的 EntityManagerFactory
      */
     public JdbcUtils(DataSource dataSource, EntityManagerFactory entityManagerFactory) {
@@ -121,6 +121,7 @@ public class JdbcUtils {
 
     /**
      * 查询单条记录，并将其映射到指定的 Java Bean 对象。
+     *
      * @return 映射后的 Bean 对象，如果没有找到则返回 null。
      */
     @Nullable
@@ -135,6 +136,7 @@ public class JdbcUtils {
 
     /**
      * 查询单条记录，返回一个 Map 对象。
+     *
      * @return 映射后的 Map 对象，如果没有找到则返回 null。
      */
     @Nullable
@@ -166,6 +168,7 @@ public class JdbcUtils {
 
     /**
      * 查询结果集的第一个值（第一行第一列），返回 Object。
+     *
      * @return 标量值，如果没有结果则返回 null。
      */
     @Nullable
@@ -198,6 +201,7 @@ public class JdbcUtils {
 
     /**
      * 查询结果集的某一列，并返回该列值的列表。
+     *
      * @param elementType 列表元素的类型
      */
     public <T> List<T> findColumnList(Class<T> elementType, String sql, Object... params) {
@@ -206,6 +210,7 @@ public class JdbcUtils {
 
     /**
      * 检查记录是否存在。
+     *
      * @return 如果至少有一条记录匹配，则返回 true。
      */
     public boolean exists(String sql, Object... params) {
@@ -424,15 +429,16 @@ public class JdbcUtils {
 
         params.add(idValue); // 添加 ID 作为 WHERE 条件的参数
 
-        String sql = String.format("UPDATE %s SET %s WHERE id=?", table, setClause.toString());
+        String sql = String.format("UPDATE %s SET %s WHERE id=?", table, setClause);
 
         return this.update(sql, params.toArray());
     }
 
     /**
      * 根据 Bean 数据动态构建 SQL，执行通用更新（需手动指定 WHERE 条件）。
-     * @param table 表名
-     * @param bean 包含更新字段和值的 Bean
+     *
+     * @param table       表名
+     * @param bean        包含更新字段和值的 Bean
      * @param whereClause WHERE 子句 (例如: "name=? AND age>?" )
      * @param whereParams WHERE 子句中的参数值
      * @return 更新的行数
@@ -444,8 +450,9 @@ public class JdbcUtils {
 
     /**
      * 根据 Map 数据动态构建 SQL，执行通用更新（需手动指定 WHERE 条件）。
-     * @param table 表名
-     * @param data 包含更新字段和值的 Map
+     *
+     * @param table       表名
+     * @param data        包含更新字段和值的 Map
      * @param whereClause WHERE 子句 (例如: "name=? AND age>?" )
      * @param whereParams WHERE 子句中的参数值
      * @return 更新的行数
@@ -476,7 +483,7 @@ public class JdbcUtils {
             params.addAll(Arrays.asList(whereParams));
         }
 
-        String sql = String.format("UPDATE %s SET %s WHERE %s", table, setClause.toString(), whereClause);
+        String sql = String.format("UPDATE %s SET %s WHERE %s", table, setClause, whereClause);
 
         return this.update(sql, params.toArray());
     }

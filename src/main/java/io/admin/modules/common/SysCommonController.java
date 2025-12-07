@@ -1,4 +1,3 @@
-
 package io.admin.modules.common;
 
 import cn.hutool.core.lang.Dict;
@@ -144,34 +143,34 @@ public class SysCommonController {
         Set<SysRole> roles = user.getRoles();
         List<MenuDefinition> menuDefinitions = roleService.ownMenu(roles);
 
-        Map<String,MenuDefinition> pathMenuMap = new HashMap<>();
-        Map<String,MenuDefinition> menuMap = new HashMap<>();
+        Map<String, MenuDefinition> pathMenuMap = new HashMap<>();
+        Map<String, MenuDefinition> menuMap = new HashMap<>();
         List<MenuItem> list = menuDefinitions.stream()
-                .filter(def-> !def.isDisabled())
+                .filter(def -> !def.isDisabled())
                 .map(def -> {
-            MenuItem item = new MenuItem();
-            item.setKey(def.getId());
-            item.setIcon(def.getIcon());
-            item.setLabel(def.getName());
-            item.setTitle(def.getName().substring(0, 1));
-            item.setParentKey(def.getPid());
-            item.setPath(StrUtil.nullToEmpty(def.getPath()));
+                    MenuItem item = new MenuItem();
+                    item.setKey(def.getId());
+                    item.setIcon(def.getIcon());
+                    item.setLabel(def.getName());
+                    item.setTitle(def.getName().substring(0, 1));
+                    item.setParentKey(def.getPid());
+                    item.setPath(StrUtil.nullToEmpty(def.getPath()));
 
 
-            if(def.getPath() != null){
-                pathMenuMap.put(def.getPath(),def);
-            }
-            menuMap.put(def.getId(),def);
+                    if (def.getPath() != null) {
+                        pathMenuMap.put(def.getPath(), def);
+                    }
+                    menuMap.put(def.getId(), def);
 
-            return item;
-        }).toList();
+                    return item;
+                }).toList();
 
         // ======== 开始转换 ===========
         List<MenuItem> tree = TreeUtils.buildTree(list, MenuItem::getKey, MenuItem::getParentKey, MenuItem::getChildren, MenuItem::setChildren);
         Dict data = new Dict();
         data.put("menuTree", tree);
         data.put("menuMap", menuMap);
-        data.put("pathMenuMap",pathMenuMap);
+        data.put("pathMenuMap", pathMenuMap);
 
 
         return AjaxResult.ok().data(data);

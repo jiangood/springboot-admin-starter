@@ -1,4 +1,3 @@
-
 package io.admin.framework.config;
 
 import cn.hutool.captcha.generator.CodeGenerator;
@@ -55,19 +54,12 @@ public class WebMvcConfig implements WebMvcConfigurer {
     };
 
 
-
-
-
-
-
-
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
 
-      //  registry.addInterceptor(appApiInterceptor).addPathPatterns(WebConstants.APP_API_PATTERN);
+        //  registry.addInterceptor(appApiInterceptor).addPathPatterns(WebConstants.APP_API_PATTERN);
 
     }
-
 
 
     @Override
@@ -92,6 +84,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     /**
      * 由于引入了 jackson-dataformat-xml， 导致浏览器打开接口时返回xml(浏览器请求头Accept含xml)，这里设置默认返回json
+     *
      * @param configurer
      */
     @Override
@@ -109,7 +102,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Bean
     public CodeGenerator getCodeGenerator() {
         SysProperties.CaptchaType captchaType = sysProperties.getCaptchaType();
-        if(captchaType != null){
+        if (captchaType != null) {
             switch (captchaType) {
                 case MATH -> {
                     return new MathGenerator(2);

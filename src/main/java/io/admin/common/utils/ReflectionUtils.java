@@ -9,15 +9,15 @@ public class ReflectionUtils {
 
     /**
      * 获取首个泛型类型
+     *
      * @param propertyDescriptor
      * @return
      */
-    public static Type getFirstGeneric(PropertyDescriptor propertyDescriptor){
+    public static Type getFirstGeneric(PropertyDescriptor propertyDescriptor) {
         Method readMethod = propertyDescriptor.getReadMethod();
         Type genericReturnType = readMethod.getGenericReturnType();
 
-        if(genericReturnType instanceof ParameterizedType) {
-            ParameterizedType pt = (ParameterizedType) genericReturnType;
+        if (genericReturnType instanceof ParameterizedType pt) {
 
             Type argument = pt.getActualTypeArguments()[0];
 

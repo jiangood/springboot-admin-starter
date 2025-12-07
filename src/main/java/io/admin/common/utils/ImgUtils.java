@@ -15,8 +15,8 @@ import java.util.Base64;
 public class ImgUtils {
 
     public static File scale(File sourceFile, int maxSize) {
-        File targetFile = FileUtil.createTempFile("." + FileUtil.getSuffix(sourceFile),true);
-        if(scale(sourceFile,targetFile,maxSize,maxSize)){
+        File targetFile = FileUtil.createTempFile("." + FileUtil.getSuffix(sourceFile), true);
+        if (scale(sourceFile, targetFile, maxSize, maxSize)) {
             return targetFile;
         }
         return null;
@@ -24,28 +24,28 @@ public class ImgUtils {
 
     public static boolean scale(File sourceFile, File targetFile,
                                 int maxWidth, int maxHeight) {
-            if (!sourceFile.exists()) {
-                System.out.println("原图文件不存在");
-                return false;
-            }
+        if (!sourceFile.exists()) {
+            System.out.println("原图文件不存在");
+            return false;
+        }
 
-            Image srcImg = ImgUtil.read(sourceFile);
-            int srcWidth = srcImg.getWidth(null);
-            int srcHeight = srcImg.getHeight(null);
+        Image srcImg = ImgUtil.read(sourceFile);
+        int srcWidth = srcImg.getWidth(null);
+        int srcHeight = srcImg.getHeight(null);
 
-            // 计算缩放比例
-            float widthRatio = (float) maxWidth / srcWidth;
-            float heightRatio = (float) maxHeight / srcHeight;
-            float ratio = Math.min(widthRatio, heightRatio);
+        // 计算缩放比例
+        float widthRatio = (float) maxWidth / srcWidth;
+        float heightRatio = (float) maxHeight / srcHeight;
+        float ratio = Math.min(widthRatio, heightRatio);
 
-            // 如果图片比目标尺寸小，则不放大
-            if (ratio > 1) {
-                ratio = 1;
-            }
+        // 如果图片比目标尺寸小，则不放大
+        if (ratio > 1) {
+            ratio = 1;
+        }
 
 
-            ImgUtil.scale(sourceFile, targetFile, ratio);
-            return true;
+        ImgUtil.scale(sourceFile, targetFile, ratio);
+        return true;
 
     }
 

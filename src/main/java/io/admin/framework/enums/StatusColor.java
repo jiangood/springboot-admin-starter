@@ -11,6 +11,6 @@ public enum StatusColor {
     RED,
     BLUE,
     GREEN,
-    GRAY;
+    GRAY
 
 }

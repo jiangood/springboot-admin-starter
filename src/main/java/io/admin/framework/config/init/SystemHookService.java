@@ -11,12 +11,12 @@ import java.util.Collection;
 @Slf4j
 public class SystemHookService {
 
-    public void trigger(SystemHookEventType type){
+    public void trigger(SystemHookEventType type) {
         for (SystemHook hook : SpringUtils.getBeans(SystemHook.class)) {
             hook.onEvent(type);
         }
 
-        if(type == SystemHookEventType.BEFORE_DATA_INIT){
+        if (type == SystemHookEventType.BEFORE_DATA_INIT) {
             Collection<SystemHook> interceptors = SpringUtils.getBeans(SystemHook.class);
             for (SystemHook it : interceptors) {
                 log.warn("已弃用beforeDataInit: {}", it.getClass().getName());
@@ -24,7 +24,7 @@ public class SystemHookService {
             }
         }
 
-        if(type == SystemHookEventType.AFTER_DATA_INIT){
+        if (type == SystemHookEventType.AFTER_DATA_INIT) {
             Collection<SystemHook> interceptors = SpringUtils.getBeans(SystemHook.class);
             for (SystemHook it : interceptors) {
                 log.warn("已弃用afterDataInit: {}", it.getClass().getName());

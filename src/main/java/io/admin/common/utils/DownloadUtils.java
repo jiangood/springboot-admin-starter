@@ -1,4 +1,3 @@
-
 package io.admin.common.utils;
 
 import cn.hutool.core.io.FileUtil;
@@ -14,11 +13,9 @@ import java.io.InputStream;
 
 /**
  * 文件下载工具类
- *
  */
 @Slf4j
 public class DownloadUtils {
-
 
 
     public static void download(String fileName, byte[] fileBytes, HttpServletResponse response) {
@@ -42,7 +39,6 @@ public class DownloadUtils {
     }
 
 
-
     /**
      * 下载文件
      *
@@ -55,7 +51,6 @@ public class DownloadUtils {
     }
 
     /**
-     *
      * @param fileName
      * @param contentLength 不知道的情况下填0或-1
      * @param response
@@ -66,7 +61,7 @@ public class DownloadUtils {
         response.setHeader("Access-Control-Allow-Origin", "*");
         response.setHeader("Access-Control-Expose-Headers", "Content-Disposition");
         response.setContentType("application/octet-stream;charset=UTF-8");
-        if(contentLength > 0){
+        if (contentLength > 0) {
             response.addHeader("Content-Length", String.valueOf(contentLength));
         }
     }

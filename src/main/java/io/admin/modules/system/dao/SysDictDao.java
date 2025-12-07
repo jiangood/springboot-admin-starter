@@ -1,4 +1,3 @@
-
 package io.admin.modules.system.dao;
 
 import io.admin.framework.data.repository.BaseDao;

@@ -1,4 +1,3 @@
-
 package io.admin.modules.system.controller;
 
 
@@ -22,30 +21,27 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("admin/sysConfig")
-public class SysConfigController  {
+public class SysConfigController {
 
-  @Resource
-  private SysConfigService service;
-
-
-
-  @HasPermission("sysConfig:view")
-  @RequestMapping("page")
-  public AjaxResult page(String searchText) throws Exception {
-    List<SysConfigResponse> list = service.findAllByRequest(searchText);
-
-    return AjaxResult.ok().data(list);
-  }
-
-  @Log("修改系统配置")
-  @HasPermission("sysConfig:save")
-  @PostMapping("save")
-  public AjaxResult save(@RequestBody SysConfig param) throws Exception {
-    service.save(param);
-    return AjaxResult.ok().msg("保存成功");
-  }
+    @Resource
+    private SysConfigService service;
 
 
+    @HasPermission("sysConfig:view")
+    @RequestMapping("page")
+    public AjaxResult page(String searchText) throws Exception {
+        List<SysConfigResponse> list = service.findAllByRequest(searchText);
+
+        return AjaxResult.ok().data(list);
+    }
+
+    @Log("修改系统配置")
+    @HasPermission("sysConfig:save")
+    @PostMapping("save")
+    public AjaxResult save(@RequestBody SysConfig param) throws Exception {
+        service.save(param);
+        return AjaxResult.ok().msg("保存成功");
+    }
 
 
 }

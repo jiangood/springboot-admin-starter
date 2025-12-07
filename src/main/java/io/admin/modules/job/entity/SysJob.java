@@ -47,19 +47,15 @@ public class SysJob extends BaseEntity {
     String jobClass;
 
 
-
     // 参数
     @Lob
     @Column(columnDefinition = DBConstants.TYPE_BLOB)
     @Convert(converter = ToMapConverter.class)
-    Map<String,Object> jobData;
+    Map<String, Object> jobData;
 
 
     // 扩展字段
     String extraInfo;
-
-
-
 
 
     @JsonIgnore
@@ -71,9 +67,6 @@ public class SysJob extends BaseEntity {
 
         return Collections.emptyMap();
     }
-
-
-
 
 
     @PrePersist

@@ -9,9 +9,9 @@ import org.springframework.context.annotation.Configuration;
 @Data
 public class MinioProperties {
     /**
-     * 	是否启用minio存储服务		是	不启用的情况，使用的是本地存储
+     * 是否启用minio存储服务		是	不启用的情况，使用的是本地存储
      */
-    Boolean enable =false;
+    Boolean enable = false;
 
     String url;
 

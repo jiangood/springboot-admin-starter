@@ -11,14 +11,11 @@ import java.util.Map;
 public interface ProcessListener {
 
 
-
-
     /**
-     *
      * @param type
-     * @param initiator 发起人
+     * @param initiator   发起人
      * @param businessKey 业务标识，如key
-     * @param variables 变量
+     * @param variables   变量
      */
     @Transactional
     void onProcessEvent(FlowableEventType type, String initiator, String businessKey, Map<String, Object> variables);

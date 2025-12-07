@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
 /**
  * 不包含汉字
  */
-@Target({ElementType.FIELD,ElementType.PARAMETER})
+@Target({ElementType.FIELD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = ValidateNotContainsChinese.MyChineseValidator.class)
 public @interface ValidateNotContainsChinese {

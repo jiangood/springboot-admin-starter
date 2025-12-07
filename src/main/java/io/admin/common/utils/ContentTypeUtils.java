@@ -6,7 +6,7 @@ import org.springframework.util.StringUtils;
 
 public class ContentTypeUtils {
 
-    public static boolean isVideo(String contentType){
+    public static boolean isVideo(String contentType) {
         return StrUtil.startWith(contentType, "video");
     }
 

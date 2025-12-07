@@ -1,4 +1,3 @@
-
 package io.admin.modules.system.controller;
 
 
@@ -20,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("admin/sysDict")
-public class SysDictController  {
+public class SysDictController {
 
     @Resource
     private SysDictService service;
@@ -29,7 +28,7 @@ public class SysDictController  {
     @RequestMapping("page")
     public AjaxResult page(String searchText, @PageableDefault(direction = Sort.Direction.DESC, sort = "updateTime") Pageable pageable) throws Exception {
         Spec<SysDict> q = service.spec();
-        q.orLike(searchText, "text","code");
+        q.orLike(searchText, "text", "code");
 
         Page<SysDict> page = service.findPageByRequest(q, pageable);
 
@@ -49,9 +48,6 @@ public class SysDictController  {
         service.deleteByRequest(id);
         return AjaxResult.ok().msg("删除成功");
     }
-
-
-
 
 
 }

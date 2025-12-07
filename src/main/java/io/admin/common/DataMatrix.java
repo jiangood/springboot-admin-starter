@@ -4,10 +4,7 @@ import cn.hutool.core.util.StrUtil;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.admin.common.utils.excel.ExcelOptUtils;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 // 二维数组
 public class DataMatrix extends LinkedList<List<Object>> {
@@ -39,6 +36,7 @@ public class DataMatrix extends LinkedList<List<Object>> {
 
     /**
      * 添加一个二维数组
+     *
      * @param data
      * @return
      */
@@ -50,19 +48,19 @@ public class DataMatrix extends LinkedList<List<Object>> {
     }
 
     /**
-     *  添加一行
+     * 添加一行
+     *
      * @param data
      */
     public void add(Object[] data) {
         List<Object> rowData = new ArrayList<>();
-        for (Object cellData : data) {
-            rowData.add(cellData);
-        }
+        Collections.addAll(rowData, data);
         this.add(rowData);
     }
 
     /**
-     *  添加一行
+     * 添加一行
+     *
      * @param data
      */
     public void add(Iterable<Object> data) {
@@ -74,11 +72,10 @@ public class DataMatrix extends LinkedList<List<Object>> {
     }
 
 
-
     @JsonIgnore
     public Object getValue(int row, int col) {
         List<Object> rowData = this.get(row);
-        if(rowData == null){
+        if (rowData == null) {
             return null;
         }
         return rowData.get(col);
@@ -110,7 +107,7 @@ public class DataMatrix extends LinkedList<List<Object>> {
         DataMatrix rs = new DataMatrix(rowSize, colSize);
         for (int i = 0; i < rowSize; i++) {
             for (int j = 0; j < colSize; j++) {
-                rs.setValue(i, j , this.getValue(i, j));
+                rs.setValue(i, j, this.getValue(i, j));
             }
 
         }
@@ -124,7 +121,7 @@ public class DataMatrix extends LinkedList<List<Object>> {
      * @param inputData
      * @return
      */
-    public  void mergeInputData( Map<String, Object> inputData) {
+    public void mergeInputData(Map<String, Object> inputData) {
         if (inputData == null) {
             return;
         }
@@ -141,15 +138,15 @@ public class DataMatrix extends LinkedList<List<Object>> {
     }
 
 
-    public List<DataMatrix> split(int rows){
+    public List<DataMatrix> split(int rows) {
         List<DataMatrix> list = new ArrayList<>();
 
         int total = this.size();
         int splitCount = total / rows;
 
-        for(int i = 0; i < splitCount; i++){
+        for (int i = 0; i < splitCount; i++) {
             DataMatrix item = new DataMatrix();
-            for(int j = 0; j < rows; j++){
+            for (int j = 0; j < rows; j++) {
                 item.add(this.get(i * rows + j));
             }
             list.add(item);
@@ -157,8 +154,6 @@ public class DataMatrix extends LinkedList<List<Object>> {
 
         return list;
     }
-
-
 
 
 }

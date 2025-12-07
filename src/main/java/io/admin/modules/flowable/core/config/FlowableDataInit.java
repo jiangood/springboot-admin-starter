@@ -1,4 +1,3 @@
-
 package io.admin.modules.flowable.core.config;
 
 import io.admin.framework.config.init.SystemHookEventType;

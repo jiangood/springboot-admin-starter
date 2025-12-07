@@ -14,7 +14,7 @@ public interface TreeNode<T> {
 
     List<T> getChildren();
 
-   void setChildren(List<T> list);
+    void setChildren(List<T> list);
 
 
     default void setIsLeaf(Boolean b) {

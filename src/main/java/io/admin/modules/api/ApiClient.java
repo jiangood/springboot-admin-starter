@@ -12,9 +12,9 @@ import java.util.Map;
 @Slf4j
 public class ApiClient {
 
-    private String baseUrl;
-    private String appId;
-    private String appSecret;
+    private final String baseUrl;
+    private final String appId;
+    private final String appSecret;
 
 
     public ApiClient(String baseUrl, String appId, String appSecret) {
@@ -33,19 +33,17 @@ public class ApiClient {
 
 
         HttpResponse response = HttpUtil.createPost(url)
-                .header("appId",appId)
+                .header("appId", appId)
                 .header("timestamp", String.valueOf(timestamp))
                 .header("sign", sign)
                 .form(params)
                 .execute();
 
-        log.info("返回：\n{}",response);
+        log.info("返回：\n{}", response);
 
         // 成功
         return response.body();
     }
-
-
 
 
 }

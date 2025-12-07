@@ -14,7 +14,7 @@ import java.lang.annotation.Target;
 /**
  * 16进制字符串
  */
-@Target({ElementType.FIELD,ElementType.PARAMETER})
+@Target({ElementType.FIELD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = ValidateHex.MyValidator.class)
 public @interface ValidateHex {
@@ -25,7 +25,7 @@ public @interface ValidateHex {
 
     Class<? extends Payload>[] payload() default {};
 
-   class MyValidator implements ConstraintValidator<ValidateHex, String> {
+    class MyValidator implements ConstraintValidator<ValidateHex, String> {
 
 
         @Override

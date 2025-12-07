@@ -35,7 +35,7 @@ public class SysJobService extends BaseService<SysJob> {
 
     @Override
     public SysJob saveOrUpdateByRequest(SysJob input, List<String> updateKeys) throws Exception {
-        SysJob db= super.saveOrUpdateByRequest(input,updateKeys);
+        SysJob db = super.saveOrUpdateByRequest(input, updateKeys);
 
         quartzService.deleteJob(db);
         if (db.getEnabled()) {
@@ -44,7 +44,6 @@ public class SysJobService extends BaseService<SysJob> {
 
         return null;
     }
-
 
 
     @Transactional
@@ -60,10 +59,8 @@ public class SysJobService extends BaseService<SysJob> {
     }
 
 
-
-
     public Page<SysJobExecuteRecord> findAllExecuteRecord(Specification<SysJobExecuteRecord> q, Pageable pageable) {
-      return   sysJobExecuteRecordDao.findAll(q, pageable);
+        return sysJobExecuteRecordDao.findAll(q, pageable);
     }
 
     public Page<SysJob> page(String searchText, Pageable pageable) throws SchedulerException {

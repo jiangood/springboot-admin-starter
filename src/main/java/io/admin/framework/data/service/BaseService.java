@@ -22,8 +22,6 @@ public abstract class BaseService<T extends Persistable<String>> {
     protected BaseDao<T> baseDao;
 
 
-
-
     /**
      * 更新时，指定字段更新
      * 防止了全字段更新，以免有些字段非前端输入的情况

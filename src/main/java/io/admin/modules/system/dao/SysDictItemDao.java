@@ -1,4 +1,3 @@
-
 package io.admin.modules.system.dao;
 
 
@@ -18,7 +17,7 @@ import java.util.List;
 @Repository
 public class SysDictItemDao extends BaseDao<SysDictItem> {
     @Transactional
-    public SysDictItem add(SysDict dict, String code, String text){
+    public SysDictItem add(SysDict dict, String code, String text) {
         SysDictItem item = new SysDictItem();
         item.setSysDict(dict);
         item.setCode(code);
@@ -42,15 +41,15 @@ public class SysDictItemDao extends BaseDao<SysDictItem> {
     }
 
 
-    public SysDictItem findByDictAndCode(SysDict dict ,String code) {
-        return this.findByField(SysDictItem.Fields.code, code,SysDictItem.Fields.sysDict , dict);
+    public SysDictItem findByDictAndCode(SysDict dict, String code) {
+        return this.findByField(SysDictItem.Fields.code, code, SysDictItem.Fields.sysDict, dict);
     }
 
 
     @Transactional
     public void saveOrUpdate(SysDict sysDict, String code, String text, int seq, boolean buildin) {
         SysDictItem item = this.findByDictAndCode(sysDict, code);
-        if(item == null){
+        if (item == null) {
             item = new SysDictItem();
         }
         item.setCode(code);

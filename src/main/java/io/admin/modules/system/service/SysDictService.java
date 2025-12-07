@@ -1,4 +1,3 @@
-
 package io.admin.modules.system.service;
 
 import cn.hutool.core.util.StrUtil;
@@ -59,7 +58,8 @@ public class SysDictService extends BaseService<SysDict> {
     }
 
 
-    public record SimpleDictItem(Object value, String label, String color) {}
+    public record SimpleDictItem(Object value, String label, String color) {
+    }
 
     public Map<String, Collection<SimpleDictItem>> dictMap() {
         List<SysDictItem> list = sysDictItemDao.findAll(Sort.by(SysDictItem.Fields.seq));

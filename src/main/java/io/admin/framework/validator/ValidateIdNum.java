@@ -14,7 +14,7 @@ import java.lang.annotation.Target;
 /**
  * 身份证
  */
-@Target({ElementType.FIELD,ElementType.PARAMETER})
+@Target({ElementType.FIELD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = ValidateIdNum.IdNumValidator.class)
 public @interface ValidateIdNum {
@@ -25,7 +25,7 @@ public @interface ValidateIdNum {
 
     Class<? extends Payload>[] payload() default {};
 
-   class IdNumValidator implements ConstraintValidator<ValidateIdNum, String> {
+    class IdNumValidator implements ConstraintValidator<ValidateIdNum, String> {
 
 
         @Override

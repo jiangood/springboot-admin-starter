@@ -20,7 +20,7 @@ public class RequestUtils {
      * @return 基础URL
      */
     public static String getBaseUrl(HttpServletRequest request) {
-        if(request == null){
+        if (request == null) {
             return "/";
         }
         String scheme = request.getScheme();
@@ -69,12 +69,12 @@ public class RequestUtils {
         return null;
     }
 
-    public static Map<String,String> getHeaders(HttpServletRequest request){
-        Map<String,String> headers = new HashMap<>();
+    public static Map<String, String> getHeaders(HttpServletRequest request) {
+        Map<String, String> headers = new HashMap<>();
         Enumeration<String> headerNames = request.getHeaderNames();
-        while (headerNames.hasMoreElements()){
+        while (headerNames.hasMoreElements()) {
             String name = headerNames.nextElement();
-            headers.put(name,request.getHeader(name));
+            headers.put(name, request.getHeader(name));
         }
         return headers;
     }

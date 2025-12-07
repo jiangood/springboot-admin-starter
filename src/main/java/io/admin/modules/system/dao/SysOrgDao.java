@@ -1,4 +1,3 @@
-
 package io.admin.modules.system.dao;
 
 import cn.hutool.core.collection.CollectionUtil;
@@ -32,8 +31,6 @@ public class SysOrgDao extends BaseDao<SysOrg> {
 
     /**
      * TODO 也不能一直放内存，虽然消耗少，考虑缓存10分钟
-     *
-     *
      */
     public TreeManager<SysOrg> getTreeManager() {
         List<SysOrg> list = findAll();
@@ -50,7 +47,6 @@ public class SysOrgDao extends BaseDao<SysOrg> {
      * 判断是否节点
      *
      * @param id
-     *
      */
     public boolean checkIsLeaf(String id) {
         return getTreeManager().isLeaf(id);
@@ -60,7 +56,6 @@ public class SysOrgDao extends BaseDao<SysOrg> {
      * 直接下级公司
      *
      * @param id
-     *
      */
     public List<SysOrg> findDirectChildUnit(String id, Boolean enabled) {
         Spec<SysOrg> q = spec().eq(SysOrg.Fields.type, OrgType.TYPE_UNIT.getCode()).eq(SysOrg.Fields.pid, id);
@@ -76,7 +71,6 @@ public class SysOrgDao extends BaseDao<SysOrg> {
      * 直接下级公司
      *
      * @param id
-     *
      */
     public List<String> findDirectChildUnitId(String id) {
         List<SysOrg> list = this.findDirectChildUnit(id, null);
@@ -92,7 +86,6 @@ public class SysOrgDao extends BaseDao<SysOrg> {
      *
      * @param org
      * @param targetLevel
-     *
      */
     public SysOrg findParentUnit(SysOrg org, int targetLevel) {
         Map<String, Integer> lm = getTreeManager().buildLevelMap();
@@ -116,8 +109,6 @@ public class SysOrgDao extends BaseDao<SysOrg> {
 
     /**
      * 获得上级单位。 如当前类型为部门，则先找到公司，再找公司父公司
-     *
-     *
      */
     public SysOrg findParentUnit(SysOrg org) {
         return getTreeManager().getParent(org, o -> !o.isDept());
@@ -127,7 +118,6 @@ public class SysOrgDao extends BaseDao<SysOrg> {
      * 获得机构， 如果是部门，则向上查询
      *
      * @param org
-     *
      */
     public SysOrg findUnit(SysOrg org) {
         if (!org.isDept()) {
@@ -146,7 +136,7 @@ public class SysOrgDao extends BaseDao<SysOrg> {
     }
 
     public String getNameById(String id) {
-        if(id == null){
+        if (id == null) {
             return null;
         }
         SysOrg org = this.findOne(id);
@@ -155,8 +145,6 @@ public class SysOrgDao extends BaseDao<SysOrg> {
 
     /**
      * 查早所有正常的机构
-     *
-     *
      */
     public List<SysOrg> findAllValid() {
         Spec<SysOrg> q = spec().eq(SysOrg.Fields.enabled, true);
@@ -202,10 +190,10 @@ public class SysOrgDao extends BaseDao<SysOrg> {
 
     public List<SysOrg> findByPid(String pid) {
         Spec<SysOrg> q = spec();
-        if(pid == null){
+        if (pid == null) {
             q.isNull("pid");
-        }else {
-            q.eq("pid",pid);
+        } else {
+            q.eq("pid", pid);
         }
         return this.findAll(q, Sort.by("seq"));
     }

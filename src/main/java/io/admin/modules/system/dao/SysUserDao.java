@@ -1,4 +1,3 @@
-
 package io.admin.modules.system.dao;
 
 import cn.hutool.cache.Cache;
@@ -74,7 +73,6 @@ public class SysUserDao extends BaseDao<SysUser> {
         NAME_CACHE.clear();
         super.delete(entity);
     }
-
 
 
     public List<SysUser> findByRole(SysRole role) {

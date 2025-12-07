@@ -1,4 +1,3 @@
-
 package io.admin.modules.system.controller;
 
 import cn.hutool.core.util.StrUtil;
@@ -68,8 +67,6 @@ public class SysOrgController {
     }
 
 
-
-
     @Log("机构-保存")
     @HasPermission("sysOrg:save")
     @PostMapping("save")
@@ -81,7 +78,7 @@ public class SysOrgController {
         }
         sysOrgService.saveOrUpdateByRequest(input, requestBodyKeys);
 
-      permissionStaleService.markUserStale(LoginUtils.getUser().getUsername());
+        permissionStaleService.markUserStale(LoginUtils.getUser().getUsername());
 
         return AjaxResult.ok().msg("保存机构成功");
     }
@@ -126,12 +123,11 @@ public class SysOrgController {
 
         DropResult dropResult = TreeDropUtils.onDrop(e, tree);
 
-        sysOrgService.sort(e.getDragKey(),dropResult);
+        sysOrgService.sort(e.getDragKey(), dropResult);
 
 
         return AjaxResult.ok().msg("排序成功");
     }
-
 
 
     @GetMapping("allTree")

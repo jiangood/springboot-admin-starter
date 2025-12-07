@@ -20,7 +20,7 @@ import java.time.ZoneId;
 public class LocalTimeJacksonConverter extends JsonDeserializer<LocalTime> {
 
     @Override
-    public LocalTime deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JsonProcessingException {
+    public LocalTime deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
         String originDate = p.getText();
         DateTime dateTime = DateUtil.parse(originDate);
         LocalDateTime localTime = LocalDateTime.ofInstant(dateTime.toInstant(), ZoneId.systemDefault());

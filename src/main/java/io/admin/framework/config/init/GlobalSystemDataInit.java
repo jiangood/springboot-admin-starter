@@ -42,13 +42,8 @@ public class GlobalSystemDataInit implements CommandLineRunner {
     SysConfigDao sysConfigDao;
 
 
-
-
-
-
     @Resource
     DictAnnHandler dictAnnHandler;
-
 
 
     @Resource
@@ -58,16 +53,12 @@ public class GlobalSystemDataInit implements CommandLineRunner {
     String applicationName;
 
 
-
     @Resource
     private SystemHookService systemHookService;
+
     @Override
     public void run(String... args) throws Exception {
         systemHookService.trigger(SystemHookEventType.BEFORE_DATA_INIT);
-
-
-
-
 
 
         log.info("执行初始化程序： {}", getClass().getName());
@@ -91,9 +82,8 @@ public class GlobalSystemDataInit implements CommandLineRunner {
 
         RSA rsa = SecureUtil.rsa();
         sysConfigDao.init(ConfigConsts.RSA_PUBLIC_KEY, rsa.getPublicKeyBase64()); // 放到siteInfo, 前端可获取
-        sysConfigDao.init( ConfigConsts.RSA_PRIVATE_KEY, rsa.getPrivateKeyBase64());
+        sysConfigDao.init(ConfigConsts.RSA_PRIVATE_KEY, rsa.getPrivateKeyBase64());
     }
-
 
 
     private void initUser(SysRole adminRole) {
@@ -117,7 +107,7 @@ public class GlobalSystemDataInit implements CommandLineRunner {
         log.info("管理员登录账号:{}", admin.getAccount());
 
         String pwd = sysProperties.getResetAdminPwd();
-        if(StrUtil.isNotEmpty(pwd)){
+        if (StrUtil.isNotEmpty(pwd)) {
             admin.setPassword(PasswordUtils.encode(pwd));
             log.info("管理员密码重置为 {}", pwd);
             sysUserDao.save(admin);

@@ -23,6 +23,7 @@ public class ResponseUtils {
     public static final String CONTENT_TYPE_PDF = "application/pdf";
 
     public static final String CONTENT_TYPE_STREAM = "application/octet-stream";
+
     public static void setDownloadHeader(String filename, String contentType, HttpServletResponse response) throws IOException {
         filename = URLUtil.encode(filename, StandardCharsets.UTF_8);
 
@@ -59,7 +60,6 @@ public class ResponseUtils {
     }
 
 
-
     public static void setCrossDomain(HttpServletRequest request, HttpServletResponse response) {
         String origin = request.getHeader("Origin");
 
@@ -73,15 +73,12 @@ public class ResponseUtils {
     }
 
 
-
-
-
     public static void responseExceptionError(HttpServletResponse response,
                                               Integer code,
                                               String message) {
         response.setCharacterEncoding(CharsetUtil.UTF_8);
         response.setContentType(ContentType.JSON.toString());
-        AjaxResult result = AjaxResult.err().code(code).msg( message);
+        AjaxResult result = AjaxResult.err().code(code).msg(message);
         String errorResponseJsonData = JsonUtils.toPrettyJsonQuietly(result);
         try {
             response.setStatus(code);
@@ -90,6 +87,7 @@ public class ResponseUtils {
             log.error(e.getClass().getName() + ":" + e.getMessage());
         }
     }
+
     public static void responseJson(HttpServletResponse response, Object data) {
         response.setCharacterEncoding(CharsetUtil.UTF_8);
         response.setContentType(ContentType.JSON.toString());
@@ -106,7 +104,6 @@ public class ResponseUtils {
         response.getWriter().write(JsonUtils.toJson(result));
         response.getWriter().flush();
     }
-
 
 
     public static void responseHtml(HttpServletResponse response, String html) throws IOException {

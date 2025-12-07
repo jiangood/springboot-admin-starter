@@ -47,19 +47,18 @@ public class DictAnnHandler {
             boolean isCodeEnum = CodeEnum.class.isAssignableFrom(cls);
 
 
-
             SysDict sysDict = sysDictDao.saveOrUpdate(code, label, isCodeEnum);
 
             boolean buildin = true;
             Field[] fields = cls.getFields();
             if (isCodeEnum) {
                 Object[] enumConstants = cls.getEnumConstants();
-                for (int i = 0; i < enumConstants.length; i++){
+                for (int i = 0; i < enumConstants.length; i++) {
                     CodeEnum codeEnum = (CodeEnum) enumConstants[i];
                     sysDictItemDao.saveOrUpdate(sysDict, String.valueOf(codeEnum.getCode()), codeEnum.getMsg(), i, buildin);
                 }
 
-            }else {
+            } else {
                 for (int i = 0; i < fields.length; i++) {
                     Field field = fields[i];
 

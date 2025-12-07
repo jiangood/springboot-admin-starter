@@ -1,4 +1,3 @@
-
 package io.admin.modules.system.dao;
 
 
@@ -22,15 +21,15 @@ public class SysConfigDao extends BaseDao<SysConfig> {
     @Transactional
     public SysConfig init(String code, String defaultValue) {
         SysConfig cfg = this.findByCode(code);
-        if (cfg == null){
+        if (cfg == null) {
             cfg = new SysConfig();
             cfg.setCode(code);
             cfg.setValue(defaultValue);
         }
-        if(cfg.getValue() == null){
+        if (cfg.getValue() == null) {
             cfg.setValue(defaultValue);
         }
-      return  super.save(cfg);
+        return super.save(cfg);
     }
 
 

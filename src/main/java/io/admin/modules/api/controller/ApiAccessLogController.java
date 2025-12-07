@@ -13,11 +13,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("admin/apiAccessLog")
-public class ApiAccessLogController  {
+public class ApiAccessLogController {
 
     @Resource
     ApiAccessLogService service;
-
 
 
     @Deprecated

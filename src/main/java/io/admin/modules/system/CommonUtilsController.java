@@ -1,4 +1,3 @@
-
 package io.admin.modules.system;
 
 import cn.hutool.core.codec.Base64;
@@ -32,11 +31,6 @@ public class CommonUtilsController {
 
         return AjaxResult.ok().data(encode);
     }
-
-
-
-
-
 
 
 }

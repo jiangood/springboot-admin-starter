@@ -19,17 +19,17 @@ public class TreeUtils {
         return buildTree(list, TreeOption::getKey, TreeOption::getParentKey, TreeOption::getChildren, TreeOption::setChildren);
     }
 
-    public static Map<String, TreeOption>  treeToMap(List<TreeOption> tree) {
+    public static Map<String, TreeOption> treeToMap(List<TreeOption> tree) {
         Map<String, TreeOption> map = new HashMap<>();
-        walk(tree, TreeOption::getChildren, node->{
+        walk(tree, TreeOption::getChildren, node -> {
             map.put(node.getKey(), node);
         });
         return map;
     }
 
-    public static <E> Map<String,E>  treeToMap(List<E> tree,Function<E, String> keyFn, Function<E, List<E>> getChildren) {
-        Map<String,E> map = new HashMap<>();
-        walk(tree,getChildren,node->{
+    public static <E> Map<String, E> treeToMap(List<E> tree, Function<E, String> keyFn, Function<E, List<E>> getChildren) {
+        Map<String, E> map = new HashMap<>();
+        walk(tree, getChildren, node -> {
             String key = keyFn.apply(node);
             map.put(key, node);
         });
@@ -104,7 +104,6 @@ public class TreeUtils {
             walk(children, getChildren, consumer);
         }
     }
-
 
 
     /**

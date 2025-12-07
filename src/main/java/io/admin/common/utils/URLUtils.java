@@ -7,8 +7,8 @@ import java.util.Map;
 
 public class URLUtils {
 
-    public static String removeQueryString(String url){
-        return StrUtil.subBefore(url,'?',true);
+    public static String removeQueryString(String url) {
+        return StrUtil.subBefore(url, '?', true);
     }
 
 
@@ -17,8 +17,8 @@ public class URLUtils {
         if (StrUtil.isEmpty(url)) {
             return map;
         }
-        if(url.contains("?")){
-            url = StrUtil.subAfter(url, '?',true);
+        if (url.contains("?")) {
+            url = StrUtil.subAfter(url, '?', true);
         }
 
         String[] ps = url.split("&");
@@ -30,7 +30,7 @@ public class URLUtils {
         return map;
     }
 
-    public static String getParam(String url, String key){
+    public static String getParam(String url, String key) {
         return getParams(url).get(key);
     }
 
@@ -44,6 +44,7 @@ public class URLUtils {
 
     /**
      * 再原有路径上增加一个路线，但不影响参数， 如 list?name=abc
+     *
      * @param url
      * @param path
      * @return
@@ -54,7 +55,7 @@ public class URLUtils {
             return arr[0] + path + arr[1];
         }
 
-        return url +path;
+        return url + path;
     }
 
 

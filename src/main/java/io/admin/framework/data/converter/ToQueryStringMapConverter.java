@@ -10,12 +10,12 @@ import java.util.Map;
 /**
  * 转换为 a=1&b=2这种格式
  */
-public class ToQueryStringMapConverter implements AttributeConverter<Map<String,Object>, String>, Serializable {
+public class ToQueryStringMapConverter implements AttributeConverter<Map<String, Object>, String>, Serializable {
 
 
     @Override
     public String convertToDatabaseColumn(Map<String, Object> map) {
-        if(map == null || map.isEmpty()){
+        if (map == null || map.isEmpty()) {
             return null;
         }
         StringBuilder sb = new StringBuilder();
@@ -23,7 +23,7 @@ public class ToQueryStringMapConverter implements AttributeConverter<Map<String,
             sb.append(e.getKey()).append("=").append(e.getValue());
             sb.append("&");
         }
-        sb.deleteCharAt(sb.length() -1);
+        sb.deleteCharAt(sb.length() - 1);
 
         return sb.toString();
     }

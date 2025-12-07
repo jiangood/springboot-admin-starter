@@ -22,19 +22,19 @@ public class SysUserMessageService extends BaseService<SysUserMessage> {
 
     public Page<SysUserMessage> findByUser(String id, Boolean read, Pageable pageable) {
         Spec<SysUserMessage> spec = Spec.<SysUserMessage>of().eq(SysUserMessage.Fields.user + ".id", id);
-        if(read != null){
-            spec.eq(SysUserMessage.Fields.isRead , read);
+        if (read != null) {
+            spec.eq(SysUserMessage.Fields.isRead, read);
         }
 
         return sysUserMsgDao.findAll(spec, pageable);
     }
 
     public long countUnReadByUser(String id) {
-       return sysUserMsgDao.count(Spec.<SysUserMessage>of().eq(SysUserMessage.Fields.user + ".id", id).eq(SysUserMessage.Fields.isRead , false));
+        return sysUserMsgDao.count(Spec.<SysUserMessage>of().eq(SysUserMessage.Fields.user + ".id", id).eq(SysUserMessage.Fields.isRead, false));
     }
 
     @Transactional
-    public void save(String userId, String title, String content){
+    public void save(String userId, String title, String content) {
         SysUserMessage msg = new SysUserMessage();
         msg.setUser(new SysUser(userId));
         msg.setTitle(title);

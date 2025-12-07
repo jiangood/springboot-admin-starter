@@ -28,8 +28,6 @@ import java.util.Date;
 public class JacksonConfig {
 
 
-
-
     /**
      * json自定义序列化工具,long转string
      */

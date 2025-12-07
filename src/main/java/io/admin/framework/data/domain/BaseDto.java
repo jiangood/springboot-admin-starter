@@ -11,7 +11,6 @@ public class BaseDto {
     private String id;
 
 
-
     @Remark("创建时间")
     private Date createTime;
 
@@ -25,7 +24,6 @@ public class BaseDto {
 
     @Remark("更新人ID")
     private String updateUser;
-
 
 
 }

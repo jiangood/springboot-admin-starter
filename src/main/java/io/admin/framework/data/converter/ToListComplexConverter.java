@@ -10,7 +10,6 @@ import java.util.List;
 
 /**
  * 字符串，数组
- *
  */
 public class ToListComplexConverter implements AttributeConverter<List<String>, String>, Serializable {
 

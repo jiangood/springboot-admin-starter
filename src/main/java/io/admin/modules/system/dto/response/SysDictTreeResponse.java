@@ -1,4 +1,3 @@
-
 package io.admin.modules.system.dto.response;
 
 import lombok.Data;
@@ -7,8 +6,6 @@ import java.util.List;
 
 /**
  * 系统字典树
- *
- *
  */
 @Data
 public class SysDictTreeResponse {

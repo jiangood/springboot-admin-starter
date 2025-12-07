@@ -1,4 +1,3 @@
-
 package io.admin.modules.flowable.admin.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -59,7 +58,7 @@ public class ModelController {
     @RequestMapping("page")
     public AjaxResult page(String searchText, Pageable pageable) throws Exception {
         ModelQuery query = repositoryService.createModelQuery();
-        if(searchText != null){
+        if (searchText != null) {
             query.modelNameLike(searchText);
         }
         List<Model> list = query.list();
@@ -92,9 +91,9 @@ public class ModelController {
         byte[] source = repositoryService.getModelEditorSource(id);
 
         Map<String, Object> data = new HashMap<>();
-        data.put("id",id);
-        data.put("name",model.getName());
-        data.put("content", new String(source,StandardCharsets.UTF_8));
+        data.put("id", id);
+        data.put("name", model.getName());
+        data.put("content", new String(source, StandardCharsets.UTF_8));
 
         return AjaxResult.ok().data(data);
     }
@@ -150,7 +149,6 @@ public class ModelController {
                 .name(m.getName())
                 .key(key)
                 .deploy();
-
 
 
         return AjaxResult.ok().msg("部署成功");

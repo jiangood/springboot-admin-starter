@@ -12,7 +12,7 @@ public class IdUtilsTest {
     public void testUuidV7() {
         String uuid1 = IdUtils.uuidV7();
         String uuid2 = IdUtils.uuidV7();
-        
+
         assertNotNull(uuid1);
         assertEquals(32, uuid1.length()); // UUID without hyphens should be 32 characters
         assertTrue(uuid1.matches("[0-9a-fA-F]+")); // Should contain only hex characters
@@ -25,7 +25,7 @@ public class IdUtilsTest {
     public void testUuidV7Format() {
         String uuid = IdUtils.uuidV7();
         // 验证UUID的格式
-        assertTrue(uuid.length() == 32);
+        assertEquals(32, uuid.length());
         assertTrue(uuid.matches("[0-9a-fA-F]+"));
     }
 }

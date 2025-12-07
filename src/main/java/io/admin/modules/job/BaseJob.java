@@ -26,7 +26,6 @@ public abstract class BaseJob implements Job {
         JobDataMap data = context.getMergedJobDataMap();
 
 
-
         String jobName = context.getJobDetail().getKey().getName();
 
         // 1. 数据库保存记录

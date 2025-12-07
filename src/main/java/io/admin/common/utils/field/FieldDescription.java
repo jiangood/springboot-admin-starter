@@ -2,7 +2,7 @@ package io.admin.common.utils.field;
 
 import java.lang.annotation.*;
 
-@Target({ ElementType.PARAMETER ,ElementType.FIELD,ElementType.ANNOTATION_TYPE})
+@Target({ElementType.PARAMETER, ElementType.FIELD, ElementType.ANNOTATION_TYPE})
 
 
 @Retention(RetentionPolicy.RUNTIME)
@@ -10,26 +10,27 @@ import java.lang.annotation.*;
 @Documented
 public @interface FieldDescription {
 
-	String name() default "";
+    String name() default "";
 
-	boolean required() default true;
+    boolean required() default true;
 
-	String label() ;
+    String label();
 
-	/**
-	 * 示例值
-	 * @return
-	 */
-	String demo() default "";
+    /**
+     * 示例值
+     *
+     * @return
+     */
+    String demo() default "";
 
-	int len() default -1;
+    int len() default -1;
 
-	/**
-	 * 字段类型
-	 * @return
-	 */
-	ValueType type() default ValueType.STRING;
-
+    /**
+     * 字段类型
+     *
+     * @return
+     */
+    ValueType type() default ValueType.STRING;
 
 
 }

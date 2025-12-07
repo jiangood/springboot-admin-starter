@@ -1,4 +1,3 @@
-
 package io.admin.modules.system.file;
 
 import cn.hutool.core.io.FileUtil;
@@ -26,7 +25,7 @@ public class LocalFileOperator implements FileOperator {
             FileUtil.mkdir(bucketPath);
         }
 
-        this. dir = savePath + File.separator + BUCKET_NAME + File.separator ;
+        this.dir = savePath + File.separator + BUCKET_NAME + File.separator;
     }
 
 

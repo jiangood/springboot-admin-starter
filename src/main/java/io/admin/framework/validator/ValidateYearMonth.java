@@ -14,7 +14,7 @@ import java.lang.annotation.Target;
 /**
  * 年月 yyyy-MM
  */
-@Target({ElementType.FIELD,ElementType.PARAMETER})
+@Target({ElementType.FIELD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = ValidateYearMonth.MyValidator.class)
 public @interface ValidateYearMonth {
@@ -25,15 +25,15 @@ public @interface ValidateYearMonth {
 
     Class<? extends Payload>[] payload() default {};
 
-   class MyValidator implements ConstraintValidator<ValidateYearMonth, String> {
+    class MyValidator implements ConstraintValidator<ValidateYearMonth, String> {
 
 
         @Override
         public boolean isValid(String str, ConstraintValidatorContext constraintValidatorContext) {
             if (str != null && !str.isEmpty()) {
                 try {
-                    DateUtil.parse(str,"yyyy-MM");
-                }catch (Exception e){
+                    DateUtil.parse(str, "yyyy-MM");
+                } catch (Exception e) {
                     return false;
                 }
 

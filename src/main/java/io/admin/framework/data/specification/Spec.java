@@ -35,14 +35,14 @@ public class Spec<T> implements Specification<T> {
 
             Path<Number> x = root.get(field);
 
-           Expression<? extends Number> sel = switch (fn) {
-               case AVG -> cb.avg(x);
-               case SUM -> cb.sum(x);
-               case MIN -> cb.min(x);
-               case MAX -> cb.max(x);
-               case COUNT -> cb.count(x);
+            Expression<? extends Number> sel = switch (fn) {
+                case AVG -> cb.avg(x);
+                case SUM -> cb.sum(x);
+                case MIN -> cb.min(x);
+                case MAX -> cb.max(x);
+                case COUNT -> cb.count(x);
             };
-           sel.alias(fn.name().toLowerCase() + "_" + field);
+            sel.alias(fn.name().toLowerCase() + "_" + field);
 
             List<Selection<?>> newSections = new ArrayList<>(query.getSelection().getCompoundSelectionItems());
             newSections.add(sel);
@@ -56,7 +56,7 @@ public class Spec<T> implements Specification<T> {
     public Spec<T> select(String... fields) {
         return this.add((Specification<T>) (root, query, cb) -> {
 
-            List<Selection<?>> newSections = new  ArrayList<>(query.getSelection().getCompoundSelectionItems());
+            List<Selection<?>> newSections = new ArrayList<>(query.getSelection().getCompoundSelectionItems());
             for (String field : fields) {
                 newSections.add(root.get(field).alias(field));
             }
@@ -82,10 +82,11 @@ public class Spec<T> implements Specification<T> {
         IS_MEMBER, IS_NOT_MEMBER
     }
 
-    public static <T> Spec<T> of(){
+    public static <T> Spec<T> of() {
         return new Spec<>();
     }
-    private Spec(){
+
+    private Spec() {
     }
 
     // ---------------------- 核心构建方法 ----------------------
@@ -104,6 +105,7 @@ public class Spec<T> implements Specification<T> {
         this.add((Specification<T>) (root, query, builder) -> QueryByExamplePredicateBuilder.getPredicate(root, builder, example));
         return this;
     }
+
     public Spec<T> eq(String field, Object value) {
         return this.addIfValuePresent(Operator.EQUAL, field, value);
     }
@@ -239,11 +241,11 @@ public class Spec<T> implements Specification<T> {
     /**
      * **JPA IS MEMBER OF**：检查一个元素是否属于实体集合字段中的成员。
      * 适用于 @OneToMany 或 @ManyToMany 关联。
-     *
+     * <p>
      * 例如查询用户列表， 条件为拥有管理员角色的用户列表 isMemberOf("roles", adminRole)
      *
      * @param element 要检查的实体对象（e.g., 一个 Role 对象）
-     * @param field 实体中的集合字段名 (e.g., "roles")
+     * @param field   实体中的集合字段名 (e.g., "roles")
      */
     public Spec<T> isMember(String field, Object element) {
         // field 作为集合属性名，element 作为要检查的元素
@@ -257,7 +259,7 @@ public class Spec<T> implements Specification<T> {
      * **JPA IS NOT MEMBER OF**：检查一个元素是否不属于实体集合字段中的成员。
      *
      * @param element 要检查的实体对象
-     * @param field 实体中的集合字段名
+     * @param field   实体中的集合字段名
      */
     public Spec<T> isNotMember(String field, Object element) {
         if (element != null && StringUtils.hasText(field)) {
@@ -269,6 +271,7 @@ public class Spec<T> implements Specification<T> {
     /**
      * 设置 GROUP BY 字段。
      * 注意：这会修改 CriteriaQuery，返回的 Predicate 仍是 AND 连接的结果。
+     *
      * @param fields 需要分组的字段 (支持点操作 e.g., "dept.id")
      */
     public Spec<T> groupBy(String... fields) {
@@ -293,6 +296,7 @@ public class Spec<T> implements Specification<T> {
     /**
      * 设置 HAVING 过滤条件，用于 GROUP BY 之后。
      * 注意：havingSpec 内部必须使用聚合函数，否则其行为等同于 WHERE 过滤。
+     *
      * @param havingSpec 包含聚合函数条件的 Specification
      */
     public Spec<T> having(Specification<T> havingSpec) {
@@ -377,12 +381,11 @@ public class Spec<T> implements Specification<T> {
         }
 
 
-
         @Override
         @SuppressWarnings({"unchecked", "rawtypes"})
         public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
             // 使用更新后的 getPath 方法，支持点操作
-            Expression path = ExpressionUtils.getPath(root,field);
+            Expression path = ExpressionUtils.getPath(root, field);
 
             return switch (op) {
                 case EQUAL -> cb.equal(path, value);

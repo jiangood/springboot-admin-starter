@@ -11,13 +11,14 @@ public class RegexUtils {
         boolean b = matcher.find();
 
         int count = matcher.groupCount();
-        if(b && (groupIndex  <= count)) {
+        if (b && (groupIndex <= count)) {
             return matcher.group(groupIndex);
         }
 
         return null;
     }
+
     public static String findFirstMatch(String regex, String input) {
-       return findMatch(regex,input,1);
+        return findMatch(regex, input, 1);
     }
 }

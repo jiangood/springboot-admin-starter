@@ -1,4 +1,3 @@
-
 package io.admin.modules.system.service;
 
 import io.admin.common.utils.tree.TreeUtils;
@@ -15,7 +14,7 @@ import java.util.List;
  */
 @Service
 @Slf4j
-public class SysMenuService  {
+public class SysMenuService {
 
 
     @Resource
@@ -27,26 +26,12 @@ public class SysMenuService  {
     }
 
 
-
-
-
     public List<MenuDefinition> menuTree() {
         List<MenuDefinition> all = sysMenuDao.findAll();
-        List<MenuDefinition> tree = TreeUtils.buildTree(all, MenuDefinition::getId, MenuDefinition::getPid,MenuDefinition::getChildren, MenuDefinition::setChildren);
+        List<MenuDefinition> tree = TreeUtils.buildTree(all, MenuDefinition::getId, MenuDefinition::getPid, MenuDefinition::getChildren, MenuDefinition::setChildren);
         return tree;
 
     }
-
-
-
-
-
-
-
-
-
-
-
 
 
 }

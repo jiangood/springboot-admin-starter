@@ -8,10 +8,10 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
 /**
- *
  * 只需简单实现一个类，即可转换
  * public class XConverter extends BaseEnumCodeConverter<UserType> {
  * }
+ *
  * @param <E>
  */
 public abstract class BaseCodeEnumConverter<E extends Enum<E> & CodeEnum> implements AttributeConverter<E, Integer>, Serializable {

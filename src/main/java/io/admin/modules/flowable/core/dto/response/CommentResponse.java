@@ -19,7 +19,7 @@ public class CommentResponse {
     public CommentResponse(Comment comment) {
         this.id = comment.getId();
         this.content = comment.getFullMessage();
-        this.time = DateFormatUtils.format(comment.getTime(), "yyyy-MM-dd HH:mm:ss") ;
+        this.time = DateFormatUtils.format(comment.getTime(), "yyyy-MM-dd HH:mm:ss");
         this.user = SpringUtils.getBean(FlowableService.class).getUserName(comment.getUserId());
     }
 }

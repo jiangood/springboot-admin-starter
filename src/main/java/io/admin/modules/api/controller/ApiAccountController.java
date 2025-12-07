@@ -40,9 +40,9 @@ public class ApiAccountController {
     @GetMapping("docInfo")
     public AjaxResult docInfo(String id) {
         List<ApiResource> list = apiResourceService.findAll();
-        if(StrUtil.isNotEmpty(id)){
+        if (StrUtil.isNotEmpty(id)) {
             ApiAccount acc = service.findOne(id);
-            list = list.stream().filter(t->acc.getPerms().contains(t.getAction())).toList();
+            list = list.stream().filter(t -> acc.getPerms().contains(t.getAction())).toList();
         }
 
         Dict resultData = new Dict();

@@ -46,6 +46,7 @@ public class MyFlowableController {
     private TaskService taskService;
     private HistoryService historyService;
     private FlowableService flowableService;
+
     @GetMapping("todoCount")
     public AjaxResult todo() {
         String userId = LoginUtils.getUserId();
@@ -77,7 +78,7 @@ public class MyFlowableController {
 
 
         HistoricProcessInstanceQuery query = historyService.createHistoricProcessInstanceQuery();
-            query.startedBy(loginUser.getId());
+        query.startedBy(loginUser.getId());
 
 
         query.orderByProcessInstanceStartTime().desc();

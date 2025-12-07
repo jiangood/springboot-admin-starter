@@ -33,8 +33,6 @@ public class ApiGatewayController {
     public static final int TIME_DIFF_LIMIT = 5;
 
 
-
-
     @Resource
     private ApiAccessLogService accessLogService;
 
@@ -61,7 +59,6 @@ public class ApiGatewayController {
         this.check(account.getEnable(), ApiErrorCode.ACC_NOT_FORBIDDEN);
 
 
-
         // 校验是否超期
         if (account.getEndTime() != null) {
             this.check(DateUtil.current() < account.getEndTime().getTime(), ApiErrorCode.ACC_EXPIRE);
@@ -75,7 +72,7 @@ public class ApiGatewayController {
         // 校验签名
         String appSecret = account.getAppSecret();
         String calcSign = ApiSignUtils.sign(appId, appSecret, timestamp);
-        this.check(sign.equals(calcSign),  ApiErrorCode.SIGN_ERROR);
+        this.check(sign.equals(calcSign), ApiErrorCode.SIGN_ERROR);
 
 
         // 校验权限

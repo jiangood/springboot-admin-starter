@@ -1,4 +1,3 @@
-
 package io.admin.modules.flowable.utils;
 
 import cn.hutool.core.util.StrUtil;
@@ -26,10 +25,6 @@ import java.util.Map;
  */
 @Slf4j
 public class ModelUtils {
-
-
-
-
 
 
     public static BpmnModel xmlToModel(String xml) {
@@ -77,7 +72,7 @@ public class ModelUtils {
                 if (task.getAssignee() == null &&
                         CollectionUtils.isEmpty(task.getCandidateUsers()) &&
                         CollectionUtils.isEmpty(task.getCandidateGroups())) {
-                      throw new IllegalArgumentException("请指定分配对象");
+                    throw new IllegalArgumentException("请指定分配对象");
                 }
 
                 String assignmentType = getAttr(task, "assignmentType");
@@ -103,7 +98,7 @@ public class ModelUtils {
                 }
 
                 try {
-                     ProcessEngineConfigurationImpl processEngineConfiguration = SpringUtils.getBean(ProcessEngineConfigurationImpl.class);
+                    ProcessEngineConfigurationImpl processEngineConfiguration = SpringUtils.getBean(ProcessEngineConfigurationImpl.class);
                     processEngineConfiguration.getExpressionManager().createExpression(conditionExpression);
                 } catch (Exception e) {
                     throw new IllegalArgumentException("条件表达式异常:" + e.getMessage());
@@ -114,8 +109,6 @@ public class ModelUtils {
 
 
     }
-
-
 
 
     /**
@@ -142,7 +135,6 @@ public class ModelUtils {
 
         return null;
     }
-
 
 
 }

@@ -36,7 +36,6 @@ public class AuthService {
 
 
     /**
-     *
      * @param request
      * @return 解密后的密码
      */
@@ -46,7 +45,6 @@ public class AuthService {
 
         String username = request.getParameter("username");
         String captchaCode = request.getParameter("captchaCode");
-
 
 
         boolean locked = loginAttemptService.isAccountLocked(username);
@@ -64,10 +62,9 @@ public class AuthService {
         }
 
 
-
     }
 
-    public  String decodeWebPassword(String password) {
+    public String decodeWebPassword(String password) {
         String rsaPrivateKey = ConfigConsts.get(ConfigConsts.RSA_PRIVATE_KEY);
         String rsaPublicKey = ConfigConsts.get(ConfigConsts.RSA_PUBLIC_KEY);
         RSA rsa = SecureUtil.rsa(rsaPrivateKey, rsaPublicKey);

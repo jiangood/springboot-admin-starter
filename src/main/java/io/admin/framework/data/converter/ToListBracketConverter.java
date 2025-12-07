@@ -1,5 +1,3 @@
-
-
 package io.admin.framework.data.converter;
 
 import cn.hutool.core.collection.CollUtil;
@@ -33,7 +31,7 @@ public class ToListBracketConverter implements AttributeConverter<List<String>, 
 
 
     private static String join(List<String> list) {
-        if(CollUtil.isEmpty(list)){
+        if (CollUtil.isEmpty(list)) {
             return null;
         }
         return CollUtil.join(list, CONJUNCTION, PREFIX, SUFFIX);

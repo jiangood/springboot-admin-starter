@@ -44,7 +44,7 @@ public class FlowableManagerImpl implements FlowableManager {
 
     @Override
     public void start(String key, String bizKey, String title, Map<String, Object> variables) {
-        Assert.notNull(key,"key不能为空");
+        Assert.notNull(key, "key不能为空");
         if (variables == null) {
             variables = new HashMap<>();
         }

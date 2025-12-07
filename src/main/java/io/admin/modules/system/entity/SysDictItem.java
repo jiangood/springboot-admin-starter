@@ -1,4 +1,3 @@
-
 package io.admin.modules.system.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -33,11 +32,8 @@ public class SysDictItem extends BaseEntity {
     String code;
 
 
-
-
     @Remark("文本")
     private String text;
-
 
 
     @Column(nullable = false)
@@ -56,15 +52,12 @@ public class SysDictItem extends BaseEntity {
     private Integer seq;
 
 
-
-
-
     @PrePersist
     public void prePersistOrUpdate() {
-        if(seq == null){
+        if (seq == null) {
             seq = 0;
         }
-        if(enabled == null){
+        if (enabled == null) {
             enabled = true;
         }
     }

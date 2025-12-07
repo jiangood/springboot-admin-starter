@@ -15,7 +15,7 @@ public interface SystemHook {
     }
 
 
-    default void onEvent(SystemHookEventType eventType){
+    default void onEvent(SystemHookEventType eventType) {
 
     }
 

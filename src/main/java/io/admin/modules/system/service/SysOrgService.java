@@ -193,9 +193,9 @@ public class SysOrgService extends BaseService<SysOrg> {
         return null;
     }
 
-    public String  getDeptLeaderId(String userId) {
+    public String getDeptLeaderId(String userId) {
         SysUser deptLeader = getDeptLeader(userId);
-        if(deptLeader != null){
+        if (deptLeader != null) {
             return deptLeader.getId();
         }
         return null;

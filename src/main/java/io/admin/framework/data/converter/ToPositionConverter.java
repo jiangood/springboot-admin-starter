@@ -10,7 +10,7 @@ public class ToPositionConverter extends BaseConverter<Position> {
 
     @Override
     public Position convertToEntityAttribute(String dbData) {
-        if(dbData != null){
+        if (dbData != null) {
             try {
                 return JsonUtils.jsonToBean(dbData, Position.class);
             } catch (IOException e) {
@@ -18,6 +18,6 @@ public class ToPositionConverter extends BaseConverter<Position> {
             }
         }
 
-        return  null;
+        return null;
     }
 }

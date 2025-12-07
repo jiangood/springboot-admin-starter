@@ -79,7 +79,7 @@ public class JsonUtilsTest {
     @Test
     public void testJsonToBean() throws IOException {
         String json = "{\"name\":\"test\",\"value\":123}";
-        
+
         // Create a simple test class to deserialize to
         TestBean bean = JsonUtils.jsonToBean(json, TestBean.class);
         assertNotNull(bean);
@@ -96,8 +96,9 @@ public class JsonUtilsTest {
     @Test
     public void testJsonToBeanTypeReference() throws IOException {
         String json = "[{\"name\":\"test1\",\"value\":123},{\"name\":\"test2\",\"value\":456}]";
-        TypeReference<List<TestBean>> typeRef = new TypeReference<List<TestBean>>() {};
-        
+        TypeReference<List<TestBean>> typeRef = new TypeReference<List<TestBean>>() {
+        };
+
         List<TestBean> beans = JsonUtils.jsonToBean(json, typeRef);
         assertNotNull(beans);
         assertEquals(2, beans.size());
@@ -108,7 +109,7 @@ public class JsonUtilsTest {
     @Test
     public void testJsonToBeanQuietly() {
         String json = "{\"name\":\"test\",\"value\":123}";
-        
+
         TestBean bean = JsonUtils.jsonToBeanQuietly(json, TestBean.class);
         assertNotNull(bean);
         assertEquals("test", bean.getName());
@@ -118,7 +119,7 @@ public class JsonUtilsTest {
     @Test
     public void testJsonToBeanQuietlyWithInvalidJson() {
         String invalidJson = "{invalid json}";
-        
+
         TestBean bean = JsonUtils.jsonToBeanQuietly(invalidJson, TestBean.class);
         assertNull(bean);
     }
@@ -126,7 +127,7 @@ public class JsonUtilsTest {
     @Test
     public void testJsonToBeanListQuietly() {
         String json = "[{\"name\":\"test1\",\"value\":123},{\"name\":\"test2\",\"value\":456}]";
-        
+
         List<TestBean> beans = JsonUtils.jsonToBeanListQuietly(json, TestBean.class);
         assertNotNull(beans);
         assertEquals(2, beans.size());
@@ -137,7 +138,7 @@ public class JsonUtilsTest {
     @Test
     public void testJsonToListQuietly() {
         String json = "[\"item1\", \"item2\", \"item3\"]";
-        
+
         List<String> list = JsonUtils.jsonToListQuietly(json);
         assertNotNull(list);
         assertEquals(3, list.size());
@@ -149,7 +150,7 @@ public class JsonUtilsTest {
     @Test
     public void testJsonToBeanQuietlyObject() {
         String json = "{\"name\":\"test\",\"value\":123}";
-        
+
         Object obj = JsonUtils.jsonToBeanQuietly(json);
         assertNotNull(obj);
     }
@@ -157,7 +158,7 @@ public class JsonUtilsTest {
     @Test
     public void testJsonToMapQuietly() {
         String json = "{\"name\":\"test\",\"value\":\"123\"}";
-        
+
         Map<String, Object> map = JsonUtils.jsonToMapQuietly(json);
         assertNotNull(map);
         assertEquals("test", map.get("name"));
@@ -167,7 +168,7 @@ public class JsonUtilsTest {
     @Test
     public void testJsonToMapQuietlyWithInvalidJson() {
         String invalidJson = "{invalid json}";
-        
+
         Map<String, Object> map = JsonUtils.jsonToMapQuietly(invalidJson);
         assertNotNull(map);
         assertTrue(map.isEmpty()); // Should return empty map on error
@@ -176,7 +177,7 @@ public class JsonUtilsTest {
     @Test
     public void testJsonToMap() throws IOException {
         String json = "{\"name\":\"test\",\"value\":\"123\"}";
-        
+
         Map<String, Object> map = JsonUtils.jsonToMap(json);
         assertNotNull(map);
         assertEquals("test", map.get("name"));
@@ -186,7 +187,7 @@ public class JsonUtilsTest {
     @Test
     public void testJsonToMapStringStringQuietly() {
         String json = "{\"name\":\"test\",\"value\":\"123\"}";
-        
+
         Map<String, String> map = JsonUtils.jsonToMapStringStringQuietly(json);
         assertNotNull(map);
         assertEquals("test", map.get("name"));
@@ -196,7 +197,7 @@ public class JsonUtilsTest {
     @Test
     public void testReadTree() throws JsonProcessingException {
         String json = "{\"name\":\"test\",\"value\":123}";
-        
+
         JsonNode node = JsonUtils.readTree(json);
         assertNotNull(node);
         assertEquals("test", node.get("name").asText());
@@ -207,7 +208,7 @@ public class JsonUtilsTest {
     public void testGetObjectMapper() {
         ObjectMapper mapper = JsonUtils.getObjectMapper();
         assertNotNull(mapper);
-        
+
         // Ensure that the mapper has the expected configuration
         // This is harder to test directly, but we can ensure the object is properly configured
         assertDoesNotThrow(() -> mapper.writeValueAsString(new TestBean()));

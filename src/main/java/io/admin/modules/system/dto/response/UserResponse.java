@@ -24,7 +24,6 @@ public class UserResponse extends BaseDto {
     private String account;
 
 
-
     private String name;
 
 
@@ -34,7 +33,7 @@ public class UserResponse extends BaseDto {
 
     private Boolean enabled;
 
-    private  List<String> roleNames;
+    private List<String> roleNames;
 
     private String dataPermType;
 

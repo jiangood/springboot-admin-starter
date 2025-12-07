@@ -14,7 +14,7 @@ import java.lang.annotation.Target;
 /**
  * 字母开头
  */
-@Target({ElementType.FIELD,ElementType.PARAMETER})
+@Target({ElementType.FIELD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = ValidateStartWithLetter.MyValidator.class)
 public @interface ValidateStartWithLetter {
@@ -29,13 +29,13 @@ public @interface ValidateStartWithLetter {
     class MyValidator implements ConstraintValidator<ValidateStartWithLetter, String> {
 
 
-            @Override
-            public boolean isValid(String str, ConstraintValidatorContext constraintValidatorContext) {
-                if (str != null && !str.isEmpty()) {
-                    char c = str.charAt(0);
-                    return Character.isLetter(c);
-                }
-                return true;
+        @Override
+        public boolean isValid(String str, ConstraintValidatorContext constraintValidatorContext) {
+            if (str != null && !str.isEmpty()) {
+                char c = str.charAt(0);
+                return Character.isLetter(c);
             }
+            return true;
         }
+    }
 }

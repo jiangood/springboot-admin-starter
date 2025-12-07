@@ -20,5 +20,4 @@ public class DropdownRequest {
     List<String> selected;
 
 
-
 }

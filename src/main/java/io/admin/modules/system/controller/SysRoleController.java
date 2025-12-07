@@ -35,7 +35,7 @@ import java.util.stream.Collectors;
  */
 @RestController
 @RequestMapping("admin/sysRole")
-public class SysRoleController  {
+public class SysRoleController {
 
     @Resource
     private SysRoleService sysRoleService;
@@ -50,14 +50,13 @@ public class SysRoleController  {
     @Resource
     private PermissionStaleService permissionStaleService;
 
-   @HasPermission("role:view")
+    @HasPermission("role:view")
     @RequestMapping("page")
-    public AjaxResult page(   @PageableDefault(direction = Sort.Direction.DESC, sort = "updateTime") Pageable pageable) throws Exception {
+    public AjaxResult page(@PageableDefault(direction = Sort.Direction.DESC, sort = "updateTime") Pageable pageable) throws Exception {
         Spec<SysRole> q = Spec.of();
         Page<SysRole> page = sysRoleService.findPageByRequest(q, pageable);
         return AjaxResult.ok().data(page);
     }
-
 
 
     @HasPermission("role:delete")
@@ -110,9 +109,9 @@ public class SysRoleController  {
         List<MenuDefinition> menuList = sysRoleService.ownMenu(id);
 
         // 将角色权限分散成map， 按菜单id为key, 拥有的权限为value
-        Map<String,Collection<String>> permsMap = new HashMap<>();
+        Map<String, Collection<String>> permsMap = new HashMap<>();
         for (MenuDefinition menuDefinition : menuList) {
-            if(CollUtil.isNotEmpty(menuDefinition.getPerms())){
+            if (CollUtil.isNotEmpty(menuDefinition.getPerms())) {
                 Set<String> menuPerms = menuDefinition.getPerms().stream().map(MenuPermission::getPerm).collect(Collectors.toSet());
 
                 List<String> ownMenuPerms = CollectionUtils.findExistingElements(rolePerms, menuPerms);

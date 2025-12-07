@@ -1,4 +1,3 @@
-
 package io.admin.modules.system.controller;
 
 
@@ -25,14 +24,11 @@ public class SysLogController {
     private SysLogService service;
 
 
-
-
-
     @HasPermission("sysLog:view")
     @RequestMapping("page")
-    public AjaxResult page( String dateRange ,String operation, @PageableDefault(sort = "operationTime", direction = Sort.Direction.DESC) Pageable pageable) throws Exception {
+    public AjaxResult page(String dateRange, String operation, @PageableDefault(sort = "operationTime", direction = Sort.Direction.DESC) Pageable pageable) throws Exception {
         Spec<SysLog> q = Spec.of();
-        q.betweenIsoDateRange(SysLog.Fields.operationTime, dateRange,true);
+        q.betweenIsoDateRange(SysLog.Fields.operationTime, dateRange, true);
         q.like(SysLog.Fields.operation, operation);
 
         Page<SysLog> page = service.findPageByRequest(q, pageable);

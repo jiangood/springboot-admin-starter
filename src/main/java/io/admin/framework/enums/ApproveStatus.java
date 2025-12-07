@@ -1,4 +1,3 @@
-
 package io.admin.framework.enums;
 
 import io.admin.common.utils.annotation.Remark;
@@ -7,7 +6,7 @@ import lombok.Getter;
 
 @Remark("审核状态")
 @Getter
-public enum ApproveStatus  {
+public enum ApproveStatus {
 
     @Remark("待提交")
     DRAFT,
@@ -19,7 +18,7 @@ public enum ApproveStatus  {
     APPROVED,
 
     @Remark("审核未通过")
-    REJECTED;
+    REJECTED
 
 
 }

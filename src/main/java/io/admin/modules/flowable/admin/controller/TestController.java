@@ -31,11 +31,11 @@ public class TestController {
 
 
     @PostMapping("submit")
-    public AjaxResult submit(@RequestBody Map<String,Object> params) {
+    public AjaxResult submit(@RequestBody Map<String, Object> params) {
         String bizKey = params.get("id").toString();
         String key = (String) params.get("key");
 
-        flowableManager.start(key,bizKey, params);
+        flowableManager.start(key, bizKey, params);
 
         return AjaxResult.ok().msg("提交测试流程成功");
     }

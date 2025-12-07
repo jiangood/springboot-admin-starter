@@ -9,6 +9,7 @@ import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
+
 import java.lang.annotation.Annotation;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -20,7 +21,7 @@ public class ValidateMobileTest {
     @Test
     public void testValidateMobileMyValidatorWithValidMobile() {
         ValidateMobile.MyValidator validator = new ValidateMobile.MyValidator();
-        
+
         // Valid mobile numbers
         assertTrue(validator.isValid("13812345678", null));
         assertTrue(validator.isValid("15912345678", null));
@@ -32,7 +33,7 @@ public class ValidateMobileTest {
     @Test
     public void testValidateMobileMyValidatorWithInvalidMobile() {
         ValidateMobile.MyValidator validator = new ValidateMobile.MyValidator();
-        
+
         // Invalid mobile numbers
         assertFalse(validator.isValid("12345678901", null)); // Doesn't match mobile pattern
         assertFalse(validator.isValid("1381234567", null));  // Too short
@@ -44,7 +45,7 @@ public class ValidateMobileTest {
     @Test
     public void testValidateMobileMyValidatorWithNullAndEmpty() {
         ValidateMobile.MyValidator validator = new ValidateMobile.MyValidator();
-        
+
         // Null and empty should be valid (as per the implementation)
         assertTrue(validator.isValid(null, null));
         assertTrue(validator.isValid("", null));

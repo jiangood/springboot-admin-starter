@@ -42,8 +42,6 @@ public class ArgumentResolver {
     }
 
 
-
-
     private static Object convert(Class<?> cls, Object value, HttpServletRequest request, HttpServletResponse response) {
         if (value == null) {
             return null;

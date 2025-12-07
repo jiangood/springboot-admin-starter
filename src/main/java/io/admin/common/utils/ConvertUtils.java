@@ -15,30 +15,29 @@ public class ConvertUtils {
      * @param type
      * @param value
      * @param <T>
-     * @param genericTypes  泛型
+     * @param genericTypes 泛型
      * @return
      */
     public static <T> T convert(Class<T> type, Object value, Type... genericTypes) {
-        if(value == null){
+        if (value == null) {
             return null;
         }
 
         // 修复数字转枚举时，输入为long的异常（常见于数据取值）
-        if(Enum.class.isAssignableFrom(type) && value instanceof Long){
+        if (Enum.class.isAssignableFrom(type) && value instanceof Long) {
             value = ((Long) value).intValue();
         }
 
-        if(type.isAssignableFrom(List.class) && genericTypes != null && genericTypes.length ==1){
+        if (type.isAssignableFrom(List.class) && genericTypes != null && genericTypes.length == 1) {
             Type genType = genericTypes[0];
 
-            if(genType == Integer.class){
+            if (genType == Integer.class) {
                 TypeReference<List<Integer>> typeRef = new TypeReference<>() {
                 };
                 List<Integer> list = Convert.convert(typeRef, value);
                 return (T) list;
             }
         }
-
 
 
         T result = Convert.convert(type, value);

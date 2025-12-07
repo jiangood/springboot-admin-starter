@@ -1,4 +1,3 @@
-
 package io.admin.modules.system.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;

@@ -20,18 +20,18 @@ public class FileUtils {
     /**
      * 是否存在匹配文件
      *
-     * @param directory 文件夹路径
-     * @param targetFileName    文件夹中所包含文件名的正则表达式
+     * @param directory      文件夹路径
+     * @param targetFileName 文件夹中所包含文件名的正则表达式
      * @return 如果存在匹配文件返回true
      */
     public static boolean existByMainName(File directory, String targetFileName) {
         File file = findByMainName(directory, targetFileName);
-        return  file != null;
+        return file != null;
     }
 
     public static boolean existByMainName(String directory, String targetFileName) {
         final File file = new File(directory);
-      return existByMainName(file, targetFileName);
+        return existByMainName(file, targetFileName);
     }
 
 

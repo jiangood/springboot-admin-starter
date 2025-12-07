@@ -14,7 +14,7 @@ import java.lang.annotation.Target;
 /**
  * 手机号码
  */
-@Target({ElementType.FIELD,ElementType.PARAMETER})
+@Target({ElementType.FIELD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = ValidateMobile.MyValidator.class)
 public @interface ValidateMobile {
@@ -25,7 +25,7 @@ public @interface ValidateMobile {
 
     Class<? extends Payload>[] payload() default {};
 
-   class MyValidator implements ConstraintValidator<ValidateMobile, String> {
+    class MyValidator implements ConstraintValidator<ValidateMobile, String> {
 
 
         @Override

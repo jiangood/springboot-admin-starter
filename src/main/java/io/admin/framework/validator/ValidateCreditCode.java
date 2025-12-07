@@ -14,7 +14,7 @@ import java.lang.annotation.Target;
 /**
  * 统一社会信用代码
  */
-@Target({ElementType.FIELD,ElementType.PARAMETER})
+@Target({ElementType.FIELD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = ValidateCreditCode.MyValidator.class)
 public @interface ValidateCreditCode {
@@ -25,7 +25,7 @@ public @interface ValidateCreditCode {
 
     Class<? extends Payload>[] payload() default {};
 
-   class MyValidator implements ConstraintValidator<ValidateCreditCode, String> {
+    class MyValidator implements ConstraintValidator<ValidateCreditCode, String> {
 
 
         @Override

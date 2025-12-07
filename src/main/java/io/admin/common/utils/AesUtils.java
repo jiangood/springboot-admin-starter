@@ -10,6 +10,7 @@ public class AesUtils {
 
     /**
      * 加密
+     *
      * @param text 明文
      * @return 密文，并使用hex编码
      */
@@ -19,6 +20,7 @@ public class AesUtils {
 
     /**
      * 解密
+     *
      * @param encryptedText 密文
      * @return 明文
      */

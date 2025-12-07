@@ -14,7 +14,7 @@ import java.lang.annotation.Target;
 /**
  * 中文姓名
  */
-@Target({ElementType.FIELD,ElementType.PARAMETER})
+@Target({ElementType.FIELD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = ValidateChineseName.MyValidator.class)
 public @interface ValidateChineseName {
@@ -25,7 +25,7 @@ public @interface ValidateChineseName {
 
     Class<? extends Payload>[] payload() default {};
 
-   class MyValidator implements ConstraintValidator<ValidateChineseName, String> {
+    class MyValidator implements ConstraintValidator<ValidateChineseName, String> {
 
 
         @Override

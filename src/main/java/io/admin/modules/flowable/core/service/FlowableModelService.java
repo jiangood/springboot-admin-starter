@@ -35,7 +35,6 @@ public class FlowableModelService {
     private RepositoryService repositoryService;
 
 
-
     @Resource
     private HistoryService historyService;
 
@@ -127,7 +126,6 @@ public class FlowableModelService {
                 .list();
 
 
-
         // 不显示回退节点
         List<String> deleteList = new LinkedList<>();
         for (int i = 0; i < list.size(); i++) {
@@ -143,7 +141,7 @@ public class FlowableModelService {
                 String toActivity = deleteReason.replace("Change activity to ", "");
 
                 // 将目标节点和当前节点之间的元素都加入到删除列表
-                for (int j = i ; j > 0; j--) {
+                for (int j = i; j > 0; j--) {
                     HistoricActivityInstance pre = list.get(j);
                     String preActivityId = pre.getActivityId();
                     deleteList.add(preActivityId);

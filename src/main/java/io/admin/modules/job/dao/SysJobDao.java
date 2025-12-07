@@ -43,7 +43,7 @@ public class SysJobDao extends BaseDao<SysJob> {
         Assert.notNull(job, "没有找到数据库中的job " + name);
 
         Map<String, Object> jobData = job.getJobData();
-        if(jobData == null){
+        if (jobData == null) {
             jobData = new HashMap<>();
             job.setJobData(jobData);
         }

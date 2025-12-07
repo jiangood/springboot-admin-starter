@@ -86,8 +86,8 @@ public class FileLogConfig {
     }
 
     public File buildLogFile(String key) {
-        File file = new File(logPath ,  key + ".log");
-        System.out.println("计算文件日志地址 " +file.getAbsolutePath());
+        File file = new File(logPath, key + ".log");
+        System.out.println("计算文件日志地址 " + file.getAbsolutePath());
         return file;
     }
 }

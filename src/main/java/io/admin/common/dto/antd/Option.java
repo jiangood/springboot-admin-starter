@@ -23,7 +23,6 @@ public class Option {
     Object data;
 
 
-
     public static Option of(Object value, String label) {
         Option option = new Option();
         option.setValue(value);

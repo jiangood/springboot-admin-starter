@@ -160,13 +160,13 @@ public class DbUtils {
     }
 
     // 这里默认使用mysql的分页
-    public <T> Page<T> findAll(Class<T> cls,Pageable pageable, String sql, Object... params) {
+    public <T> Page<T> findAll(Class<T> cls, Pageable pageable, String sql, Object... params) {
         params = checkParam(params);
 
         String countSql = "select count(*) from (" + sql + ") as t";
         long count = this.findLong(countSql, params);
 
-        if(count == 0){
+        if (count == 0) {
             return new PageImpl<>(Collections.emptyList(), pageable, 0);
         }
 
@@ -181,15 +181,11 @@ public class DbUtils {
     }
 
 
-
     public Map<String, Object> findOne(String sql, Object... params) {
         params = checkParam(params);
         MapHandler rsh = new MapHandler();
         Map<String, Object> map = this.query(sql, rsh, params);
 
-        if (map == null) {
-            return null;
-        }
         return map;
     }
 
@@ -269,13 +265,13 @@ public class DbUtils {
 
     @SneakyThrows
     public int[] batch(String sql) {
-            return getRunner().batch(sql, new Object[0][0]);
+        return getRunner().batch(sql, new Object[0][0]);
     }
 
 
     @SneakyThrows
     public int execute(String sql, Object... params) {
-            return getRunner().execute(sql, params);
+        return getRunner().execute(sql, params);
     }
 
     public int executeQuietly(String sql, Object... params) {
@@ -318,8 +314,7 @@ public class DbUtils {
     private Object[] checkParam(Object... params) {
         if (params != null && params.length == 1) {
             Object object = params[0];
-            if (object instanceof Collection) {
-                Collection col = (Collection) object;
+            if (object instanceof Collection col) {
                 if (col.isEmpty()) {
                     return null;
                 }
@@ -381,7 +376,7 @@ public class DbUtils {
 
     @SneakyThrows
     public <T> T query(final String sql, final ResultSetHandler<T> rsh, final Object... params) {
-            return getRunner().query(sql, rsh, params);
+        return getRunner().query(sql, rsh, params);
     }
 
 
@@ -540,7 +535,6 @@ public class DbUtils {
     private boolean hasOrderBy(String sql) {
         return sql.toLowerCase().contains("order by");
     }
-
 
 
 }

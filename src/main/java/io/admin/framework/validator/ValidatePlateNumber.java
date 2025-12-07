@@ -14,7 +14,7 @@ import java.lang.annotation.Target;
 /**
  * 中国车牌号
  */
-@Target({ElementType.FIELD,ElementType.PARAMETER})
+@Target({ElementType.FIELD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = ValidatePlateNumber.MyValidator.class)
 public @interface ValidatePlateNumber {
@@ -25,7 +25,7 @@ public @interface ValidatePlateNumber {
 
     Class<? extends Payload>[] payload() default {};
 
-   class MyValidator implements ConstraintValidator<ValidatePlateNumber, String> {
+    class MyValidator implements ConstraintValidator<ValidatePlateNumber, String> {
 
 
         @Override

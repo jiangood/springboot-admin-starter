@@ -11,7 +11,7 @@ import java.util.Set;
 
 public class ClassUtils {
 
-    private static CachingMetadataReaderFactory cachingMetadataReaderFactory = new CachingMetadataReaderFactory();
+    private static final CachingMetadataReaderFactory cachingMetadataReaderFactory = new CachingMetadataReaderFactory();
 
     public static <T> Set<Class<T>> scanPackageBySuper(String basePackage, Class<T> javaDelegateClass) throws IOException, ClassNotFoundException {
         Set<Class<T>> ret = new HashSet<>();

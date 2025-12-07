@@ -9,9 +9,7 @@ public class DecimalUtils {
      * 保留2位小数， 超出则四舍五入
      *
      * @param data 输入数字
-     *
      * @return 2位小数
-     *
      */
     public static String toFixed2(Double data) {
         if (data == null) {

@@ -48,7 +48,7 @@ public class SysJobExecuteRecord extends BaseEntity {
     @PrePersist
     public void prePersist() {
         this.executeDate = DateUtil.formatDate(beginTime);
-        if(success == null){
+        if (success == null) {
             success = true;
         }
     }

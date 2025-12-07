@@ -1,4 +1,3 @@
-
 package io.admin.modules.system.dao;
 
 
@@ -30,11 +29,8 @@ public class SysMenuDao {
     }
 
 
-
-
-
     public List<MenuDefinition> findAllById(List<String> ids) {
         List<MenuDefinition> list = this.findAll();
-        return list.stream().filter(t->ids.contains(t.getId())).toList();
+        return list.stream().filter(t -> ids.contains(t.getId())).toList();
     }
 }

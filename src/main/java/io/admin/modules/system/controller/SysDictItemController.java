@@ -1,4 +1,3 @@
-
 package io.admin.modules.system.controller;
 
 import cn.hutool.core.util.StrUtil;
@@ -21,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("admin/sysDictItem")
-public class SysDictItemController  {
+public class SysDictItemController {
 
     @Resource
     private SysDictItemService service;
@@ -30,17 +29,15 @@ public class SysDictItemController  {
     private SysDictService sysDictService;
 
 
-
-
     @HasPermission("sysDict:view")
     @RequestMapping("page")
-    public AjaxResult page( String sysDictId, @PageableDefault(direction = Sort.Direction.DESC, sort = "updateTime") Pageable pageable) {
-        if(StrUtil.isNotEmpty(sysDictId)){
+    public AjaxResult page(String sysDictId, @PageableDefault(direction = Sort.Direction.DESC, sort = "updateTime") Pageable pageable) {
+        if (StrUtil.isNotEmpty(sysDictId)) {
             Spec<SysDictItem> q = service.spec();
-            q.eq(SysDictItem.Fields.sysDict + ".id",  sysDictId);
+            q.eq(SysDictItem.Fields.sysDict + ".id", sysDictId);
             Page<SysDictItem> page = service.findPageByRequest(q, pageable);
             return AjaxResult.ok().data(page);
-        }else {
+        } else {
             return AjaxResult.ok().data(Page.empty(pageable));
         }
     }
@@ -49,10 +46,9 @@ public class SysDictItemController  {
     @HasPermission("sysDict:save")
     @PostMapping("save")
     public AjaxResult save(@RequestBody SysDictItem param, RequestBodyKeys updateFields) throws Exception {
-        SysDictItem result = service.saveOrUpdateByRequest(param,updateFields);
-        return AjaxResult.ok().data( result.getId()).msg("保存成功");
+        SysDictItem result = service.saveOrUpdateByRequest(param, updateFields);
+        return AjaxResult.ok().data(result.getId()).msg("保存成功");
     }
-
 
 
     @HasPermission("sysDict:delete")

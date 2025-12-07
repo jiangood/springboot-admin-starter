@@ -22,7 +22,7 @@ public class PrefixedSequenceGenerator extends TableGenerator {
 
     public static final String TABLE_NAME = "sys_sequence_ids";
 
-    private String prefix;
+    private final String prefix;
 
     public PrefixedSequenceGenerator(GeneratePrefixedSequence config) {
         this.prefix = config.prefix();

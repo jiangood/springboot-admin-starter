@@ -18,7 +18,7 @@ public class FriendlyUtils {
     /**
      * 将小数转换为友好的百分比显示格式
      *
-     * @param value 小数值（0-1之间）
+     * @param value         小数值（0-1之间）
      * @param decimalPlaces 保留的小数位数
      * @return 百分比字符串，例如"85.5%"
      */
@@ -92,7 +92,6 @@ public class FriendlyUtils {
     }
 
 
-
     /**
      * 计算两个时间点之间的友好时间差显示
      *
@@ -118,7 +117,6 @@ public class FriendlyUtils {
         }
 
         long between = endTime - startTime;
-
 
 
         return DateUtil.formatBetween(between, BetweenFormatter.Level.SECOND);

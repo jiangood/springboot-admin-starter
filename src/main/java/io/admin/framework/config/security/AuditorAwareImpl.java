@@ -15,7 +15,7 @@ public class AuditorAwareImpl implements AuditorAware<String> {
     @Override
     public Optional<String> getCurrentAuditor() {
         LoginUser user = LoginUtils.getUser();
-        if(user != null && user.getId() != null){
+        if (user != null && user.getId() != null) {
             return Optional.of(user.getId());
         }
         return Optional.empty();

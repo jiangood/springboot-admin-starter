@@ -8,7 +8,7 @@ import java.util.Set;
 
 /**
  * window下优先使用黑体，
- *
+ * <p>
  * linux 下优先使用 思源黑体（版权问题）， https://github.com/adobe-fonts/source-han-sans/releases 下载中文简体版，Language打头的那个
  * 也可以命令行安装 sudo yum install google-noto-sans-cjk-ttc-fonts 或者 sudo apt install fonts-noto-cjk
  */
@@ -34,13 +34,13 @@ public class FontUtils {
 
     public static String getDefaultFontName() {
         Set<String> names = getAllFontName();
-        if(names.contains("思源黑体")){
+        if (names.contains("思源黑体")) {
             return "思源黑体";
         }
-        if(names.contains("黑体")){
+        if (names.contains("黑体")) {
             return "黑体";
         }
-        if(names.contains("宋体")){
+        if (names.contains("宋体")) {
             return "宋体";
         }
         return null;

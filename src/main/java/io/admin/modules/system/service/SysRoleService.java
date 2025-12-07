@@ -1,4 +1,3 @@
-
 package io.admin.modules.system.service;
 
 import io.admin.common.utils.tree.TreeUtils;
@@ -35,9 +34,6 @@ public class SysRoleService extends BaseService<SysRole> {
     private SysUserDao sysUserDao;
 
 
-
-
-
     public SysRole findByCode(String code) {
         return roleDao.findByCode(code);
     }
@@ -53,7 +49,6 @@ public class SysRoleService extends BaseService<SysRole> {
     }
 
 
-
     public List<SysRole> findValid() {
         return roleDao.findAllByField(SysRole.Fields.enabled, true);
     }
@@ -66,7 +61,7 @@ public class SysRoleService extends BaseService<SysRole> {
         if (role.isAdmin()) {
             menuList = sysMenuDao.findAll();
         } else {
-            menuList = sysMenuDao.findAllById(role.getMenus()) ;
+            menuList = sysMenuDao.findAllById(role.getMenus());
         }
 
         // 去重排序
@@ -142,7 +137,7 @@ public class SysRoleService extends BaseService<SysRole> {
         SysRole role = roleDao.findOne(id);
         role.setPerms(perms);
         role.setMenus(finalMenus);
-        return  roleDao.save(role);
+        return roleDao.save(role);
     }
 
     public List<SysRole> findAll() {

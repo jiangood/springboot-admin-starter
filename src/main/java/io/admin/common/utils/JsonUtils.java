@@ -1,7 +1,6 @@
 package io.admin.common.utils;
 
 
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.*;
@@ -16,9 +15,9 @@ import java.util.Map;
 
 public class JsonUtils {
 
-    public static <T> T convert(Object fromValue, Class<T> toValueType){
+    public static <T> T convert(Object fromValue, Class<T> toValueType) {
         ObjectMapper om = new ObjectMapper();
-       return om.convertValue(fromValue, toValueType);
+        return om.convertValue(fromValue, toValueType);
     }
 
     public static String toJson(Object o) throws JsonProcessingException {
@@ -164,9 +163,9 @@ public class JsonUtils {
     }
 
 
-
     // singleton ,as to initialize need much TIME
     private static final ObjectMapper om = new ObjectMapper();
+
     static {
         om.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, false);
         om.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -175,8 +174,8 @@ public class JsonUtils {
     }
 
 
-    public static ObjectMapper getObjectMapper(){
-        return  om;
+    public static ObjectMapper getObjectMapper() {
+        return om;
     }
 
 }

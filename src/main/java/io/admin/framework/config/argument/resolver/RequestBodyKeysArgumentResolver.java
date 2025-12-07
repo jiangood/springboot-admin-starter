@@ -48,9 +48,9 @@ public class RequestBodyKeysArgumentResolver implements HandlerMethodArgumentRes
     // 解析参数
     @Override
     public Object resolveArgument(MethodParameter parameter,
-                                 ModelAndViewContainer mavContainer,
-                                 NativeWebRequest webRequest,
-                                 WebDataBinderFactory binderFactory) throws Exception {
+                                  ModelAndViewContainer mavContainer,
+                                  NativeWebRequest webRequest,
+                                  WebDataBinderFactory binderFactory) throws Exception {
 
         ContentCachingRequestWrapper req = webRequest.getNativeRequest(ContentCachingRequestWrapper.class);
 
@@ -58,6 +58,6 @@ public class RequestBodyKeysArgumentResolver implements HandlerMethodArgumentRes
         JsonNode tree = JsonUtils.readTree(content);
         List<String> fieldNames = IterUtil.toList(tree.fieldNames());
 
-        return new RequestBodyKeys(fieldNames) ;
+        return new RequestBodyKeys(fieldNames);
     }
 }

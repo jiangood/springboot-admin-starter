@@ -33,13 +33,9 @@ public abstract class BaseNoIdEntity implements Persistable<String> {
     private String createUser;
 
 
-
-
     @LastModifiedBy
     @Column(length = DBConstants.LEN_ID)
     private String updateUser;
-
-
 
 
 }

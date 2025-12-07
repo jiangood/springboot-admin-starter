@@ -20,7 +20,7 @@ import java.util.*;
 public class JpaService {
 
 
-   private Cache<String,List<String>> cache = CacheUtil.newTimedCache(5 * 1000 * 60);
+    private final Cache<String, List<String>> cache = CacheUtil.newTimedCache(5 * 1000 * 60);
 
 
     public <T> Class<T> findOne(String name) throws IOException, ClassNotFoundException {
@@ -47,7 +47,7 @@ public class JpaService {
 
     public List<String> findAllNames() {
         String key = "ALL_NAMES";
-        if(cache.containsKey(key)){
+        if (cache.containsKey(key)) {
             return cache.get(key);
         }
         Set<Class<?>> basePackageClasses = SpringUtils.getBasePackageClasses();

@@ -14,7 +14,7 @@ import java.lang.annotation.Target;
 /**
  * IP地址(v4)
  */
-@Target({ElementType.FIELD,ElementType.PARAMETER})
+@Target({ElementType.FIELD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = ValidateIpv4.MyValidator.class)
 public @interface ValidateIpv4 {
@@ -25,17 +25,17 @@ public @interface ValidateIpv4 {
 
     Class<? extends Payload>[] payload() default {};
 
-   class MyValidator implements ConstraintValidator<ValidateIpv4, String> {
+    class MyValidator implements ConstraintValidator<ValidateIpv4, String> {
 
 
         @Override
         public boolean isValid(String str, ConstraintValidatorContext constraintValidatorContext) {
             if (str != null && !str.isEmpty()) {
-                if(str.contains(",")){
+                if (str.contains(",")) {
                     String[] arr = str.split(",");
                     for (String s : arr) {
                         boolean ipv4 = Validator.isIpv4(str);
-                        if(!ipv4){
+                        if (!ipv4) {
                             return false;
                         }
                     }

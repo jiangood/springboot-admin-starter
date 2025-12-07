@@ -16,9 +16,9 @@ public class SysManualService extends BaseService<SysManual> {
 
     @Override
     public SysManual saveOrUpdateByRequest(SysManual input, List<String> updateKeys) throws Exception {
-        if(input.isNew()){
+        if (input.isNew()) {
             int maxVersion = dao.findMaxVersion(input.getName());
-            input.setVersion(maxVersion+1);
+            input.setVersion(maxVersion + 1);
         }
 
         return super.saveOrUpdateByRequest(input, updateKeys);

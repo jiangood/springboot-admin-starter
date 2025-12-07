@@ -22,11 +22,7 @@ import java.util.*;
 @Service
 public class ApiResourceService {
 
-    private Map<String, ApiResource> actionMap = new LinkedHashMap<>();
-
-
-
-
+    private final Map<String, ApiResource> actionMap = new LinkedHashMap<>();
 
 
     public List<ApiResource> findAll() {
@@ -38,8 +34,6 @@ public class ApiResourceService {
     public void add(ApiResource r) {
         actionMap.put(r.getAction(), r);
     }
-
-
 
 
     @Transactional

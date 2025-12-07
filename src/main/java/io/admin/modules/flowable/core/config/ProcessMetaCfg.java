@@ -27,7 +27,7 @@ public class ProcessMetaCfg {
     @PostConstruct
     void init() throws IOException {
         InputStream is = ResourceUtil.getStream("application-process.yml");
-        ProcessMetaCfg cfg = YmlUtils.parseYml(is, ProcessMetaCfg.class,"process");
+        ProcessMetaCfg cfg = YmlUtils.parseYml(is, ProcessMetaCfg.class, "process");
         this.list = cfg.getList();
     }
 

@@ -19,10 +19,7 @@ import java.util.Date;
 import java.util.Properties;
 
 /**
- *
- *
  * 类似于 TableGenerator， 不过按天区分的
- *
  */
 public class DailyTableGenerator extends TableGenerator {
 

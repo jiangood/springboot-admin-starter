@@ -18,7 +18,7 @@ public class ApiAccessLogService extends BaseService<ApiAccessLog> {
     @Resource
     ApiAccessLogDao dao;
 
-    public void add(long timestamp,ApiAccount account, ApiResource resource,   Map<String, Object> params, Object retValue,String ip, long executionTime) {
+    public void add(long timestamp, ApiAccount account, ApiResource resource, Map<String, Object> params, Object retValue, String ip, long executionTime) {
         ApiAccessLog a = new ApiAccessLog();
         a.setTimestamp(timestamp);
         a.setName(resource.getName());
