@@ -1,7 +1,7 @@
 prompt = """
 # 任务：生成文档
 你是这个软件项目的架构师。现在要生成业务项目的使用说明书及开发文档。
-生成的文档为根目录的README.md文件
+生成的文档地址为 docs/index.md
 
 ## 要求
 - 本项目是一个后端管理系统的框架，供业务项目使用。请站在业务项目如何使用的角度编写文档
@@ -18,8 +18,9 @@ prompt = """
     4. 表格： 尽量使用Markdown 表格进行展示。
 
 ## 生成格式
+阅读README.md,优化后生成文档
 
-1 介绍
+### 介绍
 读取pom.xml和 web/package.json文件得到主要信息
 描述开发环境
 
@@ -32,14 +33,14 @@ prompt = """
 
 
 
-2 前端
+### 前端
 读取 web/src/framework 目录下的所有文件.ts,.tsx文件
 要求如下:
 组件文档包含名称，参数，说明
 工具文档包含名称，说明，举例
 确保不要遗漏任何文件，业务项目开发人员需要全部文档
 
-3 后端
+### 后端
 
 描述菜单列表
 描述业务项目如何配置
@@ -66,7 +67,7 @@ prompt = """
 - src/main/resources/application-process.yml
 - src/main/java/io/admin/modules/flowable/example/LeaveProcessListener.java
 
-4 模板代码
+### 模板代码
 读取以下文件，生成通用代码模板，代码去掉注释，去掉多余空格、换行，并适当简化。
 - src/main/java/io/admin/modules/system/entity/SysManual.java
 - src/main/java/io/admin/modules/system/dao/SysManualDao.java
@@ -78,6 +79,8 @@ prompt = """
 最后整体检查一遍,修正错误，按合适的顺序生成模板
 
 
-5 扫描docs目录下的文件，并增加链接
+### 生成目录
+ 生成目录，放到文档最前面
+ 扫描docs目录下的文件，并增加链接
 
 """
