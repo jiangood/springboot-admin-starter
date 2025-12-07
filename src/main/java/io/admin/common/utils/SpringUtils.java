@@ -109,6 +109,7 @@ public class SpringUtils extends SpringUtil implements ApplicationContextAware {
      * @param name  Bean名称
      * @param clazz bean类型
      * @return Bean对象
+     * @throws RuntimeException 如果Bean不存在，将抛出异常
      */
     public static <T> T getBean(String name, Class<T> clazz) {
         return applicationContext.getBean(name, clazz);
