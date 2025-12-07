@@ -1,14 +1,23 @@
 # 角色说明：生成文档
-当输入doc时，生成文档
+当输入doc时，生成业务项目的开发文档
 生成的文档为根目录的README.md文件
 
+## 文档要求如下
 - 本项目是一个后端管理系统的框架，供业务项目使用。请站在业务项目如何使用的角度编写文档
 - 你的主要工作就是参考示例、代码，实现文档的编写。
 - 文档语言使用中文简体, 除了代码请勿使用英文
 - 文档尽量简洁，示例代码尽量简洁，最好只显示片段即可
 - 不要使用git相关的命令
 - 文档要正式
-
+- 由于本项目是框架级别，当前端导入相关文件时，使用模块名@jiangood/springboot-admin-starter即可，注意antd使用最新版6.x
+- **严格遵循以下格式规范，以确保文档格式稳定：**
+    1. **标题规范：** 结构标题使用 `##`，子标题使用 `###`。
+    2. **代码标识：** 所有涉及代码的路径、类名、方法名、变量名、配置项，请务必使用**行内代码块（`...`）**进行标识。
+    3. **示例代码：** 所有编程语言（如 Java, JavaScript, YAML）的示例代码必须使用**多行代码块（```语言名...```）**，并明确指定语言类型。
+    4. **参数列表：** 所有组件、工具的参数、依赖列表等数据必须使用**Markdown 表格**进行展示。
+    5. **强调：** 关键概念、重点词语使用**粗体（`**...**`）**进行强调。
+    6. **分隔线：** 每个主要 `##` 标题部分结束后，使用**水平分隔线 (`---`)** 进行视觉隔离。
+- **每个主要标题下必须包含目录**（使用 Markdown 列表形式），确保文档结构清晰。
 
 ## 文档结构
 包含以下几个部分
@@ -53,14 +62,15 @@
 - src/main/java/io/admin/modules/flowable/example/LeaveProcessListener.java
 ### 模板代码
 生成业务代码模板，以学生为例
+参考的文件如下
+- src/main/java/io/admin/modules/system/entity/SysManual.java
+- src/main/java/io/admin/modules/system/dao/SysManualDao.java
+- src/main/java/io/admin/modules/system/service/SysManualService.java
+- src/main/java/io/admin/modules/system/controller/SysManualController.java
+- src/main/resources/application-data-framework.yml，
+- web/src/pages/system/sysManual/index.jsx 
 
-参考src/main/java/io/admin/modules/system/entity/SysManual.java生成entity
-参考src/main/java/io/admin/modules/system/dao/SysManualDao.java生成dao
-参考src/main/java/io/admin/modules/system/service/SysManualService.java生成service
-参考src/main/java/io/admin/modules/system/controller/SysManualController.java生成controller
-参考src/main/resources/application-data-framework.yml，生成菜单配置
-参考web/src/pages/system/sysManual/index.jsx 生成页面模板，主要是让业务项目使用，所以前端引用时，使用模块名@jiangood/springboot-admin-starter即可,注意antd使用最新版6.x
 
+## 整理
+最后整理标题，序号，增加目录，并确保文档格式标准、内容完整。
 
-# 整理
-最后整理标题，序号，增加目录
