@@ -59,8 +59,9 @@ prompt = """
 - src/main/java/io/admin/modules/job/example/HelloWorldJob.java
 - src/main/java/io/admin/modules/flowable/example/LeaveProcessListener.java
 
-读取如下文件，生成流程配置文档：
+读取如下文件，生成系统设置参考文档：
 - src/main/resources/application-data-framework.yml
+- src/main/java/io/admin/framework/config/data/DataProperties.java
 读取如下文件，生成流程配置文档
 - src/main/resources/application-process.yml
 
