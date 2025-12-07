@@ -25,10 +25,16 @@ public class Spec<T> implements Specification<T> {
     // 存储所有查询条件
     private final List<Specification<T>> specifications = new ArrayList<>();
 
+    private Spec() {
+    }
+
+    public static <T> Spec<T> of() {
+        return new Spec<>();
+    }
+
     public void betweenIsoDateRange(String createTime, String dateRange, boolean b) {
 
     }
-
 
     public Spec<T> selectFnc(AggregateFunction fn, String field) {
         return this.add((Specification<T>) (root, query, cb) -> {
@@ -52,7 +58,6 @@ public class Spec<T> implements Specification<T> {
         });
     }
 
-
     public Spec<T> select(String... fields) {
         return this.add((Specification<T>) (root, query, cb) -> {
 
@@ -65,31 +70,6 @@ public class Spec<T> implements Specification<T> {
             return cb.conjunction();
         });
     }
-
-
-    /**
-     * 定义支持的操作符，消除魔术字符串，提高可读性和类型安全。
-     */
-    private enum Operator {
-        EQUAL, NOT_EQUAL,
-        GREATER_THAN, LESS_THAN, GREATER_THAN_OR_EQUAL, LESS_THAN_OR_EQUAL,
-        LIKE, NOT_LIKE,
-        IN, NOT_IN,
-        IS_NULL, IS_NOT_NULL,
-        BETWEEN,
-
-        // 新增：用于集合成员查询
-        IS_MEMBER, IS_NOT_MEMBER
-    }
-
-    public static <T> Spec<T> of() {
-        return new Spec<>();
-    }
-
-    private Spec() {
-    }
-
-    // ---------------------- 核心构建方法 ----------------------
 
     public Spec<T> addExample(T t, String... ignores) {
         ExampleMatcher exampleMatcher = ExampleMatcher.matching()
@@ -105,6 +85,8 @@ public class Spec<T> implements Specification<T> {
         this.add((Specification<T>) (root, query, builder) -> QueryByExamplePredicateBuilder.getPredicate(root, builder, example));
         return this;
     }
+
+    // ---------------------- 核心构建方法 ----------------------
 
     public Spec<T> eq(String field, Object value) {
         return this.addIfValuePresent(Operator.EQUAL, field, value);
@@ -190,9 +172,6 @@ public class Spec<T> implements Specification<T> {
         return this;
     }
 
-
-    // ---------------------- 逻辑 OR 条件 ----------------------
-
     /**
      * **自定义 OR 条件**：将传入的多个 Specification 用 **OR** 连接，作为一个整体加入主查询。
      */
@@ -207,6 +186,9 @@ public class Spec<T> implements Specification<T> {
         }
         return this.add(orSpec);
     }
+
+
+    // ---------------------- 逻辑 OR 条件 ----------------------
 
     /**
      * 对传入的 Specification 进行 NOT (取反) 操作。
@@ -321,14 +303,14 @@ public class Spec<T> implements Specification<T> {
         return this;
     }
 
-    // ---------------------- 私有辅助方法 ----------------------
-
     private Spec<T> add(Specification<T> spec) {
         if (spec != null) {
             specifications.add(spec);
         }
         return this;
     }
+
+    // ---------------------- 私有辅助方法 ----------------------
 
     private Spec<T> addIfValuePresent(Operator op, String field, Object value) {
         return this.addIfValuePresent(value, new ConditionSpec<>(op, field, value));
@@ -340,8 +322,6 @@ public class Spec<T> implements Specification<T> {
         }
         return this;
     }
-
-    // ---------------------- 最终构建 (AND 连接) ----------------------
 
     /**
      * 核心方法：将列表中的所有 Specification 通过 AND 连接起来。
@@ -358,6 +338,23 @@ public class Spec<T> implements Specification<T> {
                 .toArray(Predicate[]::new);
 
         return cb.and(predicates);
+    }
+
+    // ---------------------- 最终构建 (AND 连接) ----------------------
+
+    /**
+     * 定义支持的操作符，消除魔术字符串，提高可读性和类型安全。
+     */
+    private enum Operator {
+        EQUAL, NOT_EQUAL,
+        GREATER_THAN, LESS_THAN, GREATER_THAN_OR_EQUAL, LESS_THAN_OR_EQUAL,
+        LIKE, NOT_LIKE,
+        IN, NOT_IN,
+        IS_NULL, IS_NOT_NULL,
+        BETWEEN,
+
+        // 新增：用于集合成员查询
+        IS_MEMBER, IS_NOT_MEMBER
     }
 
     // ---------------------- 统一的内部条件实现类 (支持点操作) ----------------------

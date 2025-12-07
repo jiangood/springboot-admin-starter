@@ -35,7 +35,10 @@ public class ApiGatewayController {
 
     @Resource
     private ApiAccessLogService accessLogService;
-
+    @Resource
+    private ApiAccountService apiAccountService;
+    @Resource
+    private ApiResourceService apiResourceService;
 
     @PostMapping("{action}")
     public AjaxResult process(
@@ -137,11 +140,4 @@ public class ApiGatewayController {
 
         return AjaxResult.err(msg).code(code);
     }
-
-
-    @Resource
-    private ApiAccountService apiAccountService;
-
-    @Resource
-    private ApiResourceService apiResourceService;
 }

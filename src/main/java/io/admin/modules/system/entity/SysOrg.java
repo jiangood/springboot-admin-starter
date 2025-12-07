@@ -23,47 +23,32 @@ import java.util.List;
 public class SysOrg extends BaseEntity implements TreeNode<SysOrg> {
 
 
+    @Transient
+    List<SysOrg> children;
     /**
      * 父id, 如果是根节点，则为空
      */
     private String pid;
-
-
     /**
      * 名称
      */
     @NotNull
     private String name;
-
-
     /**
      * 排序
      */
     private Integer seq;
-
-
     @Column(nullable = false)
     private Boolean enabled;
-
-
     @NotNull
     private Integer type;
-
-
     // 部门领导
     @ManyToOne
     private SysUser leader;
-
-
     // 扩展字段1
     private String extra1;
     private String extra2;
     private String extra3;
-
-
-    @Transient
-    List<SysOrg> children;
-
 
     @Transient
     public boolean isDept() {

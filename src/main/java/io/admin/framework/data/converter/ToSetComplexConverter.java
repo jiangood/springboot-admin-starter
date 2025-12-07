@@ -15,8 +15,8 @@ import java.util.Set;
 public class ToSetComplexConverter implements AttributeConverter<Set<String>, String>, Serializable {
 
 
-    private static final long serialVersionUID = 1L;
     public static final String CONJUNCTION = "::||,||::";
+    private static final long serialVersionUID = 1L;
 
     @Override
     public String convertToDatabaseColumn(Set<String> list) {

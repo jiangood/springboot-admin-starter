@@ -30,17 +30,23 @@ public class AjaxResult {
     Object data;
 
     String message;
-
+    /**
+     * 动态字段，处理实体中不包含的字段
+     * 例如状态字段 status, 转成json希望动态增加字段 statusLabel
+     */
+    @Setter(AccessLevel.NONE) // lombok不生成setter
+    @JsonAnySetter
+    private Map<String, Object> extData = new HashMap<>();
 
     public AjaxResult() {
         this(true);
     }
 
+
     public AjaxResult(boolean success) {
         this.success = success;
         this.code = success ? SUCCESS : FAILURE;
     }
-
 
     public static AjaxResult ok() {
         return new AjaxResult(true);
@@ -58,7 +64,6 @@ public class AjaxResult {
         return new AjaxResult(false);
     }
 
-
     public static AjaxResult err(String msg) {
         return err().msg(msg);
     }
@@ -72,7 +77,6 @@ public class AjaxResult {
         return this;
     }
 
-
     public AjaxResult data(Object data) {
         this.data = data;
         return this;
@@ -82,16 +86,6 @@ public class AjaxResult {
         this.message = msg;
         return this;
     }
-
-
-    /**
-     * 动态字段，处理实体中不包含的字段
-     * 例如状态字段 status, 转成json希望动态增加字段 statusLabel
-     */
-    @Setter(AccessLevel.NONE) // lombok不生成setter
-    @JsonAnySetter
-    private Map<String, Object> extData = new HashMap<>();
-
 
     @JsonAnyGetter
     public Map<String, Object> getExtData() {

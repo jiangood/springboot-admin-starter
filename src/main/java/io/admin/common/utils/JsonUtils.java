@@ -15,6 +15,16 @@ import java.util.Map;
 
 public class JsonUtils {
 
+    // singleton ,as to initialize need much TIME
+    private static final ObjectMapper om = new ObjectMapper();
+
+    static {
+        om.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, false);
+        om.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        om.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+        om.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
+    }
+
     public static <T> T convert(Object fromValue, Class<T> toValueType) {
         ObjectMapper om = new ObjectMapper();
         return om.convertValue(fromValue, toValueType);
@@ -26,7 +36,6 @@ public class JsonUtils {
         }
         return om.writeValueAsString(o);
     }
-
 
     public static String toJsonQuietly(Object o) {
         if (o == null) {
@@ -61,7 +70,6 @@ public class JsonUtils {
         return om.readValue(json, cls);
 
     }
-
 
     public static <T> T jsonToBean(String json, TypeReference<T> valueTypeRef)
             throws IOException {
@@ -100,7 +108,6 @@ public class JsonUtils {
         return null;
     }
 
-
     public static <T> List<T> jsonToListQuietly(String json) {
         if (json == null) {
             return null;
@@ -113,7 +120,6 @@ public class JsonUtils {
         }
         return null;
     }
-
 
     public static Object jsonToBeanQuietly(String json) {
         if (json == null) {
@@ -161,18 +167,6 @@ public class JsonUtils {
         JsonNode node = om.reader().readTree(json);
         return node;
     }
-
-
-    // singleton ,as to initialize need much TIME
-    private static final ObjectMapper om = new ObjectMapper();
-
-    static {
-        om.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, false);
-        om.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        om.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-        om.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
-    }
-
 
     public static ObjectMapper getObjectMapper() {
         return om;

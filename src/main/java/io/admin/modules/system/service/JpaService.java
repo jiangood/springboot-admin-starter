@@ -22,6 +22,34 @@ public class JpaService {
 
     private final Cache<String, List<String>> cache = CacheUtil.newTimedCache(5 * 1000 * 60);
 
+    private static List<String> findBySuperClass(Class baseClas) {
+        try {
+
+            String base = ClassUtils.convertClassNameToResourcePath(baseClas.getPackage().getName());
+            String locationPattern = "classpath*:" + base + "/**/*.class";
+
+            PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
+            org.springframework.core.io.Resource[] resources = resolver.getResources(locationPattern);
+
+
+            MetadataReaderFactory readerfactory = new CachingMetadataReaderFactory(resolver);
+
+            List<String> list = new ArrayList<>();
+            for (org.springframework.core.io.Resource resource : resources) {
+                MetadataReader meta = readerfactory.getMetadataReader(resource);
+                if (meta.getAnnotationMetadata().hasAnnotation(Entity.class.getName())) {
+
+                    ClassMetadata classMetadata = meta.getClassMetadata();
+                    list.add(classMetadata.getClassName());
+                }
+            }
+            return list;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Collections.emptyList();
+        }
+    }
 
     public <T> Class<T> findOne(String name) throws IOException, ClassNotFoundException {
         List<String> list = findAllNames();
@@ -61,36 +89,6 @@ public class JpaService {
         cache.put(key, entityList);
 
         return entityList;
-    }
-
-
-    private static List<String> findBySuperClass(Class baseClas) {
-        try {
-
-            String base = ClassUtils.convertClassNameToResourcePath(baseClas.getPackage().getName());
-            String locationPattern = "classpath*:" + base + "/**/*.class";
-
-            PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
-            org.springframework.core.io.Resource[] resources = resolver.getResources(locationPattern);
-
-
-            MetadataReaderFactory readerfactory = new CachingMetadataReaderFactory(resolver);
-
-            List<String> list = new ArrayList<>();
-            for (org.springframework.core.io.Resource resource : resources) {
-                MetadataReader meta = readerfactory.getMetadataReader(resource);
-                if (meta.getAnnotationMetadata().hasAnnotation(Entity.class.getName())) {
-
-                    ClassMetadata classMetadata = meta.getClassMetadata();
-                    list.add(classMetadata.getClassName());
-                }
-            }
-            return list;
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Collections.emptyList();
-        }
     }
 
 }

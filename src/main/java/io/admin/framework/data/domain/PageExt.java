@@ -29,19 +29,9 @@ public class PageExt<T> extends org.springframework.data.domain.PageImpl<T> {
         super(page.getContent(), page.getPageable(), page.getTotalElements());
     }
 
-    /**
-     * 调整 Page的内容为另外一个类型
-     */
-    public <R> PageExt<R> convert(Function<T, R> fn) {
-        List<R> content = this.getContent().stream().map(fn).collect(Collectors.toList());
-        return new PageExt<>(content, this.getPageable(), this.getTotalElements());
-    }
-
-
     public static <T> PageExt<T> of(Page<T> page) {
         return new PageExt<>(page);
     }
-
 
     /**
      * @param page
@@ -64,6 +54,14 @@ public class PageExt<T> extends org.springframework.data.domain.PageImpl<T> {
         pageExt.putExtData(key, value);
         pageExt.putExtData(key2, value2);
         return pageExt;
+    }
+
+    /**
+     * 调整 Page的内容为另外一个类型
+     */
+    public <R> PageExt<R> convert(Function<T, R> fn) {
+        List<R> content = this.getContent().stream().map(fn).collect(Collectors.toList());
+        return new PageExt<>(content, this.getPageable(), this.getTotalElements());
     }
 
     public PageExt<T> putExtData(String key, Object value) {

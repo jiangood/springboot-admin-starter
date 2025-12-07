@@ -53,15 +53,12 @@ public class SysFileService {
 
     @Resource
     SysProperties sysProperties;
-
-
+    @Resource
+    FileOperator fileOperator;
     @Resource
     private SysFileDao sysFileDao;
-
-
     @Resource
     private SysConfigService sysConfigService;
-
 
     public SysFile findByTradeNo(String tradeNo) {
         return sysFileDao.findByTradeNo(tradeNo);
@@ -155,7 +152,6 @@ public class SysFileService {
         return this.uploadFile(is, name, file.getSize());
     }
 
-
     public SysFile uploadFile(InputStream is, String originalFilename, long size) throws Exception {
         return this.uploadFile(is, originalFilename, size, null);
     }
@@ -226,7 +222,6 @@ public class SysFileService {
         return sysFile;
     }
 
-
     public SysFile getFileAndStream(String fileId, Integer w) throws Exception {
         Assert.hasText(fileId, "文件id不能为空");
         // 获取文件名
@@ -249,7 +244,6 @@ public class SysFileService {
 
         return fileOperator.getFileStream(objectName);
     }
-
 
     public void download(String id, HttpServletResponse response) throws Exception {
         // 获取文件信息结果集
@@ -283,10 +277,6 @@ public class SysFileService {
     public SysFile findOne(String id) {
         return sysFileDao.findOne(id);
     }
-
-
-    @Resource
-    FileOperator fileOperator;
 
     public void fillAllImageUrl(SysFile sysFile) {
         List<Dict> urls = new ArrayList<>();

@@ -17,6 +17,7 @@ public class MinioFileOperator implements FileOperator {
     private final String secretKey;
 
     private final String bucketName;
+    private MinioClient client;
 
     public MinioFileOperator(String url, String accessKey, String secretKey, String bucketName) {
         this.url = url;
@@ -26,8 +27,6 @@ public class MinioFileOperator implements FileOperator {
 
         this.initClient();
     }
-
-    private MinioClient client;
 
     public void initClient() {
         this.client = MinioClient.builder().endpoint(url).credentials(accessKey, secretKey).build();

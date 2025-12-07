@@ -12,23 +12,13 @@ import java.util.List;
  * 区别于ToListConverter， 前后都增加中括号
  */
 public class ToListBracketConverter implements AttributeConverter<List<String>, String>, Serializable {
-    private static final long serialVersionUID = 1L;
     public static final String CONJUNCTION = ",";
     public static final String PREFIX = "[";
     public static final String SUFFIX = "]";
+    private static final long serialVersionUID = 1L;
 
     public ToListBracketConverter() {
     }
-
-    public String convertToDatabaseColumn(List<String> list) {
-        return list == null ? null : join(list);
-    }
-
-
-    public List<String> convertToEntityAttribute(String dbData) {
-        return StrUtil.isNotEmpty(dbData) ? split(dbData) : Collections.emptyList();
-    }
-
 
     private static String join(List<String> list) {
         if (CollUtil.isEmpty(list)) {
@@ -47,6 +37,14 @@ public class ToListBracketConverter implements AttributeConverter<List<String>, 
         }
 
         return list;
+    }
+
+    public String convertToDatabaseColumn(List<String> list) {
+        return list == null ? null : join(list);
+    }
+
+    public List<String> convertToEntityAttribute(String dbData) {
+        return StrUtil.isNotEmpty(dbData) ? split(dbData) : Collections.emptyList();
     }
 
 

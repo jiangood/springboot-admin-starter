@@ -22,14 +22,6 @@ public class SpringUtils extends SpringUtil implements ApplicationContextAware {
      */
     private static ApplicationContext applicationContext;
 
-
-    @SuppressWarnings("NullableProblems")
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) {
-        SpringUtils.applicationContext = applicationContext;
-    }
-
-
     /**
      * 获取{@link ApplicationContext}
      *
@@ -39,6 +31,11 @@ public class SpringUtils extends SpringUtil implements ApplicationContextAware {
         return applicationContext;
     }
 
+    @SuppressWarnings("NullableProblems")
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) {
+        SpringUtils.applicationContext = applicationContext;
+    }
 
     public static String[] getBasePackageNames() {
         return getBasePackageClasses().stream().map(Class::getPackageName).collect(Collectors.toSet()).toArray(String[]::new);

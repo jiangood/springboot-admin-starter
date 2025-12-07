@@ -16,6 +16,8 @@ import java.util.List;
 public class SysUserDao extends BaseDao<SysUser> {
 
 
+    private static final Cache<String, String> NAME_CACHE = CacheUtil.newTimedCache(1000 * 60 * 5);
+
     public SysUser findByAccount(String account) {
         return this.findByField(SysUser.Fields.account, account);
     }
@@ -35,8 +37,6 @@ public class SysUserDao extends BaseDao<SysUser> {
     public List<SysUser> findValid() {
         return this.findAllByField("enabled", true);
     }
-
-    private static final Cache<String, String> NAME_CACHE = CacheUtil.newTimedCache(1000 * 60 * 5);
 
     public synchronized String getNameById(String userId) {
         if (userId == null) {

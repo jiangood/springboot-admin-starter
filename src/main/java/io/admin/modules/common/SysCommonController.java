@@ -58,6 +58,8 @@ public class SysCommonController {
 
     @Resource
     private SysUserMessageService sysUserMessageService;
+    @Resource
+    private SysDictService sysDictService;
 
     /**
      * 站点信息， 非登录情况下使用
@@ -131,7 +133,6 @@ public class SysCommonController {
         return AjaxResult.ok().data(r);
     }
 
-
     /**
      * 前端左侧菜单调用， 以展示顶部及左侧菜单
      */
@@ -175,10 +176,6 @@ public class SysCommonController {
 
         return AjaxResult.ok().data(data);
     }
-
-
-    @Resource
-    private SysDictService sysDictService;
 
 
 }

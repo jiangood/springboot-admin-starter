@@ -22,41 +22,32 @@ import java.util.Map;
 @FieldNameConstants
 public class SysJob extends BaseEntity {
 
-    public SysJob() {
-
-    }
-
-    public SysJob(String id) {
-        this.setId(id);
-    }
-
     public static final String JOB_SUFFIX = "Job";
-
     @Column(unique = true)
     @NotNull
     String name;
-
     String cron;
-
-
     @NotNull
     Boolean enabled;
-
-
     @NotNull
     String jobClass;
-
-
     // 参数
     @Lob
     @Column(columnDefinition = DBConstants.TYPE_BLOB)
     @Convert(converter = ToMapConverter.class)
     Map<String, Object> jobData;
-
-
     // 扩展字段
     String extraInfo;
 
+
+    public SysJob() {
+
+    }
+
+
+    public SysJob(String id) {
+        this.setId(id);
+    }
 
     @JsonIgnore
     @Transient

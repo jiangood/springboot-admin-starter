@@ -17,8 +17,8 @@ import java.util.List;
 public class ToListConverter implements AttributeConverter<List<String>, String>, Serializable {
 
 
-    private static final long serialVersionUID = 1L;
     public static final String CONJUNCTION = ",";
+    private static final long serialVersionUID = 1L;
 
     @Override
     public String convertToDatabaseColumn(List<String> list) {

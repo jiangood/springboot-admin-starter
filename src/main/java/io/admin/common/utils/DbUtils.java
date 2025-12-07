@@ -31,6 +31,46 @@ public class DbUtils {
         this.runner = new QueryRunner(dataSource);
     }
 
+    public static String getSqlType(Class<?> cls) {
+        if (Enum.class.isAssignableFrom(cls)) {
+            return "varchar(50)";
+        }
+        if (BigDecimal.class.isAssignableFrom(cls)) {
+            return "decimal(10,2)";
+        }
+
+
+        String typeName = cls.getSimpleName().toLowerCase();
+        switch (typeName) {
+            case "byte":
+            case "short":
+            case "int":
+            case "integer":
+                return "INT";
+            case "long":
+                return "BIGINT";
+            case "float":
+                return "FLOAT";
+            case "double":
+                return "DOUBLE";
+            case "boolean":
+                return "BOOLEAN";
+            case "char":
+            case "string":
+                return "VARCHAR(255)";
+            case "date":
+                return "datetime(6)";
+
+
+            // support collection, convert to string
+            case "list":
+            case "set":
+                return "text";
+
+            default:
+                throw new IllegalStateException("not support field type " + cls);
+        }
+    }
 
     public int dropTable(String tableName) {
         return this.execute("DROP TABLE IF EXISTS " + tableName);
@@ -39,7 +79,6 @@ public class DbUtils {
     public int createTable(Class<?> cls) {
         return this.createTable(cls, StrUtil.toUnderlineCase(cls.getSimpleName()));
     }
-
 
     public <T> T findOne(Class<T> cls, String sql, Object... params) {
         params = checkParam(params);
@@ -102,7 +141,6 @@ public class DbUtils {
         return result;
     }
 
-
     /**
      * 返回字典
      * 先查询列表，将前两个字段组装成map
@@ -136,7 +174,6 @@ public class DbUtils {
         }
         return dict;
     }
-
 
     public <T> List<T> findAll(Class<T> cls, String sql, Object... params) {
         params = checkParam(params);
@@ -180,7 +217,6 @@ public class DbUtils {
         return new PageImpl<>(list, pageable, count);
     }
 
-
     public Map<String, Object> findOne(String sql, Object... params) {
         params = checkParam(params);
         MapHandler rsh = new MapHandler();
@@ -188,7 +224,6 @@ public class DbUtils {
 
         return map;
     }
-
 
     /**
      * 返回 单个值
@@ -199,7 +234,6 @@ public class DbUtils {
 
         return this.query(sql, new ScalarHandler<>(), params);
     }
-
 
     public Long findLong(String sql, Object... params) {
         params = checkParam(params);
@@ -221,7 +255,6 @@ public class DbUtils {
 
     }
 
-
     public Integer findInteger(String sql, Object... params) {
         Long l = this.findLong(sql, params);
         if (l != null) {
@@ -229,7 +262,6 @@ public class DbUtils {
         }
         return null;
     }
-
 
     /**
      * 查询某一列
@@ -246,14 +278,12 @@ public class DbUtils {
         return list == null ? Collections.emptyList() : list;
     }
 
-
     @SneakyThrows
     public int update(String sql, Object... params) {
         params = checkParam(params);
 
         return getRunner().update(sql, params);
     }
-
 
     @SneakyThrows
     public int[] batch(String sql, Object[][] params) {
@@ -267,7 +297,6 @@ public class DbUtils {
     public int[] batch(String sql) {
         return getRunner().batch(sql, new Object[0][0]);
     }
-
 
     @SneakyThrows
     public int execute(String sql, Object... params) {
@@ -323,7 +352,6 @@ public class DbUtils {
         return params;
     }
 
-
     /**
      * insert map data to table
      */
@@ -374,13 +402,12 @@ public class DbUtils {
     }
 
 
+    // ------------------------------------元数据部分------------------------------
+
     @SneakyThrows
     public <T> T query(final String sql, final ResultSetHandler<T> rsh, final Object... params) {
         return getRunner().query(sql, rsh, params);
     }
-
-
-    // ------------------------------------元数据部分------------------------------
 
     @SneakyThrows
     public Set<String> getTableNames() {
@@ -484,48 +511,6 @@ public class DbUtils {
 
         return sb.toString();
     }
-
-    public static String getSqlType(Class<?> cls) {
-        if (Enum.class.isAssignableFrom(cls)) {
-            return "varchar(50)";
-        }
-        if (BigDecimal.class.isAssignableFrom(cls)) {
-            return "decimal(10,2)";
-        }
-
-
-        String typeName = cls.getSimpleName().toLowerCase();
-        switch (typeName) {
-            case "byte":
-            case "short":
-            case "int":
-            case "integer":
-                return "INT";
-            case "long":
-                return "BIGINT";
-            case "float":
-                return "FLOAT";
-            case "double":
-                return "DOUBLE";
-            case "boolean":
-                return "BOOLEAN";
-            case "char":
-            case "string":
-                return "VARCHAR(255)";
-            case "date":
-                return "datetime(6)";
-
-
-            // support collection, convert to string
-            case "list":
-            case "set":
-                return "text";
-
-            default:
-                throw new IllegalStateException("not support field type " + cls);
-        }
-    }
-
 
     /***
      *

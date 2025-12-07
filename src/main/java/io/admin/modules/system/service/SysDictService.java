@@ -57,10 +57,6 @@ public class SysDictService extends BaseService<SysDict> {
         return dict;
     }
 
-
-    public record SimpleDictItem(Object value, String label, String color) {
-    }
-
     public Map<String, Collection<SimpleDictItem>> dictMap() {
         List<SysDictItem> list = sysDictItemDao.findAll(Sort.by(SysDictItem.Fields.seq));
 
@@ -78,6 +74,9 @@ public class SysDictService extends BaseService<SysDict> {
         }
 
         return map.asMap();
+    }
+
+    public record SimpleDictItem(Object value, String label, String color) {
     }
 
 }

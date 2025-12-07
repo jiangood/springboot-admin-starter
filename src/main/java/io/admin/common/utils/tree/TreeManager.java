@@ -50,11 +50,6 @@ public class TreeManager<T extends TreeNode<T>> {
         }
     }
 
-    public interface TraverseAction<T> {
-        void performAction(T item);
-    }
-
-
     public void traverseTree(List<T> treeList, TraverseAction<T> traverseAction) {
         for (T item : treeList) {
             traverseAction.performAction(item);
@@ -147,7 +142,6 @@ public class TreeManager<T extends TreeNode<T>> {
         }
     }
 
-
     public List<T> getAllChildren(String id) {
         T node = map.get(id);
         if (node == null) {
@@ -208,7 +202,6 @@ public class TreeManager<T extends TreeNode<T>> {
         return count.get();
     }
 
-
     public List<T> getLeafList() {
         List<T> result = new ArrayList<>();
         for (T t : map.values()) {
@@ -229,7 +222,6 @@ public class TreeManager<T extends TreeNode<T>> {
         return result;
     }
 
-
     public List<String> getParentIdListById(String id) {
         List<String> ids = new ArrayList<>();
 
@@ -248,7 +240,6 @@ public class TreeManager<T extends TreeNode<T>> {
         }
         return ids;
     }
-
 
     /**
      * 通过层级查询
@@ -275,7 +266,6 @@ public class TreeManager<T extends TreeNode<T>> {
         return lm.get(id);
     }
 
-
     public Map<String, Integer> buildLevelMap() {
         Map<String, Integer> result = new HashMap<>();
 
@@ -287,7 +277,6 @@ public class TreeManager<T extends TreeNode<T>> {
 
         return result;
     }
-
 
     private void setChildLevel(T t, Map<String, Integer> levelMap) {
         String id = t.getId();
@@ -301,7 +290,6 @@ public class TreeManager<T extends TreeNode<T>> {
         }
     }
 
-
     private void addChildToResult(T t, List<T> result) {
         List<T> children = t.getChildren();
         if (children != null && !children.isEmpty()) {
@@ -310,6 +298,11 @@ public class TreeManager<T extends TreeNode<T>> {
                 addChildToResult(child, result);
             }
         }
+    }
+
+
+    public interface TraverseAction<T> {
+        void performAction(T item);
     }
 
 

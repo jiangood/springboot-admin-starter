@@ -39,6 +39,10 @@ public class DailyTableGenerator extends TableGenerator {
         this.length = length;
     }
 
+    private static String date() {
+        return DateUtil.format(new Date(), DatePattern.PURE_DATE_PATTERN);
+    }
+
     @Override
     public void configure(Type type, Properties parameters, ServiceRegistry serviceRegistry) throws MappingException {
         this.entityTableName = parameters.getProperty(PersistentIdentifierGenerator.TABLE);
@@ -80,9 +84,5 @@ public class DailyTableGenerator extends TableGenerator {
 
     private String calcSegmentValue() {
         return entityTableName + "_" + date();
-    }
-
-    private static String date() {
-        return DateUtil.format(new Date(), DatePattern.PURE_DATE_PATTERN);
     }
 }

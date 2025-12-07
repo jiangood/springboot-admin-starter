@@ -52,7 +52,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
             // 接口
             "/openApi/gateway/**"
     };
-
+    @Resource
+    SysProperties sysProperties;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
@@ -60,7 +61,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
         //  registry.addInterceptor(appApiInterceptor).addPathPatterns(WebConstants.APP_API_PATTERN);
 
     }
-
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
@@ -92,9 +92,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
         configurer.ignoreAcceptHeader(true)
                 .defaultContentType(MediaType.APPLICATION_JSON);
     }
-
-    @Resource
-    SysProperties sysProperties;
 
     /**
      * 验证码生成器

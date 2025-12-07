@@ -27,6 +27,21 @@ public class DictAnnHandler {
     @Resource
     SysDictItemDao sysDictItemDao;
 
+    private static Set<Class<?>> scanEnum() {
+        Set<Class<?>> result = new HashSet<>();
+        Set<Class<?>> all = SpringUtils.getBasePackageClasses();
+
+        for (Class<?> superClass : all) {
+            Set<Class<?>> set = ClassUtil.scanPackageByAnnotation(superClass.getPackageName(), Remark.class);
+            for (Class<?> cls : set) {
+                if (cls.isEnum()) {
+                    result.add(cls);
+                }
+            }
+        }
+        return result;
+    }
+
     public void run() throws IllegalAccessException {
         log.info("开始解析字典注解");
         Set<Class<?>> classes = scanEnum();
@@ -75,22 +90,6 @@ public class DictAnnHandler {
 
 
         }
-    }
-
-
-    private static Set<Class<?>> scanEnum() {
-        Set<Class<?>> result = new HashSet<>();
-        Set<Class<?>> all = SpringUtils.getBasePackageClasses();
-
-        for (Class<?> superClass : all) {
-            Set<Class<?>> set = ClassUtil.scanPackageByAnnotation(superClass.getPackageName(), Remark.class);
-            for (Class<?> cls : set) {
-                if (cls.isEnum()) {
-                    result.add(cls);
-                }
-            }
-        }
-        return result;
     }
 
 

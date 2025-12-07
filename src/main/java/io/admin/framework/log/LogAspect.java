@@ -29,8 +29,25 @@ import java.text.SimpleDateFormat;
 public class LogAspect {
 
 
+    private static ObjectWriter writer;
     @Resource
     SysLogService logService;
+
+    // 主要是为了不保存空字段
+    @SneakyThrows
+    private static String toJson(Object obj) {
+        if (writer == null) {
+            ObjectMapper om = new ObjectMapper();
+            om.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+            om.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
+            om.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+            writer = om.writerWithDefaultPrettyPrinter();
+        }
+        if (obj == null) {
+            return null;
+        }
+        return writer.writeValueAsString(obj);
+    }
 
     /**
      * 更新切点：匹配所有被 @Log 注解标注的方法
@@ -54,7 +71,6 @@ public class LogAspect {
         return result;
     }
 
-
     private String getParams(JoinPoint joinPoint) {
         Object[] args = joinPoint.getArgs();
         Signature signature = joinPoint.getSignature();
@@ -72,25 +88,5 @@ public class LogAspect {
         }
 
         return null;
-    }
-
-
-    private static ObjectWriter writer;
-
-
-    // 主要是为了不保存空字段
-    @SneakyThrows
-    private static String toJson(Object obj) {
-        if (writer == null) {
-            ObjectMapper om = new ObjectMapper();
-            om.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-            om.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
-            om.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-            writer = om.writerWithDefaultPrettyPrinter();
-        }
-        if (obj == null) {
-            return null;
-        }
-        return writer.writeValueAsString(obj);
     }
 }

@@ -24,12 +24,8 @@ import java.util.*;
 @Getter
 public class ConfigDataDao {
     private static final String MENU_CONFIG_PATTERN = "classpath*:application-data*.yml";
-
-
-    private List<MenuDefinition> menus = new ArrayList<>();
-
-
     private final List<ConfigGroupDefinition> configs = new ArrayList<>();
+    private List<MenuDefinition> menus = new ArrayList<>();
 
     @PostConstruct
     public void init() {

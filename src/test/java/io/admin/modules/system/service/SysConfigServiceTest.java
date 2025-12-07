@@ -1,7 +1,5 @@
 package io.admin.modules.system.service;
 
-import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.convert.Convert;
 import io.admin.framework.config.SysProperties;
 import io.admin.framework.config.data.ConfigDataDao;
 import io.admin.modules.system.dao.SysConfigDao;
@@ -14,8 +12,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.core.env.Environment;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class SysConfigServiceTest {

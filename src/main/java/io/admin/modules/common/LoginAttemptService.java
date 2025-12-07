@@ -11,13 +11,11 @@ import java.time.Duration;
 @Service
 public class LoginAttemptService {
 
-    @Resource
-    private SysProperties prop;
-
     // 登录尝试次数
     private final Cache<String, Integer> loginAttempts = CacheBuilder.newBuilder().expireAfterWrite(Duration.ofDays(1)).build();
     private final Cache<String, Long> lockedAccounts = CacheBuilder.newBuilder().expireAfterWrite(Duration.ofDays(1)).build();
-
+    @Resource
+    private SysProperties prop;
 
     /**
      * 记录登录失败

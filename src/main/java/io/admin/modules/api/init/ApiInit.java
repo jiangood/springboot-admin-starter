@@ -23,12 +23,14 @@ import java.util.Map;
 @Order
 public class ApiInit implements CommandLineRunner {
 
+    @Resource
+    private ApiResourceService service;
+
     @Override
     public void run(String... args) throws Exception {
         log.info("解析接口...");
         init();
     }
-
 
     private void init() {
         Map<String, Object> beans = SpringUtils.getBeansOfType(Object.class);
@@ -42,9 +44,5 @@ public class ApiInit implements CommandLineRunner {
             }
         }
     }
-
-
-    @Resource
-    private ApiResourceService service;
 
 }

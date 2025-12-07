@@ -106,9 +106,6 @@ public class ModelController {
         return AjaxResult.ok().msg("删除模型成功");
     }
 
-    public record ModelRequest(String id, String content) {
-    }
-
     @HasPermission("flowableModel:design")
     @PostMapping("saveContent")
     public AjaxResult save(@RequestBody ModelRequest param) throws Exception {
@@ -116,7 +113,6 @@ public class ModelController {
         repositoryService.addModelEditorSource(param.id(), param.content().getBytes(StandardCharsets.UTF_8));
         return AjaxResult.ok().msg("保存成功");
     }
-
 
     @Log("部署流程模型")
     @HasPermission("flowableModel:deploy")
@@ -153,7 +149,6 @@ public class ModelController {
 
         return AjaxResult.ok().msg("部署成功");
     }
-
 
     @GetMapping("javaDelegateOptions")
     public AjaxResult javaDelegateOptions() {
@@ -231,11 +226,13 @@ public class ModelController {
         return AjaxResult.ok().data(list);
     }
 
-
     @GetMapping("varList")
     public AjaxResult varOptions(String code) {
         ProcessMeta meta = metaCfg.getMeta(code);
         return AjaxResult.ok().data(meta.getVariables());
+    }
+
+    public record ModelRequest(String id, String content) {
     }
 
 }

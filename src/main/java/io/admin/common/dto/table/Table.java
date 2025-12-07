@@ -48,6 +48,43 @@ public class Table<T> {
         this.totalElements = page.getTotalElements();
     }
 
+    public static <T> Table<T> of(List<T> list, Class<T> cls) {
+        Table<T> tb = new Table<>(list);
+
+
+        boolean hasExcelAnn = Arrays.stream(cls.getDeclaredFields()).anyMatch(t -> t.isAnnotationPresent(Remark.class));
+        if (hasExcelAnn) {
+            for (Field f : cls.getDeclaredFields()) {
+                if (!f.isAnnotationPresent(Remark.class)) {
+                    continue;
+                }
+
+                Class<?> type1 = f.getType();
+                if (type1.isAssignableFrom(String.class) || type1.isAssignableFrom(Number.class) || type1.isAssignableFrom(Date.class)) {
+                    String title = f.getAnnotation(Remark.class).value();
+                    tb.addColumn(title, f.getName());
+                }
+            }
+            return tb;
+        }
+
+
+        log.warn("实体上未配置Excel注解，将使用默认导出");
+
+        for (Field f : cls.getDeclaredFields()) {
+            if (f.isAnnotationPresent(Lob.class)) {
+                continue;
+            }
+
+            Class<?> type1 = f.getType();
+            if (type1.isAssignableFrom(String.class) || type1.isAssignableFrom(Number.class) || type1.isAssignableFrom(Date.class)) {
+                String title = f.isAnnotationPresent(Remark.class) ? f.getAnnotation(Remark.class).value() : f.getName();
+                tb.addColumn(title, f.getName());
+            }
+        }
+        return tb;
+    }
+
     public TableColumn<T> addColumn(String title, String dataIndex) {
         TableColumn<T> column = new TableColumn<>(title, dataIndex);
         columns.add(column);
@@ -59,7 +96,6 @@ public class Table<T> {
         columns.add(column);
         return column;
     }
-
 
     @JsonIgnore
     public Object getColumnValue(TableColumn<T> col, T bean) {
@@ -122,44 +158,6 @@ public class Table<T> {
             }
         }
         return m;
-    }
-
-
-    public static <T> Table<T> of(List<T> list, Class<T> cls) {
-        Table<T> tb = new Table<>(list);
-
-
-        boolean hasExcelAnn = Arrays.stream(cls.getDeclaredFields()).anyMatch(t -> t.isAnnotationPresent(Remark.class));
-        if (hasExcelAnn) {
-            for (Field f : cls.getDeclaredFields()) {
-                if (!f.isAnnotationPresent(Remark.class)) {
-                    continue;
-                }
-
-                Class<?> type1 = f.getType();
-                if (type1.isAssignableFrom(String.class) || type1.isAssignableFrom(Number.class) || type1.isAssignableFrom(Date.class)) {
-                    String title = f.getAnnotation(Remark.class).value();
-                    tb.addColumn(title, f.getName());
-                }
-            }
-            return tb;
-        }
-
-
-        log.warn("实体上未配置Excel注解，将使用默认导出");
-
-        for (Field f : cls.getDeclaredFields()) {
-            if (f.isAnnotationPresent(Lob.class)) {
-                continue;
-            }
-
-            Class<?> type1 = f.getType();
-            if (type1.isAssignableFrom(String.class) || type1.isAssignableFrom(Number.class) || type1.isAssignableFrom(Date.class)) {
-                String title = f.isAnnotationPresent(Remark.class) ? f.getAnnotation(Remark.class).value() : f.getName();
-                tb.addColumn(title, f.getName());
-            }
-        }
-        return tb;
     }
 
 

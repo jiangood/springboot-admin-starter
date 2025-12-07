@@ -16,6 +16,17 @@ public class QuartzManager {
     @Resource
     private Scheduler scheduler;
 
+    private static JobDetail getJobDetail(SysJob job) throws ClassNotFoundException {
+        String jobClass = job.getJobClass();
+        Class<? extends Job> cls = (Class<? extends Job>) Class.forName(jobClass);
+
+        Map<String, Object> jobDataMap = job.getJobDataMap();
+
+        return JobBuilder.newJob(cls)
+                .withIdentity(job.getName())
+                .usingJobData(new JobDataMap(jobDataMap))
+                .build();
+    }
 
     public void deleteJob(SysJob job) throws SchedulerException {
         JobKey jobKey = JobKey.jobKey(job.getName());
@@ -39,7 +50,6 @@ public class QuartzManager {
         scheduler.scheduleJob(jobDetail, trigger);
     }
 
-
     public void triggerJob(SysJob job) throws SchedulerException, ClassNotFoundException {
         if (job.getEnabled()) {
             JobKey jobKey = JobKey.jobKey(job.getName());
@@ -58,17 +68,5 @@ public class QuartzManager {
 
             scheduler.scheduleJob(jobDetail, trigger);
         }
-    }
-
-    private static JobDetail getJobDetail(SysJob job) throws ClassNotFoundException {
-        String jobClass = job.getJobClass();
-        Class<? extends Job> cls = (Class<? extends Job>) Class.forName(jobClass);
-
-        Map<String, Object> jobDataMap = job.getJobDataMap();
-
-        return JobBuilder.newJob(cls)
-                .withIdentity(job.getName())
-                .usingJobData(new JobDataMap(jobDataMap))
-                .build();
     }
 }

@@ -13,8 +13,8 @@ import java.util.stream.Collectors;
 public class ToIntListConverter implements AttributeConverter<List<Integer>, String>, Serializable {
 
 
-    private static final long serialVersionUID = 1L;
     public static final String CONJUNCTION = ",";
+    private static final long serialVersionUID = 1L;
 
     @Override
     public String convertToDatabaseColumn(List<Integer> list) {
