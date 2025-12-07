@@ -167,7 +167,7 @@ public class SysManualController {
 import {PlusOutlined} from '@ant-design/icons'
 import {Button, Form, Input, Modal, Popconfirm} from 'antd'
 import React from 'react'
-import {ButtonList, FieldUploadFile, HttpUtils, Page, ProTable} from "../../../framework";
+import {ButtonList, FieldUploadFile, HttpUtils, Page, ProTable} from "@jiangood/springboot-admin-starter";
 
 export default class extends React.Component {
 
