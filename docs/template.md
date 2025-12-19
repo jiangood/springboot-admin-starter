@@ -6,8 +6,8 @@
 ```java
 package io.admin.modules.system.entity;
 
-import io.admin.common.tools.annotation.Remark;
-import io.admin.framework.data.domain.BaseEntity;
+import annotation.tools.common.io.github.jiangood.sa.Remark;
+import domain.data.framework.io.github.jiangood.sa.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.validation.constraints.NotNull;
@@ -42,15 +42,13 @@ public class User extends BaseEntity {
 ```java
 package io.admin.modules.system.dao;
 
-import io.admin.framework.data.repository.BaseDao;
-import io.admin.framework.data.specification.Spec;
+import repository.data.framework.io.github.jiangood.sa.BaseDao;
 import io.admin.modules.system.entity.User;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class UserDao extends BaseDao<User> {
-   
+
 }
 ```
 
@@ -60,13 +58,11 @@ public class UserDao extends BaseDao<User> {
 ```java
 package io.admin.modules.system.service;
 
-import io.admin.framework.data.service.BaseService;
+import service.data.framework.io.github.jiangood.sa.BaseService;
 import io.admin.modules.system.dao.UserDao;
 import io.admin.modules.system.entity.User;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class UserService extends BaseService<User> {
@@ -83,10 +79,10 @@ public class UserService extends BaseService<User> {
 ```java
 package io.admin.modules.system.controller;
 
-import io.admin.common.dto.AjaxResult;
-import io.admin.framework.config.argument.RequestBodyKeys;
-import io.admin.framework.config.security.HasPermission;
-import io.admin.framework.data.specification.Spec;
+import dto.common.io.github.jiangood.sa.AjaxResult;
+import argument.config.framework.io.github.jiangood.sa.RequestBodyKeys;
+import security.config.framework.io.github.jiangood.sa.HasPermission;
+import specification.data.framework.io.github.jiangood.sa.Spec;
 import io.admin.modules.system.entity.User;
 import io.admin.modules.system.service.UserService;
 import jakarta.annotation.Resource;
@@ -109,7 +105,7 @@ public class UserController {
     @HasPermission("user:view")
     @RequestMapping("page")
     public AjaxResult page(String searchText, @PageableDefault(direction = Sort.Direction.DESC, sort = "updateTime") Pageable pageable) throws Exception {
-        Spec<User> q = Spec.<User>of().orLike(searchText,"name");
+        Spec<User> q = Spec.<User>of().orLike(searchText, "name");
 
         Page<User> page = service.findPageByRequest(q, pageable);
 
@@ -138,7 +134,7 @@ public class UserController {
     @HasPermission("user:view")
     @GetMapping("options")
     public AjaxResult options(String searchText) {
-        Spec<User> q = Spec.<User>of().orLike(searchText,"name");
+        Spec<User> q = Spec.<User>of().orLike(searchText, "name");
         List<User> list = service.findAll(q, Sort.by("name"));
         List<Option> options = list.stream().map(a -> Option.of(a.getId(), a.getName())).toList();
         return AjaxResult.ok().data(options);
