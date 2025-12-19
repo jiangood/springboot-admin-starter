@@ -8,7 +8,6 @@ import io.admin.common.dto.antd.Option;
 import io.admin.common.tools.CollectionTool;
 import io.admin.framework.config.argument.RequestBodyKeys;
 import io.admin.framework.config.data.sysmenu.MenuDefinition;
-import io.admin.framework.config.data.sysmenu.MenuPermission;
 import io.admin.framework.config.security.HasPermission;
 import io.admin.framework.config.security.refresh.PermissionStaleService;
 import io.admin.framework.data.domain.BaseEntity;
@@ -28,7 +27,6 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * 系统角色
@@ -111,8 +109,8 @@ public class SysRoleController {
         // 将角色权限分散成map， 按菜单id为key, 拥有的权限为value
         Map<String, Collection<String>> permsMap = new HashMap<>();
         for (MenuDefinition menuDefinition : menuList) {
-            if (CollUtil.isNotEmpty(menuDefinition.getPerms())) {
-                Set<String> menuPerms = menuDefinition.getPerms().stream().map(MenuPermission::getPerm).collect(Collectors.toSet());
+            if (CollUtil.isNotEmpty(menuDefinition.getPermCodes())) {
+                Set<String> menuPerms = new HashSet<>(menuDefinition.getPermCodes());
 
                 List<String> ownMenuPerms = CollectionTool.findExistingElements(rolePerms, menuPerms);
                 permsMap.put(menuDefinition.getId(), ownMenuPerms);

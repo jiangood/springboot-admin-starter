@@ -9,7 +9,6 @@ import io.admin.common.tools.tree.TreeTool;
 import io.admin.framework.config.data.sysconfig.ConfigGroupDefinition;
 import io.admin.framework.config.data.sysmenu.MenuDefinition;
 import jakarta.annotation.PostConstruct;
-import lombok.Getter;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
@@ -21,11 +20,17 @@ import java.util.*;
 
 @Slf4j
 @Configuration
-@Getter
-public class ConfigDataDao {
-    private static final String MENU_CONFIG_PATTERN = "classpath*:application-data*.yml";
+public class SysMenuYmlDao {
+    private static final String MENU_CONFIG_PATTERN = "classpath*:config/application-data*.yml";
     private final List<ConfigGroupDefinition> configs = new ArrayList<>();
+
     private List<MenuDefinition> menus = new ArrayList<>();
+
+
+    public List<MenuDefinition> findAll() {
+        return Collections.unmodifiableList(menus);
+    }
+
 
     @PostConstruct
     public void init() {
@@ -91,7 +96,6 @@ public class ConfigDataDao {
     @SneakyThrows
     private Resource[] getConfigFiles() {
         ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
-
         // 1. 查找所有匹配的文件
         Resource[] resources = resolver.getResources(MENU_CONFIG_PATTERN);
 
@@ -99,17 +103,10 @@ public class ConfigDataDao {
         Arrays.sort(resources, (o1, o2) -> {
             String f1 = o1.getFilename();
             String f2 = o2.getFilename();
-
-            if (f1.contains("framework") && !f2.contains("framework")) {
-                return -1;
-            }
-            if (f2.contains("framework") && !f1.contains("framework")) {
-                return 1;
-            }
-
             return f1.compareTo(f2);
         });
         log.info("找到 {} 个数据文件", resources.length);
+        log.info("数据文件列表: {}", Arrays.toString(resources));
 
         return resources;
     }

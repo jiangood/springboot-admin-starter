@@ -6,7 +6,7 @@ import cn.hutool.core.util.StrUtil;
 import io.admin.common.tools.RequestTool;
 import io.admin.common.tools.tree.TreeTool;
 import io.admin.framework.config.SysProperties;
-import io.admin.framework.config.data.ConfigDataDao;
+import io.admin.framework.config.data.SysConfigYmlDao;
 import io.admin.framework.config.data.sysconfig.ConfigDefinition;
 import io.admin.framework.config.data.sysconfig.ConfigGroupDefinition;
 import io.admin.modules.system.dao.SysConfigDao;
@@ -30,7 +30,7 @@ public class SysConfigService {
     private SysConfigDao sysConfigDao;
 
     @Resource
-    private ConfigDataDao dataProp;
+    private SysConfigYmlDao sysConfigYmlDao;
 
     @Resource
     private Environment env;
@@ -109,7 +109,7 @@ public class SysConfigService {
         List<SysConfigResponse> responseList = new ArrayList<>();
 
         List<SysConfig> configList = sysConfigDao.findAll();
-        for (ConfigGroupDefinition config : dataProp.getConfigs()) {
+        for (ConfigGroupDefinition config : sysConfigYmlDao.findAll()) {
             SysConfigResponse response = new SysConfigResponse();
             response.setId(config.getGroupName());
             response.setName(config.getGroupName());

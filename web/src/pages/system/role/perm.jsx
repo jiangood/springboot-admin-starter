@@ -1,5 +1,5 @@
 import React from "react";
-import {Alert, Button, Card, Checkbox, Table, Typography} from "antd";
+import {Button, Card, Checkbox, Table, Typography} from "antd";
 import {SaveOutlined} from "@ant-design/icons";
 import {ArrUtils, HttpUtils, PageUtils} from "../../../framework";
 
@@ -22,21 +22,18 @@ export default class extends React.Component {
 
         {
             title: '权限',
-            dataIndex: 'perms',
-            render: (perms, record) => {
-                if (perms == null) {
-                    if (record.path) {
-                        return <Alert type='error' message='错误：无按钮权限，请在application-data-**.yml中添加'/>
-                    }
-                    // 文件夹
+            dataIndex: 'permCodes',
+            render: (permCodes, record) => {
+                if (permCodes == null) {
                     return
                 }
-                const options = perms.map(perm => {
-                    return {
-                        label: perm.name,
-                        value: perm.perm
-                    }
-                })
+                const {permNames} = record
+                const options = [];
+                for (let i = 0; i < permCodes.length; i++) {
+                    const label = permNames[i];
+                    const value = permCodes[i];
+                    options.push({label, value});
+                }
 
 
                 let rowSelectedKey = this.state.rowSelectedKeys[record.id];

@@ -5,7 +5,6 @@ import cn.hutool.core.util.StrUtil;
 import io.admin.common.tools.PasswordTool;
 import io.admin.framework.config.SysProperties;
 import io.admin.framework.config.data.sysmenu.MenuDefinition;
-import io.admin.framework.config.data.sysmenu.MenuPermission;
 import io.admin.framework.data.domain.BaseEntity;
 import io.admin.framework.data.service.BaseService;
 import io.admin.framework.data.specification.Spec;
@@ -221,13 +220,8 @@ public class SysUserService extends BaseService<SysUser> {
             // 如果权限表是细粒度权限，如 user:read，也可以加上
             List<MenuDefinition> menus = role.isAdmin() ? sysMenuDao.findAll() : sysMenuDao.findAllById(role.getMenus());
             for (MenuDefinition menu : menus) {
-                List<MenuPermission> perms = menu.getPerms();
-                if (CollUtil.isNotEmpty(perms)) {
-                    for (MenuPermission perm : perms) {
-                        Assert.hasText(perm.getPerm(), "菜单有未设置perm的情况：" + menu.getName());
-                        list.add(perm.getPerm());
-                    }
-                }
+                List<String> perms = menu.getPermCodes();
+                list.addAll(perms);
             }
         }
 

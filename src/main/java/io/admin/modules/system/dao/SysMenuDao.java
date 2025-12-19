@@ -1,7 +1,7 @@
 package io.admin.modules.system.dao;
 
 
-import io.admin.framework.config.data.ConfigDataDao;
+import io.admin.framework.config.data.SysMenuYmlDao;
 import io.admin.framework.config.data.sysmenu.MenuDefinition;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +15,7 @@ import java.util.List;
 public class SysMenuDao {
 
     @jakarta.annotation.Resource
-    private ConfigDataDao configDataDao;
+    private SysMenuYmlDao configDataDao;
 
 
     /**
@@ -25,7 +25,7 @@ public class SysMenuDao {
      */
     @SneakyThrows
     public List<MenuDefinition> findAll() {
-        return configDataDao.getMenus();
+        return configDataDao.findAll();
     }
 
 

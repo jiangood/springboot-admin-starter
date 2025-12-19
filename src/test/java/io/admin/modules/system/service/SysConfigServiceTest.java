@@ -1,7 +1,7 @@
 package io.admin.modules.system.service;
 
 import io.admin.framework.config.SysProperties;
-import io.admin.framework.config.data.ConfigDataDao;
+import io.admin.framework.config.data.SysMenuYmlDao;
 import io.admin.modules.system.dao.SysConfigDao;
 import io.admin.modules.system.entity.SysConfig;
 import org.junit.jupiter.api.Test;
@@ -22,7 +22,7 @@ public class SysConfigServiceTest {
     private SysConfigDao sysConfigDao;
 
     @Mock
-    private ConfigDataDao dataProp;
+    private SysMenuYmlDao dataProp;
 
     @Mock
     private Environment env;

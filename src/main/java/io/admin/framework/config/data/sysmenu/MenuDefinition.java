@@ -3,6 +3,7 @@ package io.admin.framework.config.data.sysmenu;
 import io.admin.common.dto.antd.AntDesignIcon;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -39,11 +40,14 @@ public class MenuDefinition {
      */
     private List<MenuDefinition> children;
 
+    private List<String> permNames = new ArrayList<>();
 
     /**
      * 权限表，
      */
-    private List<MenuPermission> perms;
+    private List<String> permCodes = new ArrayList<>();
+
+
 
     /**
      * 菜单的消息数量接口
