@@ -28,7 +28,7 @@ public class Spec<T> implements Specification<T> {
     private Spec() {
     }
 
-    public static <T> Spec<T> of() {
+    public static <X> Spec<X> of() {
         return new Spec<>();
     }
 
