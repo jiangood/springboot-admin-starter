@@ -4,17 +4,10 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.map.CaseInsensitiveLinkedMap;
 import cn.hutool.core.util.StrUtil;
-import jakarta.persistence.EntityManagerFactory;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.dialect.Dialect;
-import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.query.spi.Limit;
-import org.hibernate.type.BasicType;
-import org.hibernate.type.BasicTypeRegistry;
-import org.hibernate.type.descriptor.jdbc.JdbcType;
-import org.hibernate.type.descriptor.sql.spi.DdlTypeRegistry;
-import org.hibernate.type.spi.TypeConfiguration;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
@@ -26,8 +19,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.lang.Nullable;
-import org.springframework.stereotype.Component;
-import org.springframework.util.ReflectionUtils;
 
 import javax.sql.DataSource;
 import java.lang.reflect.Field;
@@ -42,27 +33,17 @@ import java.util.stream.Collectors;
  * 基于 Spring 的 JdbcTemplate 封装，专注于执行复杂的原生 SQL 查询和更新。
  * 命名风格统一为 Find 风格。
  */
-@Component
 @Slf4j
 public class JdbcTool {
 
     private final JdbcTemplate jdbcTemplate;
 
     private final Dialect dialect;
-    private final TypeConfiguration typeConfiguration;
 
-    /**
-     * 构造函数：通过数据源（DataSource）初始化 JdbcTemplate。
-     *
-     * @param dataSource           数据库连接池的数据源
-     * @param entityManagerFactory JPA 的 EntityManagerFactory
-     */
-    public JdbcTool(DataSource dataSource, EntityManagerFactory entityManagerFactory) {
+
+    public JdbcTool(DataSource dataSource, Dialect dialect) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
-        SessionFactoryImplementor sessionFactory = entityManagerFactory.unwrap(SessionFactoryImplementor.class);
-
-        dialect = sessionFactory.getJdbcServices().getDialect();
-        typeConfiguration = sessionFactory.getTypeConfiguration();
+        this.dialect = dialect;
     }
 
     // --- 1. DML 和通用执行操作 ---
@@ -594,69 +575,4 @@ public class JdbcTool {
         return BeanUtil.beanToMap(bean);
     }
 
-    /**
-     * 根据 Java 类结构，生成 CREATE TABLE SQL 语句。
-     * 提示：此方法依赖 Hibernate 内部 API，可能在版本升级时失效。
-     */
-    public String generateCreateTableSql(Class<?> cls, String tableName) {
-        List<Field> allFields = new ArrayList<>();
-
-        // 1. 收集所有非静态、非瞬态字段（包括父类）
-        ReflectionUtils.doWithFields(cls, allFields::add,
-                field -> !Modifier.isStatic(field.getModifiers()) && !Modifier.isTransient(field.getModifiers()));
-
-        if (allFields.isEmpty()) {
-            throw new IllegalArgumentException("Class " + cls.getName() + " has no fields for table creation.");
-        }
-
-        Field primaryKeyField = allFields.get(0);
-        StringBuilder sql = new StringBuilder();
-        sql.append("CREATE TABLE IF NOT EXISTS `").append(tableName).append("` (\n");
-
-        // 2. 遍历字段，生成列定义
-        for (Field field : allFields) {
-            String columnName = StrUtil.toUnderlineCase(field.getName());
-            String sqlDataType = mapJavaTypeToSql(field.getType());
-
-            sql.append("    `").append(columnName).append("` ").append(sqlDataType);
-
-            // 3. 处理主键和 NOT NULL
-            if (field == primaryKeyField) {
-                sql.append(" NOT NULL");
-            } else {
-                sql.append(" NULL");
-            }
-
-            sql.append(",\n");
-        }
-
-        // 4. 补上主键定义
-        String pkColumnName = StrUtil.toUnderlineCase(primaryKeyField.getName());
-        sql.append("    PRIMARY KEY (`").append(pkColumnName).append("`)\n");
-
-        // 结束语句
-        sql.append(") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;");
-
-        return sql.toString();
-    }
-
-    /**
-     * 使用 Hibernate Dialect 内部的类型映射，将 Java 类型转换为对应的 SQL 类型名称。
-     */
-    private String mapJavaTypeToSql(Class<?> javaTypeClass) {
-        DdlTypeRegistry ddlTypeRegistry = typeConfiguration.getDdlTypeRegistry();
-        BasicTypeRegistry basicTypeRegistry = typeConfiguration.getBasicTypeRegistry();
-
-        BasicType hibernateType = basicTypeRegistry.getRegisteredType(javaTypeClass);
-        if (hibernateType == null) {
-            // 对于未注册的类型，默认映射为 String 类型
-            hibernateType = basicTypeRegistry.getRegisteredType(String.class);
-        }
-
-        JdbcType jdbcType = hibernateType.getJdbcType();
-
-        String typeName = ddlTypeRegistry.getTypeName(jdbcType.getDdlTypeCode(), dialect);
-
-        return typeName;
-    }
 }
