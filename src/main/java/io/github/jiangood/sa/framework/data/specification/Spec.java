@@ -1,5 +1,10 @@
 package io.github.jiangood.sa.framework.data.specification;
 
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.StrUtil;
+import io.github.jiangood.sa.common.tools.ArrayTool;
+import io.github.jiangood.sa.common.tools.range.Range;
+import io.github.jiangood.sa.common.tools.range.RangeTool;
 import jakarta.persistence.criteria.*;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -9,10 +14,8 @@ import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+import java.util.function.Consumer;
 
 /**
  * 简洁、动态、支持关联字段查询 (e.g., "dept.name") 的 JPA Specification 构建器。
@@ -32,8 +35,38 @@ public class Spec<T> implements Specification<T> {
         return new Spec<>();
     }
 
-    public void betweenIsoDateRange(String createTime, String dateRange, boolean b) {
+    public Spec<T> betweenDateRange(String field, String isoRange, boolean convertToJavaDate) {
+        if (StrUtil.isEmpty(isoRange)) {
+            return this;
+        }
 
+        if (convertToJavaDate) {
+            Range<Date> range = RangeTool.toDateRange(isoRange);
+            return this.between(field, range.getBegin(), range.getEnd());
+        }
+        Range<String> range = RangeTool.toStrRange(isoRange);
+        return this.between(field, range.getBegin(), range.getEnd());
+    }
+
+    public <V extends Comparable<V>> Spec<T> between(String field, Range<V> range) {
+        if (range == null || range.isEmpty()) {
+            return this;
+        }
+        return this.between(field, range.getBegin(), range.getEnd());
+    }
+
+    public <C extends Comparable<C>> Spec<T> between(String field, C begin, C end) {
+        if (begin != null && end != null) {
+            return this.add(new ConditionSpec<>(Operator.BETWEEN, field, new Object[]{begin, end}));
+        }
+        if (begin != null) {
+            return this.add(new ConditionSpec<>(Operator.GREATER_THAN_OR_EQUAL, field, begin));
+        }
+        if (end != null) {
+            return this.add(new ConditionSpec<>(Operator.LESS_THAN_OR_EQUAL, field, end));
+        }
+
+        return this;
     }
 
     public Spec<T> selectFnc(AggregateFunctionType type, String field) {
@@ -152,12 +185,6 @@ public class Spec<T> implements Specification<T> {
         return this;
     }
 
-    public <C extends Comparable<C>> Spec<T> between(String field, C value1, C value2) {
-        if (value1 != null && value2 != null) {
-            this.add(new ConditionSpec<>(Operator.BETWEEN, field, new Object[]{value1, value2}));
-        }
-        return this;
-    }
 
     public Spec<T> isNotNull(String field) {
         return this.add(new ConditionSpec<>(Operator.IS_NOT_NULL, field));
@@ -177,20 +204,7 @@ public class Spec<T> implements Specification<T> {
         return this;
     }
 
-    /**
-     * **自定义 OR 条件**：将传入的多个 Specification 用 **OR** 连接，作为一个整体加入主查询。
-     */
-    @SafeVarargs
-    public final Spec<T> or(Specification<T>... orSpecifications) {
-        if (orSpecifications == null || orSpecifications.length == 0) {
-            return this;
-        }
-        Specification<T> orSpec = orSpecifications[0];
-        for (int i = 1; i < orSpecifications.length; i++) {
-            orSpec = orSpec.or(orSpecifications[i]);
-        }
-        return this.add(orSpec);
-    }
+
 
 
     // ---------------------- 逻辑 OR 条件 ----------------------
@@ -205,6 +219,42 @@ public class Spec<T> implements Specification<T> {
 
         return this.add(Specification.not(spec));
     }
+
+    /**
+     * **自定义 OR 条件**：将传入的多个 Specification 用 **OR** 连接，作为一个整体加入主查询。
+     */
+    @SafeVarargs
+    public final Spec<T> or(Specification<T>... specArr) {
+        List<Specification<T>> list = ArrayTool.toList(specArr);
+        return this.or(list);
+    }
+
+    /**
+     *
+     * @param consumer
+     */
+    public void or(Consumer<Spec<T>> consumer) {
+        Spec<T> q = new Spec<>();
+        consumer.accept(q);
+
+        this.or(q.specifications);
+    }
+
+    public Spec<T> or(List<Specification<T>> specList) {
+        if(CollUtil.isEmpty(specList)){
+            return this;
+        }
+
+        Specification<T> orSpec = specList.get(0);
+        for (int i = 1; i < specList.size(); i++) {
+            orSpec = orSpec.or(specList.get(i));
+        }
+        return this.add(orSpec);
+    }
+
+
+
+
 
     /**
      * 常用封装：OR 逻辑的模糊查询 (字段1 LIKE %value% OR 字段2 LIKE %value%)

@@ -3,7 +3,7 @@ package io.github.jiangood.sa.common.tools.datetime;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
-import io.github.jiangood.sa.common.Between;
+import io.github.jiangood.sa.common.tools.range.Range;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.util.Assert;
 
@@ -52,7 +52,7 @@ public class DateTool {
     }
 
 
-    public static long count(Between between) {
+    public static long count(Range between) {
         return count(between.getBegin(), between.getEnd());
     }
 

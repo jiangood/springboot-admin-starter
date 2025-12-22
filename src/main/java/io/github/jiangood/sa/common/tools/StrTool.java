@@ -2,8 +2,6 @@ package io.github.jiangood.sa.common.tools;
 
 import cn.hutool.core.util.CharUtil;
 import com.google.common.base.CaseFormat;
-import io.github.jiangood.sa.common.Between;
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 import java.util.UUID;
@@ -30,26 +28,6 @@ public class StrTool {
         return -1;
     }
 
-
-    /**
-     * 时间区间 逗号分割 ,2022-10-11
-     *
-     * @param date 时间区间
-     * @return 区间对象
-     */
-    public static Between parseBetween(String date) {
-        Between between = new Between();
-        if (StringUtils.isNotBlank(date)) {
-            String[] s = date.split(",");
-            if (s.length >= 1) {
-                between.setBegin(s[0]);
-            }
-            if (s.length >= 2) {
-                between.setEnd(s[1]);
-            }
-        }
-        return between;
-    }
 
     /**
      * 判断是否包含中文

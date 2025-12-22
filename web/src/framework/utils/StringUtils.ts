@@ -3,6 +3,8 @@
  */
 export class StringUtils {
 
+    static readonly ISO_SPLITTER = "/";
+
     /**
      * 移除字符串前缀
      * @param str 原始字符串

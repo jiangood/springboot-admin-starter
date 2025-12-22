@@ -4,7 +4,9 @@
 import React from "react";
 import dayjs from "dayjs";
 import {DatePicker, TimePicker} from "antd";
+import {StringUtils} from "../utils";
 
+const SP = StringUtils.ISO_SPLITTER;
 
 export class FieldDateRange extends React.Component {
     static defaultProps = {
@@ -82,7 +84,7 @@ export class FieldDateRange extends React.Component {
             return null;
         }
 
-        const arr = v.split("/")
+        const arr = v.split(SP)
         let s1 = arr[0];
         let s2 = arr[1];
         return [dayjs(s1), dayjs(s2)]
@@ -95,7 +97,7 @@ export class FieldDateRange extends React.Component {
         const s1 = d1 ? d1.format(fmt) : ""
         const s2 = d2 ? d2.format(fmt) : "";
 
-        return s1 + '/' + s2
+        return s1 + SP + s2
     }
 
 }
