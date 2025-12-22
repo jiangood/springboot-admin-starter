@@ -1,5 +1,9 @@
 package io.github.jiangood.sa.framework.data.specification;
 
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.StrUtil;
+import io.github.jiangood.sa.common.tools.ArrayTool;
 import jakarta.persistence.criteria.*;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -9,10 +13,8 @@ import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+import java.util.function.Consumer;
 
 /**
  * 简洁、动态、支持关联字段查询 (e.g., "dept.name") 的 JPA Specification 构建器。
@@ -32,8 +34,22 @@ public class Spec<T> implements Specification<T> {
         return new Spec<>();
     }
 
-    public void betweenIsoDateRange(String createTime, String dateRange, boolean b) {
+    public void betweenIsoDateRange(String field, String isoRange, boolean convertToJavaDate) {
+        if (!StrUtil.isEmpty(isoRange)) {
+            String[] arr = isoRange.split("/");
+            Assert.state(arr.length == 2, "between参数数组个数必须为2");
+            String v1 = arr[0];
+            String v2 = arr[1];
+            Date d1 = DateUtil.parseDate(v1);
+            Date d2 = DateUtil.parseDate(v2);
+            d2 = DateUtil.endOfDay(d2);
+            if (convertToJavaDate) {
+                this.between(field, d1, d2);
+            } else {
+                this.between(field, v1, v2);
+            }
 
+        }
     }
 
     public Spec<T> selectFnc(AggregateFunctionType type, String field) {
@@ -177,20 +193,7 @@ public class Spec<T> implements Specification<T> {
         return this;
     }
 
-    /**
-     * **自定义 OR 条件**：将传入的多个 Specification 用 **OR** 连接，作为一个整体加入主查询。
-     */
-    @SafeVarargs
-    public final Spec<T> or(Specification<T>... orSpecifications) {
-        if (orSpecifications == null || orSpecifications.length == 0) {
-            return this;
-        }
-        Specification<T> orSpec = orSpecifications[0];
-        for (int i = 1; i < orSpecifications.length; i++) {
-            orSpec = orSpec.or(orSpecifications[i]);
-        }
-        return this.add(orSpec);
-    }
+
 
 
     // ---------------------- 逻辑 OR 条件 ----------------------
@@ -205,6 +208,42 @@ public class Spec<T> implements Specification<T> {
 
         return this.add(Specification.not(spec));
     }
+
+    /**
+     * **自定义 OR 条件**：将传入的多个 Specification 用 **OR** 连接，作为一个整体加入主查询。
+     */
+    @SafeVarargs
+    public final Spec<T> or(Specification<T>... specArr) {
+        List<Specification<T>> list = ArrayTool.toList(specArr);
+        return this.or(list);
+    }
+
+    /**
+     *
+     * @param consumer
+     */
+    public void or(Consumer<Spec<T>> consumer) {
+        Spec<T> q = new Spec<>();
+        consumer.accept(q);
+
+        this.or(q.specifications);
+    }
+
+    public Spec<T> or(List<Specification<T>> specList) {
+        if(CollUtil.isEmpty(specList)){
+            return this;
+        }
+
+        Specification<T> orSpec = specList.get(0);
+        for (int i = 1; i < specList.size(); i++) {
+            orSpec = orSpec.or(specList.get(i));
+        }
+        return this.add(orSpec);
+    }
+
+
+
+
 
     /**
      * 常用封装：OR 逻辑的模糊查询 (字段1 LIKE %value% OR 字段2 LIKE %value%)
