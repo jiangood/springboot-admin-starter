@@ -36,19 +36,24 @@ public class Spec<T> implements Specification<T> {
 
     }
 
-    public Spec<T> selectFnc(AggregateFunction fn, String field) {
+    public Spec<T> selectFnc(AggregateFunctionType type, String field) {
+        String alias = type.name().toLowerCase() + "_" + field;
+        return this.selectFnc(type, field, alias);
+    }
+
+    public Spec<T> selectFnc(AggregateFunctionType type, String field, String alias) {
         return this.add((Specification<T>) (root, query, cb) -> {
 
             Path<Number> x = root.get(field);
 
-            Expression<? extends Number> sel = switch (fn) {
+            Expression<? extends Number> sel = switch (type) {
                 case AVG -> cb.avg(x);
                 case SUM -> cb.sum(x);
                 case MIN -> cb.min(x);
                 case MAX -> cb.max(x);
                 case COUNT -> cb.count(x);
             };
-            sel.alias(fn.name().toLowerCase() + "_" + field);
+            sel.alias(alias);
 
             List<Selection<?>> newSections = new ArrayList<>(query.getSelection().getCompoundSelectionItems());
             newSections.add(sel);

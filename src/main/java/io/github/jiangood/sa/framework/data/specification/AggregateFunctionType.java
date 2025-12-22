@@ -3,7 +3,7 @@ package io.github.jiangood.sa.framework.data.specification;
 /**
  * 聚合函数
  */
-public enum AggregateFunction {
+public enum AggregateFunctionType {
     SUM,
     COUNT,
 
