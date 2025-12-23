@@ -400,78 +400,7 @@ public class Spec<T> implements Specification<T> {
     /**
      * 定义支持的操作符，消除魔术字符串，提高可读性和类型安全。
      */
-    private enum Operator {
-        EQUAL, NOT_EQUAL,
-        GREATER_THAN, LESS_THAN, GREATER_THAN_OR_EQUAL, LESS_THAN_OR_EQUAL,
-        LIKE, NOT_LIKE,
-        IN, NOT_IN,
-        IS_NULL, IS_NOT_NULL,
-        BETWEEN,
-
-        // 新增：用于集合成员查询
-        IS_MEMBER, IS_NOT_MEMBER
-    }
-
-    // ---------------------- 统一的内部条件实现类 (支持点操作) ----------------------
-
-    /**
-     * 统一的条件实现类，处理所有基本操作符，支持点操作 (e.g., "dept.name")。
-     */
-    private static class ConditionSpec<T, V> implements Specification<T> {
-        private final Operator op;
-        private final String field;
-        private final V value;
-
-        public ConditionSpec(Operator op, String field, V value) {
-            this.op = op;
-            this.field = field;
-            this.value = value;
-        }
-
-        public ConditionSpec(Operator op, String field) {
-            this(op, field, null);
-        }
 
 
-        @Override
-        @SuppressWarnings({"unchecked", "rawtypes"})
-        public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-            // 使用更新后的 getPath 方法，支持点操作
-            Expression path = ExpressionTool.getPath(root, field);
 
-            return switch (op) {
-                case EQUAL -> cb.equal(path, value);
-                case NOT_EQUAL -> cb.notEqual(path, value);
-
-                case GREATER_THAN -> cb.greaterThan(path, (Comparable) value);
-                case LESS_THAN -> cb.lessThan(path, (Comparable) value);
-                case GREATER_THAN_OR_EQUAL -> cb.greaterThanOrEqualTo(path, (Comparable) value);
-                case LESS_THAN_OR_EQUAL -> cb.lessThanOrEqualTo(path, (Comparable) value);
-
-                // LIKE 操作需要对 path 字段进行 lower() 转换，以实现不区分大小写查询
-                case LIKE -> cb.like(cb.lower(path), (String) value);
-                case NOT_LIKE -> cb.notLike(cb.lower(path), (String) value);
-
-                case IN -> path.in((Collection) value);
-
-                case IS_NULL -> cb.isNull(path);
-                case IS_NOT_NULL -> cb.isNotNull(path);
-
-                case BETWEEN -> {
-                    Object[] values = (Object[]) value;
-                    Assert.state(values.length == 2, "BETWEEN operation requires exactly two values.");
-                    yield cb.between(path, (Comparable) values[0], (Comparable) values[1]);
-                }
-                case IS_MEMBER -> {
-                    Path collectionPath = root.get(field);
-                    yield cb.isMember(value, collectionPath);
-                }
-                case IS_NOT_MEMBER -> {
-                    Path collectionPath = root.get(field);
-                    yield cb.isNotMember(value, collectionPath);
-                }
-                default -> throw new IllegalArgumentException("Unsupported operator: " + op);
-            };
-        }
-    }
 }
