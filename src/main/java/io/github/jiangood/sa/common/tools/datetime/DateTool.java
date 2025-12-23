@@ -52,7 +52,7 @@ public class DateTool {
     }
 
 
-    public static long count(Range between) {
+    public static long count(Range<String> between) {
         return count(between.getBegin(), between.getEnd());
     }
 
