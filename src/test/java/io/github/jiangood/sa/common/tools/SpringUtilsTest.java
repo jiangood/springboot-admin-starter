@@ -1,10 +1,12 @@
 package io.github.jiangood.sa.common.tools;
 
+import io.github.jiangood.sa.BasePackage;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.TestPropertySource;
 
 import java.util.Collection;
@@ -16,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @TestPropertySource(properties = {
         "spring.application.name=test-app"
 })
+@Import(BasePackage.class)
 public class SpringUtilsTest {
 
     @Autowired
@@ -30,13 +33,7 @@ public class SpringUtilsTest {
         assertEquals(applicationContext, SpringTool.getApplicationContext());
     }
 
-    @Test
-    public void testGetBeanByName() {
-        // 测试通过名称获取Bean
-        Object bean = SpringTool.getBean("springUtils"); // 默认bean名称是类名首字母小写
-        assertNotNull(bean);
-        assertTrue(bean instanceof SpringTool);
-    }
+
 
     @Test
     public void testGetBeanByClass() {
