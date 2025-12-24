@@ -5,7 +5,7 @@ import {ConfigProvider} from "antd";
 
 import {Outlet, withRouter} from "umi";
 import zhCN from 'antd/locale/zh_CN';
-import {ArrUtils, HttpUtils, PageLoading, PageUtils, SysUtils, ThemeUtils,} from "../framework";
+import {ArrUtils, HttpUtils, MessageHolder, PageLoading, PageUtils, SysUtils, ThemeUtils,} from "../framework";
 import dayjs from 'dayjs';
 import 'dayjs/locale/zh-cn';
 
@@ -120,6 +120,8 @@ class _Layouts extends React.Component {
 
             {this.renderContent()}
 
+            <MessageHolder />
+
         </ConfigProvider>
     }
 
@@ -142,9 +144,7 @@ class _Layouts extends React.Component {
         return <AdminLayout path={this.state.path} logo={this.props.logo}/>
     };
 
-    renderMessages = () => {
 
-    };
 
 }
 

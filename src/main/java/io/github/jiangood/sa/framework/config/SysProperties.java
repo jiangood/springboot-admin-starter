@@ -1,14 +1,18 @@
 package io.github.jiangood.sa.framework.config;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 
 @Configuration
 @ConfigurationProperties(prefix = SysProperties.CONFIG_PREFIX)
 @Data
+@Validated
 public class SysProperties {
 
 
@@ -30,6 +34,7 @@ public class SysProperties {
     /**
      * 系统标题
      */
+    @NotBlank(message = "请配置系统标题")
     private String title = "管理系统";
     private String logoUrl = "/admin/logo.jpg";
     private String loginBoxBottomTip = "当前非涉密网络，严禁传输处理涉密信息";
@@ -71,6 +76,8 @@ public class SysProperties {
      */
     private String resetAdminPwd;
     private boolean printException;
+
+    @NotBlank(message = "请配置默认密码")
     private String defaultPassword;
 
     public enum CaptchaType {

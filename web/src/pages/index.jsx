@@ -1,5 +1,6 @@
 import React from "react";
 import {Card} from "antd";
+import {MessageUtils} from "../framework";
 
 
 export default class extends React.Component {
@@ -7,6 +8,7 @@ export default class extends React.Component {
     state = {}
 
     componentDidMount() {
+        MessageUtils.alert('1')
     }
 
     render() {

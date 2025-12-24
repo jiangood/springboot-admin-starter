@@ -72,6 +72,7 @@ public class SysUserController {
     @HasPermission("sysUser:save")
     @PostMapping("save")
     public AjaxResult save(@RequestBody SysUser input, RequestBodyKeys updateFields) throws Exception {
+        String defaultPassword = sysProperties.getDefaultPassword();
         boolean isNew = input.isNew();
         String inputOrgId = input.getDeptId();
         SysOrg org = sysOrgService.findByRequest(inputOrgId);
@@ -89,7 +90,8 @@ public class SysUserController {
         sysUserService.saveOrUpdateByRequest(input, updateFields);
 
         if (isNew) {
-            return AjaxResult.ok().msg("添加成功,密码：" + sysProperties.getDefaultPassword());
+
+            return AjaxResult.ok().msg("添加成功,密码：" + defaultPassword);
         } else {
             permissionStaleService.markUserStale(input.getAccount());
         }
