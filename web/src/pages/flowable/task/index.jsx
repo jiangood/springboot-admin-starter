@@ -1,6 +1,6 @@
 import React from "react";
 import {Button, Modal, Tabs} from "antd";
-import {HttpUtils, LinkButton, Page, PageLoading, ProTable} from "../../../framework";
+import {HttpUtils, LinkButton, MessageUtils, Page, PageLoading, ProTable} from "../../../framework";
 import InstanceInfo from "../InstanceInfo";
 
 
@@ -186,12 +186,11 @@ export default class extends React.Component {
                 dataIndex: 'option',
                 render: (_, record) => (
                     <Button size='small' onClick={() => {
-
-                        Modal.info({
-                            title: '流程信息',
+                        MessageUtils.alert(<InstanceInfo id={record.id}/>,{
                             width: '80vw',
-                            content: <InstanceInfo id={record.id}/>
+                            title: '流程信息'
                         })
+
                     }}> 查看 </Button>
                 ),
             },
