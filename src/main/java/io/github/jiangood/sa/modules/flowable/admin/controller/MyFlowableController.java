@@ -28,10 +28,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -87,13 +84,21 @@ public class MyFlowableController {
 
         long count = query.count();
         List<HistoricProcessInstance> list = query.listPage((int) pageable.getOffset(), pageable.getPageSize());
-        List<Map<String, Object>> mapList = BeanTool.copyToListMap(list, HistoricProcessInstance.class);
+        List<Map<String, Object>> mapList = new ArrayList<>();
 
-        for (Map<String, Object> map : mapList) {
+        for (HistoricProcessInstance instance : list) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("id", instance.getId());
+            map.put("processDefinitionName", instance.getProcessDefinitionName());
+            map.put("startTime", instance.getStartTime());
+            map.put("endTime", instance.getEndTime());
+            map.put("businessKey", instance.getBusinessKey());
+
             String startUserId = (String) map.get("startUserId");
             if (startUserId != null) {
                 map.put("startUserName", flowableService.getUserName(startUserId));
             }
+            mapList.add(map);
         }
 
         return AjaxResult.ok().data(new PageImpl<>(mapList, pageable, count));
