@@ -1,4 +1,4 @@
-package io.github.jiangood.sa.common.tools.db;
+package io.github.jiangood.sa.common.tools.jdbc;
 
 import lombok.Getter;
 

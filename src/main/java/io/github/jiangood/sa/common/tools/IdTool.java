@@ -2,7 +2,7 @@ package io.github.jiangood.sa.common.tools;
 
 import cn.hutool.extra.spring.SpringUtil;
 import com.github.f4b6a3.uuid.UuidCreator;
-import io.github.jiangood.sa.common.tools.db.DbTool;
+import io.github.jiangood.sa.common.tools.jdbc.DbTool;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
