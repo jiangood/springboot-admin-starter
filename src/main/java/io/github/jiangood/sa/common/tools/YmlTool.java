@@ -36,7 +36,7 @@ public class YmlTool {
         if (StrUtil.isEmpty(prefix)) {
             return yml;
         }
-        List<String> lines = StrUtil.splitTrim(yml, "\n");
+        List<String> lines = StrUtil.split(yml, "\n");
         for (int i = 0; i < lines.size(); i++) {
             String line = lines.get(i);
             if (line.trim().equals(prefix + ":")) {
