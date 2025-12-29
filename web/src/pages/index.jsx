@@ -8,7 +8,7 @@ export default class extends React.Component {
     state = {}
 
     componentDidMount() {
-        MessageUtils.alert('1')
+
     }
 
     render() {

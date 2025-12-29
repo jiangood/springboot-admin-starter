@@ -1,4 +1,4 @@
-import {Input, InputNumber, message, Modal} from 'antd';
+import {Form, Input, InputNumber, message, Modal} from 'antd';
 import type {ModalFuncProps} from 'antd/es/modal/interface';
 import React from 'react';
 import {MessageInstance} from "antd/lib/message/interface";
@@ -55,15 +55,18 @@ export class MessageUtils {
                 title: '提示',
                 content: <div>
                     <div style={{marginBottom: 4}}>{message}</div>
-                    {isNumber ? <InputNumber value={initialValue} placeholder={placeholder}/> : <Input ref={ref} placeholder={placeholder}/>}
+                    <Form ref={ref}>
+                        <Form.Item name='inputValue' initialValue={initialValue}>
+                            {isNumber ? <InputNumber placeholder={placeholder}/> : <Input  placeholder={placeholder}/>}
+                        </Form.Item>
+                    </Form>
                 </div>,
                 okText: '确定',
                 cancelText: '取消',
                 onOk: () => {
-                    const inputInstance = ref.current;
-                    const inputElement = inputInstance.input;
-                    const inputValue = inputElement.value;
-                    resolve(inputValue)
+                    const form = ref.current;
+                   const values= form.getFieldsValue()
+                    resolve(values.inputValue)
                 },
                 onCancel: () => {
                     resolve()
