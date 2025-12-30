@@ -1,8 +1,9 @@
 import React from "react";
 import {Space} from "antd";
 import {EyeInvisibleOutlined, EyeOutlined} from "@ant-design/icons";
+import {ViewProps} from "./ViewProps";
 
-export class ViewPassword extends React.Component {
+export class ViewPassword extends React.Component<ViewProps,any> {
 
     state = {
         visible: false
