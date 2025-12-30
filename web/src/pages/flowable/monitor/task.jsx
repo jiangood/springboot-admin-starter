@@ -29,12 +29,20 @@ export default class extends React.Component {
                 actionRef={this.taskTableRef}
                 columns={[
                     {
-                        dataIndex: 'id',
-                        title: '任务标识',
+                        dataIndex: 'processInstanceName',
+                        title: '实例名称'
                     },
                     {
                         dataIndex: 'name',
-                        title: '名称',
+                        title: '任务名称',
+                    },
+                    {
+                        dataIndex: 'assigneeLabel',
+                        title: '处理人'
+                    },
+                    {
+                        dataIndex: 'id',
+                        title: '任务标识',
                     },
 
                     {
@@ -45,15 +53,9 @@ export default class extends React.Component {
                         dataIndex: 'processInstanceId',
                         title: '实例'
                     },
-                    {
-                        dataIndex: 'processInstanceName',
-                        title: '实例名称'
-                    },
 
-                    {
-                        dataIndex: 'assigneeLabel',
-                        title: '处理人'
-                    },
+
+
                     {
                         dataIndex: 'startTime',
                         title: '开始时间'
