@@ -183,7 +183,7 @@ export default class extends React.Component {
     }
 
     render() {
-        return <Page>
+        return <Page padding>
             <ProTable
                 actionRef={this.tableRef}
                 toolBarRender={() => {
@@ -285,8 +285,6 @@ export default class extends React.Component {
                    onOk={this.handleGrantMenu}
                    loading={this.state.menuTreeLoading}
             >
-
-
                     <Tree
                         height={600}
                         treeData={this.state.menuTree}
@@ -300,11 +298,7 @@ export default class extends React.Component {
                         titleRender={node=>{
                             return <span title={node.perm} >{node.title}</span>
                         }}
-                    >
-                    </Tree>
-
-
-
+                    />
             </Modal>
         </Page>
 

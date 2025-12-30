@@ -157,7 +157,7 @@ export default class extends React.Component {
 
     render() {
 
-        return <Page>
+        return <Page >
             <Splitter >
                 <Splitter.Panel defaultSize={400}   >
                     <Tabs
@@ -192,6 +192,7 @@ export default class extends React.Component {
 
                             </ButtonList>
                         }}
+                        showToolbarSearch
                         request={(params) => {
                             params.orgId = this.state.currentOrgId
                             params.roleId = this.state.currentRoleId
