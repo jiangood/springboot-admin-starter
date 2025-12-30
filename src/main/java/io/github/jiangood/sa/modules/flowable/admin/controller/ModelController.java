@@ -252,13 +252,24 @@ public class ModelController {
 
         Page<ProcessDefinition> page = FlowablePageTool.page(query, pageable);
         Page<Dict> page2 = PageTool.convert(page, d -> Dict.create()
+                .set("id",d.getId())
                 .set("key", d.getKey())
                 .set("name", d.getName())
                 .set("version",d.getVersion())
         );
 
-
         return AjaxResult.ok().data(page2);
+    }
+
+    @GetMapping("getDefinitionContent")
+    public AjaxResult getDefinitionContent( String id, Pageable pageable) {
+        Assert.notNull(id,"id不能为空");
+        ProcessDefinition definition = repositoryService.createProcessDefinitionQuery().processDefinitionId(id).singleResult();
+
+        BpmnModel bpmnModel = repositoryService.getBpmnModel(definition.getId());
+        String xml = ModelTool.modelToXml(bpmnModel);
+
+        return AjaxResult.ok().data(xml).msg("加载流程xml成功");
     }
 
 
