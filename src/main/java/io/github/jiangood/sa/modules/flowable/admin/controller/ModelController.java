@@ -262,7 +262,7 @@ public class ModelController {
     }
 
     @GetMapping("getDefinitionContent")
-    public AjaxResult getDefinitionContent( String id, Pageable pageable) {
+    public AjaxResult getDefinitionContent( String id) {
         Assert.notNull(id,"id不能为空");
         ProcessDefinition definition = repositoryService.createProcessDefinitionQuery().processDefinitionId(id).singleResult();
 
