@@ -5,7 +5,7 @@ import {Gap, HttpUtils,} from "../../framework";
 /**
  * 查看流程处理情况（不含表单）
  */
-export class ViewFlowableInstanceProgressProgress extends React.Component {
+export class ViewFlowableInstanceProgress extends React.Component {
 
     state = {
         instanceCommentList: [],
