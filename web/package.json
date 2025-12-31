@@ -29,12 +29,13 @@
   "description": "springboot-admin-starter",
   "files": [
     "src/*",
-    "config/dist/*"
+    "config/dist/*",
+    "!src/.umi"
   ],
   "main": "src/index.ts",
   "scripts": {
     "dev": "umi dev",
     "build": "tsc --outDir config/dist --skipLibCheck --noEmitOnError false config/index.ts"
   },
-  "version": "0.1.0-beta.29"
+  "version": "0.1.0-beta.31"
 }
