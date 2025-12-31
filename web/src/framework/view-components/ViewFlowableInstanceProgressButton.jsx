@@ -1,16 +1,6 @@
 import React from "react";
-import {Button, Card, Empty, Modal, Skeleton, Table, Tabs, Typography} from "antd";
-
-import {FormOutlined, ShareAltOutlined} from "@ant-design/icons";
-import {
-    FormRegistryUtils,
-    Gap,
-    HttpUtils,
-    MessageUtils,
-    ViewFlowableInstanceProgress,
-    ViewInstanceProgress
-} from "../../framework";
-
+import {Button} from "antd";
+import {MessageUtils,} from "../utils";
 
 
 export class ViewFlowableInstanceProgressButton extends React.Component{
