@@ -16,13 +16,18 @@ export class MessageUtils {
      * 弹出 Alert 提示框
      */
     static alert(content: any, config?: Omit<ModalFuncProps, 'content' | 'icon' | 'onOk' | 'onCancel'>) {
-        this.modalApi.info({
-            title: '提示',
-            content,
-            okText: '确定',
-            icon: null,
-            ...config,
-        });
+        return new Promise(resolve => {
+            this.modalApi.info({
+                title: '提示',
+                content,
+                okText: '确定',
+                onOk: () => resolve(),
+                onCancel: () => resolve(),
+                icon: null,
+                ...config,
+            });
+        })
+
     }
 
     /**
