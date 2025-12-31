@@ -186,7 +186,7 @@ export default class extends React.Component {
                 dataIndex: 'option',
                 render: (_, record) => (
                     <Button size='small' onClick={() => {
-                        MessageUtils.alert(<InstanceInfo id={record.id}/>,{
+                        MessageUtils.alert(<InstanceInfo id={record.id}/>, {
                             width: '80vw',
                             title: '流程信息'
                         })
