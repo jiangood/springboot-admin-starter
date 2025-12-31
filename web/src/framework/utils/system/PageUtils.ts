@@ -1,7 +1,7 @@
 import {history} from "umi";
 import {StringUtils} from "../StringUtils";
 import {UrlUtils} from "../UrlUtils";
-import {MessageUtils} from "@/framework";
+import {MessageUtils} from "../MessageUtils";
 
 /**
  * 页面相关的工具类，主要用于路由、URL参数和页面跳转操作。
