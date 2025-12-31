@@ -8,7 +8,6 @@ import io.github.jiangood.sa.common.dto.antd.Option;
 import io.github.jiangood.sa.common.tools.CollectionTool;
 import io.github.jiangood.sa.framework.config.argument.RequestBodyKeys;
 import io.github.jiangood.sa.framework.config.data.dto.MenuDefinition;
-import io.github.jiangood.sa.framework.config.security.HasPermission;
 import io.github.jiangood.sa.framework.config.security.refresh.PermissionStaleService;
 import io.github.jiangood.sa.framework.data.domain.BaseEntity;
 import io.github.jiangood.sa.framework.data.specification.Spec;
@@ -24,6 +23,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -48,7 +48,7 @@ public class SysRoleController {
     @Resource
     private PermissionStaleService permissionStaleService;
 
-    @HasPermission("role:view")
+    @PreAuthorize("hasAuthority('role:view')")
     @RequestMapping("page")
     public AjaxResult page(@PageableDefault(direction = Sort.Direction.DESC, sort = "updateTime") Pageable pageable) throws Exception {
         Spec<SysRole> q = Spec.of();
@@ -57,7 +57,7 @@ public class SysRoleController {
     }
 
 
-    @HasPermission("role:delete")
+    @PreAuthorize("hasAuthority('role:delete')")
     @RequestMapping("delete")
     public AjaxResult delete(String id) {
         sysRoleService.deleteByRequest(id);
@@ -68,7 +68,7 @@ public class SysRoleController {
     /**
      * 添加系统角色
      */
-    @HasPermission("sysRole:save")
+    @PreAuthorize("hasAuthority('sysRole:save')")
     @PostMapping("save")
     public AjaxResult save(@RequestBody SysRole role, RequestBodyKeys updateFields) throws Exception {
         role.setBuiltin(false);
@@ -98,7 +98,7 @@ public class SysRoleController {
         return AjaxResult.ok().data(treeList);
     }
 
-    @HasPermission("sysRole:save")
+    @PreAuthorize("hasAuthority('sysRole:save')")
     @RequestMapping("ownPerms")
     public AjaxResult ownPerms(String id) {
         SysRole role = sysRoleService.findByRequest(id);
@@ -127,7 +127,7 @@ public class SysRoleController {
      *
      * @return
      */
-    @HasPermission("sysRole:save")
+    @PreAuthorize("hasAuthority('sysRole:save')")
     @RequestMapping("permTreeTable")
     public AjaxResult menuTree() {
         List<MenuDefinition> tree = sysMenuService.menuTree();
@@ -135,7 +135,7 @@ public class SysRoleController {
         return AjaxResult.ok().data(tree);
     }
 
-    @HasPermission("sysRole:save")
+    @PreAuthorize("hasAuthority('sysRole:save')")
     @RequestMapping("savePerms")
     public AjaxResult savePerms(@RequestBody SaveRolePermRequest request) {
         SysRole sysRole = sysRoleService.savePerms(request.getId(), request.getPerms(), request.getMenus());
@@ -146,7 +146,7 @@ public class SysRoleController {
     }
 
 
-    @HasPermission("sysRole:save")
+    @PreAuthorize("hasAuthority('sysRole:save')")
     @RequestMapping("userList")
     public AjaxResult userList(String id) {
         List<SysUser> users = sysUserService.findAll();
@@ -162,7 +162,7 @@ public class SysRoleController {
         return AjaxResult.ok().data(data);
     }
 
-    @HasPermission("sysRole:view")
+    @PreAuthorize("hasAuthority('sysRole:view')")
     @GetMapping("get")
     public AjaxResult get(String id) {
         SysRole role = sysRoleService.findByRequest(id);
@@ -170,7 +170,7 @@ public class SysRoleController {
     }
 
 
-    @HasPermission("sysRole:save")
+    @PreAuthorize("hasAuthority('sysRole:save')")
     @RequestMapping("grantUsers")
     public AjaxResult saveUserList(@RequestBody GrantUserToRoleRequest request) {
         SysRole sysRole = sysRoleService.grantUsers(request.getId(), request.getUserIdList());

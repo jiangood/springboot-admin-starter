@@ -2,7 +2,6 @@ package io.github.jiangood.sa.modules.system.controller;
 
 import io.github.jiangood.sa.common.dto.AjaxResult;
 import io.github.jiangood.sa.common.tools.enums.MaterialType;
-import io.github.jiangood.sa.framework.config.security.HasPermission;
 import io.github.jiangood.sa.framework.data.specification.Spec;
 import io.github.jiangood.sa.modules.system.entity.SysFile;
 import io.github.jiangood.sa.modules.system.service.SysFileService;
@@ -13,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -28,7 +28,7 @@ public class SysFileController {
     private SysFileService service;
 
 
-    @HasPermission("sysFile:view")
+    @PreAuthorize("hasAuthority('sysFile:view')")
     @RequestMapping("page")
     public AjaxResult page(String dateRange,
                            String originName,
@@ -81,7 +81,7 @@ public class SysFileController {
     }
 
 
-    @HasPermission("sysFile:delete")
+    @PreAuthorize("hasAuthority('sysFile:delete')")
     @RequestMapping("delete")
     public AjaxResult delete(String id) throws Exception {
         service.deleteById(id);

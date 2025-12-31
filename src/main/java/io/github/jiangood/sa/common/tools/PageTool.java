@@ -2,7 +2,6 @@ package io.github.jiangood.sa.common.tools;
 
 
 import io.github.jiangood.sa.framework.data.domain.PageExt;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 

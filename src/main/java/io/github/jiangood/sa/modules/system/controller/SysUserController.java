@@ -10,7 +10,6 @@ import io.github.jiangood.sa.common.dto.antd.TreeOption;
 import io.github.jiangood.sa.common.tools.tree.TreeTool;
 import io.github.jiangood.sa.framework.config.SysProperties;
 import io.github.jiangood.sa.framework.config.argument.RequestBodyKeys;
-import io.github.jiangood.sa.framework.config.security.HasPermission;
 import io.github.jiangood.sa.framework.config.security.refresh.PermissionStaleService;
 import io.github.jiangood.sa.framework.data.domain.BaseEntity;
 import io.github.jiangood.sa.framework.data.specification.Spec;
@@ -31,6 +30,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
@@ -58,7 +58,7 @@ public class SysUserController {
     private PermissionStaleService permissionStaleService;
 
 
-    @HasPermission("sysUser:view")
+    @PreAuthorize("hasAuthority('sysUser:view')")
     @RequestMapping("page")
     public AjaxResult page(String orgId, String roleId, String searchText, @PageableDefault(sort = "updateTime", direction = Sort.Direction.DESC) Pageable pageable) throws Exception {
 
@@ -69,7 +69,7 @@ public class SysUserController {
 
 
     @Log("用户-保存")
-    @HasPermission("sysUser:save")
+    @PreAuthorize("hasAuthority('sysUser:save')")
     @PostMapping("save")
     public AjaxResult save(@RequestBody SysUser input, RequestBodyKeys updateFields) throws Exception {
         String defaultPassword = sysProperties.getDefaultPassword();
@@ -101,7 +101,7 @@ public class SysUserController {
 
 
     @Log("用户-删除")
-    @HasPermission("sysUser:delete")
+    @PreAuthorize("hasAuthority('sysUser:delete')")
     @GetMapping("delete")
     public AjaxResult delete(String id) {
         SysUser user = sysUserService.findOne(id);
@@ -134,7 +134,7 @@ public class SysUserController {
 
 
     @Log("用户-重置密码")
-    @HasPermission("sysUser:resetPwd")
+    @PreAuthorize("hasAuthority('sysUser:resetPwd')")
     @PostMapping("resetPwd")
     public AjaxResult resetPwd(@RequestBody SysUser user) {
         String defaultPassWord = sysProperties.getDefaultPassword();
@@ -198,7 +198,7 @@ public class SysUserController {
      * 授权数据
      */
     @Log("用户-授权数据")
-    @HasPermission("sysUser:grantPerm")
+    @PreAuthorize("hasAuthority('sysUser:grantPerm')")
     @PostMapping("grantPerm")
     public AjaxResult grantPerm(@Valid @RequestBody GrantUserPermRequest param) {
         SysUser sysUser = sysUserService.grantPerm(param.getId(), param.getRoleIds(), param.getDataPermType(), param.getOrgIds());

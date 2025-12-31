@@ -3,7 +3,6 @@ package io.github.jiangood.sa.modules.system.controller;
 
 import io.github.jiangood.sa.common.dto.AjaxResult;
 import io.github.jiangood.sa.framework.config.argument.RequestBodyKeys;
-import io.github.jiangood.sa.framework.config.security.HasPermission;
 import io.github.jiangood.sa.framework.data.specification.Spec;
 import io.github.jiangood.sa.modules.system.entity.SysDict;
 import io.github.jiangood.sa.modules.system.service.SysDictService;
@@ -12,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,7 +24,7 @@ public class SysDictController {
     @Resource
     private SysDictService service;
 
-    @HasPermission("sysDict:view")
+    @PreAuthorize("hasAuthority('sysDict:view')")
     @RequestMapping("page")
     public AjaxResult page(String searchText, @PageableDefault(direction = Sort.Direction.DESC, sort = "updateTime") Pageable pageable) throws Exception {
         Spec<SysDict> q = service.spec();
@@ -35,14 +35,14 @@ public class SysDictController {
         return AjaxResult.ok().data(page);
     }
 
-    @HasPermission("sysDict:save")
+    @PreAuthorize("hasAuthority('sysDict:save')")
     @PostMapping("save")
     public AjaxResult save(@RequestBody SysDict input, RequestBodyKeys updateFields) throws Exception {
         service.saveOrUpdateByRequest(input, updateFields);
         return AjaxResult.ok().msg("保存成功");
     }
 
-    @HasPermission("sysDict:delete")
+    @PreAuthorize("hasAuthority('sysDict:delete')")
     @RequestMapping("delete")
     public AjaxResult delete(String id) {
         service.deleteByRequest(id);

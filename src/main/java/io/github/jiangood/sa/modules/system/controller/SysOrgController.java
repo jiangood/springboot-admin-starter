@@ -8,7 +8,6 @@ import io.github.jiangood.sa.common.tools.tree.TreeTool;
 import io.github.jiangood.sa.common.tools.tree.drop.DropResult;
 import io.github.jiangood.sa.common.tools.tree.drop.TreeDropTool;
 import io.github.jiangood.sa.framework.config.argument.RequestBodyKeys;
-import io.github.jiangood.sa.framework.config.security.HasPermission;
 import io.github.jiangood.sa.framework.config.security.refresh.PermissionStaleService;
 import io.github.jiangood.sa.framework.data.specification.Spec;
 import io.github.jiangood.sa.framework.log.Log;
@@ -19,6 +18,7 @@ import io.github.jiangood.sa.modules.system.service.SysOrgService;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -43,7 +43,6 @@ public class SysOrgController {
      *
      * @return
      */
-    @HasPermission("sysOrg:view")
     @RequestMapping("tree")
     public AjaxResult tree(boolean onlyShowEnabled, boolean onlyShowUnit, String searchText) {
         Spec<SysOrg> q = Spec.of();
@@ -68,7 +67,7 @@ public class SysOrgController {
 
 
     @Log("机构-保存")
-    @HasPermission("sysOrg:save")
+    @PreAuthorize("hasAuthority('sysOrg:save')")
     @PostMapping("save")
     public AjaxResult saveOrUpdate(@RequestBody SysOrg input, RequestBodyKeys requestBodyKeys) throws Exception {
         if (input.getLeader() != null) {
@@ -84,7 +83,7 @@ public class SysOrgController {
     }
 
     @Log("机构-删除")
-    @HasPermission("sysOrg:delete")
+    @PreAuthorize("hasAuthority('sysOrg:delete')")
     @RequestMapping("delete")
     public AjaxResult delete(String id) {
         sysOrgService.deleteByRequest(id);
@@ -92,7 +91,6 @@ public class SysOrgController {
         return AjaxResult.ok().msg("删除机构成功");
     }
 
-    @HasPermission("sysOrg:view")
     @GetMapping("detail")
     public AjaxResult detail(String id) {
         SysOrg org = sysOrgService.findByRequest(id);
@@ -116,7 +114,7 @@ public class SysOrgController {
 
 
     @PostMapping("sort")
-    @HasPermission("sysOrg:save")
+    @PreAuthorize("hasAuthority('sysOrg:save')")
     public AjaxResult sort(@RequestBody DropEvent e) {
         List<SysOrg> nodes = sysOrgService.findAll();
         List<TreeOption> tree = list2Tree(nodes);

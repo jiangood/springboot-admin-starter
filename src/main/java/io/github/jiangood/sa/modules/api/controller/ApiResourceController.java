@@ -2,11 +2,11 @@ package io.github.jiangood.sa.modules.api.controller;
 
 import cn.hutool.core.util.StrUtil;
 import io.github.jiangood.sa.common.dto.AjaxResult;
-import io.github.jiangood.sa.framework.config.security.HasPermission;
 import io.github.jiangood.sa.modules.api.entity.ApiResource;
 import io.github.jiangood.sa.modules.api.service.ApiResourceService;
 import jakarta.annotation.Resource;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,7 +18,7 @@ public class ApiResourceController {
     @Resource
     private ApiResourceService service;
 
-    @HasPermission("api")
+    @PreAuthorize("hasAuthority('api')")
     @RequestMapping("page")
     public AjaxResult page(String searchText) throws Exception {
         List<ApiResource> list = service.findAll();

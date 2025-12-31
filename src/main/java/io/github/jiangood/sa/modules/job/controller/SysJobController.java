@@ -9,7 +9,6 @@ import io.github.jiangood.sa.common.tools.SpringTool;
 import io.github.jiangood.sa.common.tools.field.Field;
 import io.github.jiangood.sa.common.tools.field.FieldDescription;
 import io.github.jiangood.sa.framework.config.argument.RequestBodyKeys;
-import io.github.jiangood.sa.framework.config.security.HasPermission;
 import io.github.jiangood.sa.framework.data.specification.Spec;
 import io.github.jiangood.sa.framework.log.Log;
 import io.github.jiangood.sa.modules.job.JobDescription;
@@ -45,13 +44,13 @@ public class SysJobController {
     private QuartzManager quartzService;
 
 
-    @HasPermission("job:view")
+    @PreAuthorize("hasAuthority('job:view")
     @RequestMapping("page")
     public AjaxResult page(String searchText, @PageableDefault(direction = Sort.Direction.DESC, sort = "updateTime") Pageable pageable) throws SchedulerException {
         return AjaxResult.ok().data(service.page(searchText, pageable));
     }
 
-    @HasPermission("job:save")
+    @PreAuthorize("hasAuthority('job:save")
     @PostMapping("save")
     public AjaxResult save(@RequestBody SysJob param, RequestBodyKeys updateFields) throws Exception {
         Class.forName(param.getJobClass());
@@ -68,7 +67,7 @@ public class SysJobController {
 
 
     @Log("作业-执行一次")
-    @HasPermission("job:triggerJob")
+    @PreAuthorize("hasAuthority('job:triggerJob")
     @GetMapping("triggerJob")
     public AjaxResult triggerJob(String id) throws SchedulerException, ClassNotFoundException {
         SysJob job = service.findByRequest(id);
@@ -162,7 +161,7 @@ public class SysJobController {
     }
 
 
-    @HasPermission("job:view")
+    @PreAuthorize("hasAuthority('job:view")
     @RequestMapping("status")
     public AjaxResult info() throws SchedulerException {
         SchedulerMetaData meta = scheduler.getMetaData();

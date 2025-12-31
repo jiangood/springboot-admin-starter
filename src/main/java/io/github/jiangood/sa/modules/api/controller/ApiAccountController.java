@@ -5,7 +5,6 @@ import cn.hutool.core.util.StrUtil;
 import io.github.jiangood.sa.common.dto.AjaxResult;
 import io.github.jiangood.sa.common.dto.antd.Option;
 import io.github.jiangood.sa.framework.config.argument.RequestBodyKeys;
-import io.github.jiangood.sa.framework.config.security.HasPermission;
 import io.github.jiangood.sa.framework.data.specification.Spec;
 import io.github.jiangood.sa.modules.api.ApiErrorCode;
 import io.github.jiangood.sa.modules.api.dto.GrantRequest;
@@ -19,6 +18,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -36,7 +36,7 @@ public class ApiAccountController {
     private ApiResourceService apiResourceService;
 
 
-    @HasPermission("api")
+    @PreAuthorize("hasAuthority('api')")
     @GetMapping("docInfo")
     public AjaxResult docInfo(String id) {
         List<ApiResource> list = apiResourceService.findAll();
@@ -59,7 +59,7 @@ public class ApiAccountController {
         return AjaxResult.ok().data(resultData);
     }
 
-    @HasPermission("apiAccount:view")
+    @PreAuthorize("hasAuthority('apiAccount:view')")
     @RequestMapping("page")
     public AjaxResult page(String searchText, @PageableDefault(direction = Sort.Direction.DESC, sort = "updateTime") Pageable pageable) throws Exception {
         Spec<ApiAccount> q = service.spec().orLike(searchText, "name");
@@ -67,21 +67,21 @@ public class ApiAccountController {
         return AjaxResult.ok().data(page);
     }
 
-    @HasPermission("apiAccount:save")
+    @PreAuthorize("hasAuthority('apiAccount:save')")
     @PostMapping("save")
     public AjaxResult save(@RequestBody ApiAccount input, RequestBodyKeys updateFields) throws Exception {
         service.saveOrUpdateByRequest(input, updateFields);
         return AjaxResult.ok().msg("保存成功");
     }
 
-    @HasPermission("api")
+    @PreAuthorize("hasAuthority('api')")
     @RequestMapping("delete")
     public AjaxResult delete(String id) {
         service.deleteByRequest(id);
         return AjaxResult.ok().msg("删除成功");
     }
 
-    @HasPermission("api")
+    @PreAuthorize("hasAuthority('api')")
     @GetMapping("accountOptions")
     public AjaxResult accountOptions() {
         List<ApiAccount> list = service.findAll();
@@ -89,7 +89,7 @@ public class ApiAccountController {
         return AjaxResult.ok().data(options);
     }
 
-    @HasPermission("api")
+    @PreAuthorize("hasAuthority('api')")
     @PostMapping("grant")
     public AjaxResult grant(@Validate @RequestBody GrantRequest request) {
         ApiAccount acc = service.findOne(request.getAccountId());
@@ -102,7 +102,7 @@ public class ApiAccountController {
         return AjaxResult.ok();
     }
 
-    @HasPermission("api")
+    @PreAuthorize("hasAuthority('api')")
     @GetMapping("get")
     public AjaxResult get(String id) {
         ApiAccount acc = service.findOne(id);

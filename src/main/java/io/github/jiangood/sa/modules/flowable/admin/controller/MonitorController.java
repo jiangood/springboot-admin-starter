@@ -4,7 +4,6 @@ package io.github.jiangood.sa.modules.flowable.admin.controller;
 import cn.hutool.core.util.StrUtil;
 import io.github.jiangood.sa.common.dto.AjaxResult;
 import io.github.jiangood.sa.common.tools.PageTool;
-import io.github.jiangood.sa.framework.config.security.HasPermission;
 import io.github.jiangood.sa.framework.log.Log;
 import io.github.jiangood.sa.modules.common.LoginTool;
 import io.github.jiangood.sa.modules.flowable.core.dto.response.MonitorTaskResponse;
@@ -26,6 +25,7 @@ import org.flowable.task.api.TaskQuery;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -118,7 +118,7 @@ public class MonitorController {
     }
 
     @Log("关闭流程实例")
-    @HasPermission("flowableInstance:close")
+    @PreAuthorize("hasAuthority('flowableInstance:close')")
     @GetMapping("processInstance/close")
     public AjaxResult processInstanceClose(String id) {
         String name = LoginTool.getUser().getName();
@@ -187,7 +187,7 @@ public class MonitorController {
         return AjaxResult.ok().data(new PageImpl<>(responseList));
     }
 
-    @HasPermission("flowableTask:setAssignee")
+    @PreAuthorize("hasAuthority('flowableTask:setAssignee')")
     @RequestMapping("setAssignee")
     public AjaxResult setAssignee(@RequestBody SetAssigneeRequest request) {
         taskService.setAssignee(request.taskId(), request.assignee());

@@ -3,7 +3,6 @@ package io.github.jiangood.sa.modules.flowable.admin.controller;
 
 import cn.hutool.core.lang.Dict;
 import io.github.jiangood.sa.common.dto.AjaxResult;
-import io.github.jiangood.sa.common.tools.BeanTool;
 import io.github.jiangood.sa.common.tools.ImgTool;
 import io.github.jiangood.sa.common.tools.PageTool;
 import io.github.jiangood.sa.common.tools.datetime.DateFormatTool;
@@ -22,7 +21,6 @@ import org.flowable.engine.history.HistoricProcessInstanceQuery;
 import org.flowable.engine.task.Comment;
 import org.flowable.task.api.Task;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
@@ -30,7 +28,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.*;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 

@@ -2,7 +2,6 @@ package io.github.jiangood.sa.modules.system.controller;
 
 
 import io.github.jiangood.sa.common.dto.AjaxResult;
-import io.github.jiangood.sa.framework.config.security.HasPermission;
 import io.github.jiangood.sa.framework.data.specification.Spec;
 import io.github.jiangood.sa.modules.system.entity.SysLog;
 import io.github.jiangood.sa.modules.system.service.SysLogService;
@@ -11,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,7 +24,7 @@ public class SysLogController {
     private SysLogService service;
 
 
-    @HasPermission("sysLog:view")
+    @PreAuthorize("hasAuthority('sysLog:view')")
     @RequestMapping("page")
     public AjaxResult page(String dateRange, String operation, @PageableDefault(sort = "operationTime", direction = Sort.Direction.DESC) Pageable pageable) throws Exception {
         Spec<SysLog> q = Spec.of();

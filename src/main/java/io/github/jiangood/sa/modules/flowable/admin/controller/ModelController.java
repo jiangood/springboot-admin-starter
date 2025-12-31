@@ -7,7 +7,6 @@ import io.github.jiangood.sa.common.dto.antd.Option;
 import io.github.jiangood.sa.common.tools.PageTool;
 import io.github.jiangood.sa.common.tools.SpringTool;
 import io.github.jiangood.sa.common.tools.annotation.RemarkTool;
-import io.github.jiangood.sa.framework.config.security.HasPermission;
 import io.github.jiangood.sa.framework.data.specification.Spec;
 import io.github.jiangood.sa.framework.log.Log;
 import io.github.jiangood.sa.modules.flowable.core.config.ProcessMetaCfg;
@@ -19,7 +18,6 @@ import io.github.jiangood.sa.modules.system.entity.SysRole;
 import io.github.jiangood.sa.modules.system.entity.SysUser;
 import io.github.jiangood.sa.modules.system.service.SysRoleService;
 import io.github.jiangood.sa.modules.system.service.SysUserService;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.flowable.bpmn.model.BpmnModel;
@@ -34,6 +32,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
@@ -61,7 +60,7 @@ public class ModelController {
 
     private ProcessMetaCfg metaCfg;
 
-    @HasPermission("flowableModel:design")
+    @PreAuthorize("hasAuthority('flowableModel:design')")
     @RequestMapping("page")
     public AjaxResult page(String searchText, Pageable pageable) throws Exception {
         ModelQuery query = repositoryService.createModelQuery();
@@ -107,14 +106,14 @@ public class ModelController {
     }
 
 
-    @HasPermission("flowableModel:design")
+    @PreAuthorize("hasAuthority('flowableModel:design')")
     @GetMapping("delete")
     public AjaxResult delete(@RequestParam String id) {
         repositoryService.deleteModel(id);
         return AjaxResult.ok().msg("删除模型成功");
     }
 
-    @HasPermission("flowableModel:design")
+    @PreAuthorize("hasAuthority('flowableModel:design')")
     @PostMapping("saveContent")
     public AjaxResult save(@RequestBody ModelRequest param) throws Exception {
         Assert.hasText(param.content(), "内容不能为空");
@@ -123,7 +122,7 @@ public class ModelController {
     }
 
     @Log("部署流程模型")
-    @HasPermission("flowableModel:deploy")
+    @PreAuthorize("hasAuthority('flowableModel:deploy')")
     @PostMapping("deploy")
     public AjaxResult deploy(@RequestBody ModelRequest param) throws InvocationTargetException, IllegalAccessException, JsonProcessingException {
         String xml = param.content();

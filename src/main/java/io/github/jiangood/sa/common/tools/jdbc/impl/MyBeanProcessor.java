@@ -1,6 +1,5 @@
 package io.github.jiangood.sa.common.tools.jdbc.impl;
 
-import io.github.jiangood.sa.common.tools.BeanTool;
 import io.github.jiangood.sa.common.tools.ConvertTool;
 import io.github.jiangood.sa.common.tools.ReflectionTool;
 import lombok.extern.slf4j.Slf4j;

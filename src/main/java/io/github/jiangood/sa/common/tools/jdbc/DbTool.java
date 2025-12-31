@@ -1,7 +1,6 @@
 package io.github.jiangood.sa.common.tools.jdbc;
 
 
-import cn.hutool.core.lang.Dict;
 import cn.hutool.core.map.CaseInsensitiveLinkedMap;
 import cn.hutool.core.util.StrUtil;
 import lombok.Getter;
