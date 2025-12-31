@@ -46,9 +46,9 @@ public class SecurityConfig {
             if (loginExclude.length > 0) {
                 authz.requestMatchers(loginExclude).permitAll();
             }
-            authz.requestMatchers("/admin/auth/**", "/admin/public/**").permitAll();
-            authz.requestMatchers("/admin/**", "/ureport/**").authenticated();
-            authz.anyRequest().permitAll();
+            authz.requestMatchers("/admin/auth/**", "/admin/public/**").permitAll()
+                    .requestMatchers("/admin/**", "/ureport/**").authenticated()
+                    .anyRequest().permitAll();
         });
 
         http.formLogin(cfg -> {

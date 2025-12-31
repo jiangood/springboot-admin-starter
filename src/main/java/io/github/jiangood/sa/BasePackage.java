@@ -7,12 +7,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 
 @Configuration
 @ComponentScan(basePackages = {"io.github.jiangood.sa.framework", "io.github.jiangood.sa.modules"})
 @EntityScan(basePackages = "io.github.jiangood.sa.modules")
 @EnableCaching
 @EnableScheduling
+@EnableWebSecurity
 public class BasePackage {
 
     @Bean
