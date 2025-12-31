@@ -11,3 +11,6 @@ declare type ViewInstanceProgressProps = {
 
 export class ViewInstanceProgress extends React.Component<ViewInstanceProgressProps, any> {
 }
+
+export class ViewInstanceProgressButton extends React.Component<ViewInstanceProgressProps, any> {
+}

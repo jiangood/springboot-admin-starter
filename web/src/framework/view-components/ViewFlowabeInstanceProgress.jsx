@@ -1,8 +1,8 @@
 import React from "react";
-import {Card, Empty, Modal, Skeleton, Table, Tabs, Typography} from "antd";
+import {Button, Card, Empty, Modal, Skeleton, Table, Tabs, Typography} from "antd";
 
 import {FormOutlined, ShareAltOutlined} from "@ant-design/icons";
-import {FormRegistryUtils, Gap, HttpUtils} from "../../framework";
+import {FormRegistryUtils, Gap, HttpUtils, MessageUtils, ViewInstanceProgress} from "../../framework";
 
 /**
  * 查看流程处理情况（不含表单）
@@ -94,5 +94,24 @@ export class ViewFlowableInstanceProgress extends React.Component {
         </>
 
     }
+
+}
+
+export class ViewInstanceProgressButton extends React.Component{
+    state = {
+        open:false,
+    }
+
+    onClick = () => {
+        console.log('点击追踪流程')
+        MessageUtils.alert(<ViewInstanceProgress value={this.props.value} />,{
+            title:'流程审批信息',
+            width:800
+        })
+    };
+    render() {
+       return <Button onClick={this.onClick} size='small'>追踪流程</Button>
+    }
+
 
 }
