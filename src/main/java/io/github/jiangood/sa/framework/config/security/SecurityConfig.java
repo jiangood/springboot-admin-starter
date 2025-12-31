@@ -7,11 +7,15 @@ import io.github.jiangood.sa.common.tools.ResponseTool;
 import io.github.jiangood.sa.framework.config.SysProperties;
 import io.github.jiangood.sa.framework.config.init.SystemHookService;
 import io.github.jiangood.sa.framework.config.security.refresh.PermissionRefreshFilter;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -23,9 +27,12 @@ import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.context.SecurityContextRepository;
+
+import java.io.IOException;
 
 @Slf4j
 @Configuration
@@ -82,14 +89,10 @@ public class SecurityConfig {
 
         http.exceptionHandling(cfg -> {
             cfg.accessDeniedHandler((request, response, e) -> {
-                AjaxResult err = AjaxResult.err(e.getMessage());
-                ResponseTool.response(response, err);
+                ResponseTool.response(response, AjaxResult.FORBIDDEN);
             }).authenticationEntryPoint((request, response, e) -> {
-                AjaxResult err = AjaxResult.err(401, "认证信息已失效或未登录，请重新登录。" + e.getMessage());
-                response.setStatus(401);
-                ResponseTool.response(response, err);
+                ResponseTool.response(response, AjaxResult.UNAUTHORIZED);
             });
-
         });
 
 

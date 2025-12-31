@@ -6,6 +6,8 @@ import io.github.jiangood.sa.common.tools.JsonTool;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import org.aspectj.weaver.loadtime.Aj;
+import org.springframework.http.HttpStatus;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,6 +23,10 @@ public class AjaxResult {
 
     public static final int SUCCESS = 200;
     public static final int FAILURE = 500;
+
+    public static final AjaxResult FORBIDDEN = AjaxResult.err(HttpStatus.FORBIDDEN.value(), "您没有权限访问此资源");
+
+    public static final AjaxResult UNAUTHORIZED =  AjaxResult.err(HttpStatus.UNAUTHORIZED.value(), "身份验证失败，请重新登录");
 
 
     boolean success;
