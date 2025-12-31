@@ -41,7 +41,7 @@ public class SysUserDetailsService implements UserDetailsService {
 
         // 构造权限列表，比如 ROLE_ADMIN, USER_READ
         List<GrantedAuthority> authorities = new ArrayList<>();
-        Set<String> permissions = userService.getAllPermissions(user.getId());
+        Set<String> permissions = userService.getUserPerms(user.getId());
         for (String permission : permissions) {
             authorities.add(new SimpleGrantedAuthority(permission));
         }

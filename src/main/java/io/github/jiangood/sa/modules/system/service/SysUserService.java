@@ -209,28 +209,33 @@ public class SysUserService extends BaseService<SysUser> {
     }
 
     @Transactional
-    public Set<String> getAllPermissions(String id) {
+    public Set<String> getUserPerms(String id) {
         SysUser user = sysUserDao.findOne(id);
 
-        Set<String> list = new HashSet<>();
+        Set<String> result = new TreeSet<>();
         for (SysRole role : user.getRoles()) {
             // 添加角色，格式必须以 ROLE_ 开头，如 ROLE_ADMIN
-            list.add("ROLE_" + role.getName());
+            result.add("ROLE_" + role.getName());
 
-            // 如果权限表是细粒度权限，如 user:read，也可以加上
-            List<MenuDefinition> menus = role.isAdmin() ? sysMenuDao.findAll() : sysMenuDao.findAllById(role.getMenus());
-            for (MenuDefinition menu : menus) {
-                List<String> perms = menu.getPermCodes();
-                list.addAll(perms);
+            if(role.isAdmin()){
+                List<MenuDefinition> menus = sysMenuDao.findAll();
+                for (MenuDefinition menu : menus) {
+                    List<String> perms = menu.getPermCodes();
+                    CollUtil.addAll(result, perms);
+                }
+            }else {
+                List<String> rolePerms = role.getPerms();
+                CollUtil.addAll(result, rolePerms);
             }
         }
 
+        // 机构权限
         List<String> orgPermissions = this.getOrgPermissions(id);
         for (String orgPermission : orgPermissions) {
-            list.add("ORG_" + orgPermission);
+            result.add("ORG_" + orgPermission);
         }
 
-        return list;
+        return result;
     }
 
     public GrantUserPermRequest getPermInfo(String id) {
